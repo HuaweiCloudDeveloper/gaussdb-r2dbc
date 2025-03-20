@@ -284,7 +284,7 @@ public final class GaussDBConnectionFactoryProvider implements ConnectionFactory
         Assert.requireNonNull(connectionFactoryOptions, "connectionFactoryOptions must not be null");
 
         String driver = "" + connectionFactoryOptions.getValue(DRIVER);
-        return driver != null && (driver.equals(GAUSSDB_DRIVER));
+        return driver.equals(GAUSSDB_DRIVER);
     }
 
     /**
