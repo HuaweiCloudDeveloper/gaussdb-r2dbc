@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Integration tests for {@link PostgresqlConnection} connection options.
+ * Integration tests for {@link GaussDBConnection} connection options.
  */
 final class PostgresqlConnectionRuntimeOptionsIntegrationTests {
 
@@ -34,11 +34,11 @@ final class PostgresqlConnectionRuntimeOptionsIntegrationTests {
         .options(options)
         .build();
 
-    private final PostgresqlConnectionFactory connectionFactory = new PostgresqlConnectionFactory(this.configuration);
+    private final GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(this.configuration);
 
     @Test
     void connectionFactoryShouldApplyParameters() {
-        PostgresqlConnection connection = (PostgresqlConnection) connectionFactory.create().block();
+        GaussDBConnection connection = (GaussDBConnection) connectionFactory.create().block();
 
         connection
             .createStatement("SHOW lock_timeout").execute()
@@ -59,7 +59,7 @@ final class PostgresqlConnectionRuntimeOptionsIntegrationTests {
 
     @Test
     void connectionFactoryShouldApplyParametersUsingTimeoutApis() {
-        PostgresqlConnection connection = (PostgresqlConnection) connectionFactory.create().block();
+        GaussDBConnection connection = (GaussDBConnection) connectionFactory.create().block();
         connection.setLockWaitTimeout(Duration.ofSeconds(10)).block();
         connection.setStatementTimeout(Duration.ofMinutes(2)).block();
 

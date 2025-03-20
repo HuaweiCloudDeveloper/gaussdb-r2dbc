@@ -52,7 +52,7 @@ import static org.mockito.Mockito.RETURNS_SMART_NULLS;
 import static org.mockito.Mockito.mock;
 
 /**
- * Unit tests for {@link PostgresqlConnection}.
+ * Unit tests for {@link GaussDBConnection}.
  */
 final class PostgresqlConnectionUnitTests {
 
@@ -64,7 +64,7 @@ final class PostgresqlConnectionUnitTests {
             .expectRequest(new Query("BEGIN")).thenRespond(new CommandComplete("BEGIN", null, null))
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
         assertThat(connection.isAutoCommit()).isTrue();
 
         connection.beginTransaction()
@@ -78,7 +78,7 @@ final class PostgresqlConnectionUnitTests {
             .expectRequest(new Query("BEGIN ISOLATION LEVEL SERIALIZABLE, READ ONLY, NOT DEFERRABLE")).thenRespond(new CommandComplete("BEGIN", null, null))
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         connection.beginTransaction(PostgresTransactionDefinition.from(IsolationLevel.SERIALIZABLE).readOnly().notDeferrable())
             .as(StepVerifier::create)
@@ -141,7 +141,7 @@ final class PostgresqlConnectionUnitTests {
             .expectRequest(new Query("COMMIT")).thenRespond(new CommandComplete("COMMIT", null, null))
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         assertThat(connection.isAutoCommit()).isFalse();
         connection.commitTransaction()
@@ -188,7 +188,7 @@ final class PostgresqlConnectionUnitTests {
 
     @Test
     void constructorNoPortalNameSupplier() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlConnection(NO_OP, MockCodecs.empty(), null, this.statementCache, IsolationLevel.READ_COMMITTED, null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBConnection(NO_OP, MockCodecs.empty(), null, this.statementCache, IsolationLevel.READ_COMMITTED, null))
             .withMessage("portalNameSupplier must not be null");
     }
 
@@ -315,7 +315,7 @@ final class PostgresqlConnectionUnitTests {
             .expectRequest(new Query("ROLLBACK")).thenRespond(new CommandComplete("ROLLBACK", null, null))
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         connection.rollbackTransaction()
             .as(StepVerifier::create)
@@ -408,7 +408,7 @@ final class PostgresqlConnectionUnitTests {
     void getMetadata() {
         Client client = TestClient.builder().withVersion(new Version("9.4")).build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         PostgresqlConnectionMetadata metadata = connection.getMetadata();
 
@@ -422,7 +422,7 @@ final class PostgresqlConnectionUnitTests {
             .transactionStatus(OPEN)
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         assertThat(connection.isAutoCommit()).isFalse();
     }
@@ -433,7 +433,7 @@ final class PostgresqlConnectionUnitTests {
             .transactionStatus(IDLE)
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         assertThat(connection.isAutoCommit()).isTrue();
     }
@@ -444,7 +444,7 @@ final class PostgresqlConnectionUnitTests {
             .expectRequest(new Query("BEGIN")).thenRespond(new CommandComplete("BEGIN", null, null))
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         connection.setAutoCommit(false)
             .as(StepVerifier::create)
@@ -456,7 +456,7 @@ final class PostgresqlConnectionUnitTests {
         Client client = TestClient.builder()
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         connection.setAutoCommit(true)
             .as(StepVerifier::create)
@@ -522,7 +522,7 @@ final class PostgresqlConnectionUnitTests {
             )
             .build();
 
-        PostgresqlConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
+        GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
         connection.copyIn("some-sql", Flux.empty())
             .as(StepVerifier::create)
@@ -558,13 +558,13 @@ final class PostgresqlConnectionUnitTests {
             .verifyComplete();
     }
 
-    private PostgresqlConnection createConnection(Client client, MockCodecs codecs, StatementCache cache) {
+    private GaussDBConnection createConnection(Client client, MockCodecs codecs, StatementCache cache) {
         PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
             .host("127.0.0.1")
             .username("admin")
             .password("password")
             .build();
-        return new PostgresqlConnection(client, codecs, () -> "", cache, IsolationLevel.READ_COMMITTED, configuration);
+        return new GaussDBConnection(client, codecs, () -> "", cache, IsolationLevel.READ_COMMITTED, configuration);
     }
 
 }

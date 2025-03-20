@@ -18,6 +18,7 @@ package io.r2dbc.gaussdb;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.client.EncodedParameter;
 import io.r2dbc.gaussdb.codec.Codec;
@@ -84,7 +85,7 @@ final class CodecExtensionIntegrationTests extends AbstractIntegrationTests {
         static boolean REGISTER = false;
 
         @Override
-        public Publisher<Void> register(io.r2dbc.gaussdb.api.PostgresqlConnection connection, ByteBufAllocator allocator, CodecRegistry registry) {
+        public Publisher<Void> register(GaussDBConnection connection, ByteBufAllocator allocator, CodecRegistry registry) {
 
             if (!REGISTER) {
                 return Mono.empty();

@@ -20,8 +20,8 @@ import io.netty.channel.epoll.Epoll;
 import io.netty.channel.kqueue.KQueue;
 import io.netty.util.ReferenceCountUtil;
 import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
-import io.r2dbc.gaussdb.PostgresqlConnectionFactory;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.GaussDBConnectionFactory;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.authentication.PasswordAuthenticationHandler;
 import io.r2dbc.gaussdb.message.backend.BackendMessage;
 import io.r2dbc.gaussdb.message.backend.CommandComplete;
@@ -293,7 +293,7 @@ final class ReactorNettyClientIntegrationTests {
 
     @Test
     void timeoutTest() {
-        PostgresqlConnectionFactory postgresqlConnectionFactory = new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionFactory gaussDBConnectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
             .host("example.com")
             .port(81)
             .username("test")
@@ -303,7 +303,7 @@ final class ReactorNettyClientIntegrationTests {
             .connectTimeout(Duration.ofMillis(200))
             .build());
 
-        postgresqlConnectionFactory.create()
+        gaussDBConnectionFactory.create()
             .as(StepVerifier::create)
             .expectError(R2dbcNonTransientResourceException.class)
             .verify(Duration.ofMillis(500));
@@ -318,14 +318,14 @@ final class ReactorNettyClientIntegrationTests {
         assumeThat(KQueue.isAvailable() || Epoll.isAvailable()).describedAs("EPoll or KQueue must be available").isTrue();
         assumeThat(new File(socket)).exists();
 
-        PostgresqlConnectionFactory postgresqlConnectionFactory = new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionFactory gaussDBConnectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
             .socket(socket)
             .username("postgres")
             .database(SERVER.getDatabase())
             .applicationName(ReactorNettyClientIntegrationTests.class.getName())
             .build());
 
-        postgresqlConnectionFactory.create()
+        gaussDBConnectionFactory.create()
             .flatMapMany(it -> {
                 return it.createStatement("SELECT 1").execute().flatMap(r -> r.map((row, rowMetadata) -> row.get(0))).concatWith(it.close());
             })
@@ -337,7 +337,7 @@ final class ReactorNettyClientIntegrationTests {
     @Test
     @Timeout(10)
     void queryNeverCompletes() {
-        PostgresqlConnectionFactory connectionFactory = new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
             .host(SERVER.getHost())
             .port(SERVER.getPort())
             .username(SERVER.getUsername())
@@ -400,8 +400,8 @@ final class ReactorNettyClientIntegrationTests {
                 .verifyError(R2dbcPermissionDeniedException.class);
         }
 
-        private PostgresqlConnectionFactory createConnectionFactory(String username, String password) {
-            return new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        private GaussDBConnectionFactory createConnectionFactory(String username, String password) {
+            return new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
                 .host(SERVER.getHost())
                 .port(SERVER.getPort())
                 .username(username)
@@ -516,7 +516,7 @@ final class ReactorNettyClientIntegrationTests {
         }
 
         private void client(Function<PostgresqlConnectionConfiguration.Builder, PostgresqlConnectionConfiguration.Builder> configurer,
-                            Consumer<Mono<PostgresqlConnection>> connectionConsumer) {
+                            Consumer<Mono<GaussDBConnection>> connectionConsumer) {
             PostgresqlConnectionConfiguration.Builder defaultConfig = PostgresqlConnectionConfiguration.builder()
                 .database(SERVER.getDatabase())
                 .host(SERVER.getHost())
@@ -525,10 +525,10 @@ final class ReactorNettyClientIntegrationTests {
                 .password((String) null)
                 .sslMode(SSLMode.VERIFY_FULL)
                 .sslHostnameVerifier(new NoVerification());
-            new PostgresqlConnectionFactory(configurer.apply(defaultConfig).build()).create()
+            new GaussDBConnectionFactory(configurer.apply(defaultConfig).build()).create()
                 .onErrorResume(e -> Mono.fromRunnable(() -> connectionConsumer.accept(Mono.error(e))))
                 .delayUntil(connection -> Mono.fromRunnable(() -> connectionConsumer.accept(Mono.just(connection))))
-                .flatMap(PostgresqlConnection::close)
+                .flatMap(GaussDBConnection::close)
                 .block();
         }
 

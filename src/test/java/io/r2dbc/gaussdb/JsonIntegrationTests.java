@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.codec.Json;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ final class JsonIntegrationTests extends AbstractIntegrationTests {
         jdbcOperations.execute("DROP TABLE IF EXISTS my_table;");
         jdbcOperations.execute("CREATE TABLE my_table (my_json JSON)");
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("INSERT INTO my_table (my_json) VALUES($1)")
             .bind("$1", Json.of("{\"hello\": \"world\"}")).execute()
@@ -62,7 +62,7 @@ final class JsonIntegrationTests extends AbstractIntegrationTests {
         jdbcOperations.execute("DROP TABLE IF EXISTS my_table;");
         jdbcOperations.execute("CREATE TABLE my_table (my_json JSON)");
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("INSERT INTO my_table (my_json) VALUES($1::JSON)")
             .bind("$1", "{\"hello\": \"world\"}").execute()

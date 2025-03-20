@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb.codec;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.util.Assert;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
@@ -55,13 +55,13 @@ public class PostgresTypes {
 
     private final static Pattern TYPENAME = Pattern.compile("[a-zA-Z0-9_]+");
 
-    private final PostgresqlConnection connection;
+    private final GaussDBConnection connection;
 
-    private PostgresTypes(PostgresqlConnection connection) {
+    private PostgresTypes(GaussDBConnection connection) {
         this.connection = connection;
     }
 
-    public static PostgresTypes from(PostgresqlConnection connection) {
+    public static PostgresTypes from(GaussDBConnection connection) {
         return new PostgresTypes(Assert.requireNonNull(connection, "connection must not be null"));
     }
 

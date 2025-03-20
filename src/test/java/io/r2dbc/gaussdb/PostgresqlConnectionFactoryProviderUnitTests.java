@@ -166,7 +166,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void disableSsl() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -181,7 +181,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void enableSsl() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -196,7 +196,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void supportsSslCertificates() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -212,7 +212,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void supportsSslCertificatesByClasspath() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -228,7 +228,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void supportsSslMode() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -243,7 +243,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void supportsSslModeAlias() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -267,7 +267,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderFetchSize() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -280,7 +280,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderFetchSizeAsString() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -293,7 +293,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderBinaryTransfer() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -306,7 +306,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderBinaryTransferWhenProvidedAsString() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -319,7 +319,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderCompatibilityMode() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -332,7 +332,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderPreparedStatementCacheQueries() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -345,7 +345,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void providerShouldConsiderPreparedStatementCacheQueriesWhenProvidedAsString() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -361,7 +361,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
         Map<String, String> expectedOptions = new HashMap<>();
         expectedOptions.put("lock_timeout", "5s");
         expectedOptions.put("statement_timeout", "6000");
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -380,7 +380,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
         Map<String, String> expectedOptions = new HashMap<>();
         expectedOptions.put("lock_timeout", "5000");
         expectedOptions.put("statement_timeout", "6000");
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -397,7 +397,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void shouldConfigureAutodetectExtensions() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -420,7 +420,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void shouldConfigureLogLevels() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -437,7 +437,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldApplySslContextBuilderCustomizer() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -458,7 +458,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldApplySslSni() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -475,7 +475,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldConfigureTcpKeepAlive() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -489,7 +489,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldConfigureTcpNoDelay() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -503,7 +503,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldConfigureTimeZone() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -517,7 +517,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldConfigureTimeZoneAsString() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -531,7 +531,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldConnectUsingUnixDomainSocket() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(SOCKET, "/tmp/.s.PGSQL.5432")
             .option(USER, "postgres")
@@ -543,7 +543,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void shouldConnectUsingMultiHostConfiguration() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(PROTOCOL, FAILOVER_PROTOCOL)
             .option(HOST, "host1:5433,host2:5432,host3")
@@ -566,7 +566,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void shouldConnectUsingMultiHostConfigurationFromUrl() {
-        PostgresqlConnectionFactory factory = this.provider.create(ConnectionFactoryOptions.parse("r2dbc:gaussdb:failover://user:foo@host1:5433,host2:5432,host3" +
+        GaussDBConnectionFactory factory = this.provider.create(ConnectionFactoryOptions.parse("r2dbc:gaussdb:failover://user:foo@host1:5433,host2:5432,host3" +
             "?loadBalanceHosts=true&hostRecheckTime=20s&targetServerType=SECONdArY"));
 
         assertThat(factory.getConfiguration().getSingleHostConfiguration()).isNull();
@@ -583,7 +583,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldParseOptionsProvidedAsString() {
         Option<String> options = Option.valueOf("options");
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -603,7 +603,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
         optionsMap.put("search_path", "public,private");
         optionsMap.put("default_tablespace", "unknown");
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -618,7 +618,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     @Test
     void shouldConfigurePreferAttachedBuffers() {
 
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -633,7 +633,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
     void shouldConfigureExtensions() {
         TestExtension testExtension1 = new TestExtension("extension-1");
         TestExtension testExtension2 = new TestExtension("extension-2");
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(PASSWORD, "test-password")
@@ -646,7 +646,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void supportsUsernameAndPasswordSupplier() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(Option.valueOf("password"), (Supplier<String>) () -> "test-password")
@@ -660,7 +660,7 @@ final class PostgresqlConnectionFactoryProviderUnitTests {
 
     @Test
     void supportsUsernameAndPasswordPublisher() {
-        PostgresqlConnectionFactory factory = this.provider.create(builder()
+        GaussDBConnectionFactory factory = this.provider.create(builder()
             .option(DRIVER, LEGACY_POSTGRESQL_DRIVER)
             .option(HOST, "test-host")
             .option(Option.valueOf("password"), Mono.just("test-password"))

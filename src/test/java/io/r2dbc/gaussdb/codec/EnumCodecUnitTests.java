@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBufAllocator;
-import io.r2dbc.gaussdb.api.MockPostgresqlConnection;
+import io.r2dbc.gaussdb.api.MockGaussDBConnection;
 import io.r2dbc.gaussdb.api.MockPostgresqlResult;
 import io.r2dbc.gaussdb.api.MockPostgresqlStatement;
 import io.r2dbc.gaussdb.extension.CodecRegistrar;
@@ -104,7 +104,7 @@ final class EnumCodecUnitTests {
                     .build())
                 .build())
             .build();
-        MockPostgresqlConnection mockPostgresqlConnection = new MockPostgresqlConnection(mockPostgresqlStatement);
+        MockGaussDBConnection mockPostgresqlConnection = new MockGaussDBConnection(mockPostgresqlStatement);
 
         Publisher<Void> register = codecRegistrar.register(mockPostgresqlConnection, mockByteBufAllocator, mockCodecRegistry);
         StepVerifier.create(register).verifyComplete();
@@ -133,7 +133,7 @@ final class EnumCodecUnitTests {
                     .build())
                 .build())
             .build();
-        MockPostgresqlConnection mockPostgresqlConnection = new MockPostgresqlConnection(mockPostgresqlStatement);
+        MockGaussDBConnection mockPostgresqlConnection = new MockGaussDBConnection(mockPostgresqlStatement);
 
         Publisher<Void> register = codecRegistrar.register(mockPostgresqlConnection, mockByteBufAllocator, mockCodecRegistry);
         StepVerifier.create(register).verifyComplete();
@@ -170,7 +170,7 @@ final class EnumCodecUnitTests {
                     .build())
                 .build())
             .build();
-        MockPostgresqlConnection mockPostgresqlConnection = new MockPostgresqlConnection(mockPostgresqlStatement);
+        MockGaussDBConnection mockPostgresqlConnection = new MockGaussDBConnection(mockPostgresqlStatement);
 
         Publisher<Void> register = codecRegistrar.register(mockPostgresqlConnection, mockByteBufAllocator, mockCodecRegistry);
         StepVerifier.create(register).verifyComplete();

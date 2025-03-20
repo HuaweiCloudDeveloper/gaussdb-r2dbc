@@ -24,11 +24,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public final class MockPostgresqlConnection implements PostgresqlConnection {
+public final class MockGaussDBConnection implements GaussDBConnection {
 
     private final MockPostgresqlStatement statement;
 
-    public MockPostgresqlConnection(MockPostgresqlStatement statement) {
+    public MockGaussDBConnection(MockPostgresqlStatement statement) {
         this.statement = statement;
     }
 

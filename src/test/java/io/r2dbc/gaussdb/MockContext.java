@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.PortalNameSupplier;
 import io.r2dbc.gaussdb.client.TestClient;
@@ -42,7 +42,7 @@ final class MockContext {
 
         private Client client = TestClient.NO_OP;
 
-        private PostgresqlConnection connection;
+        private GaussDBConnection connection;
 
         private StatementCache statementCache = mock(StatementCache.class, RETURNS_SMART_NULLS);
 
@@ -73,7 +73,7 @@ final class MockContext {
             return this;
         }
 
-        public Builder connection(PostgresqlConnection connection) {
+        public Builder connection(GaussDBConnection connection) {
             this.connection = connection;
             return this;
         }

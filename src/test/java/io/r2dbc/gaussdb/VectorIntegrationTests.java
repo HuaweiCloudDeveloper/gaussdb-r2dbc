@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.codec.Vector;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +66,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
 
         jdbcOperations.execute("INSERT INTO vector_items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]');");
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("SELECT * FROM vector_items WHERE id != $1 ORDER BY embedding <-> '[3,1,2]' ")
             .bind("$1", 1)
@@ -103,7 +103,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
         JdbcOperations jdbcOperations = SERVER.getJdbcOperations();
         jdbcOperations.execute("INSERT INTO vector_arrays (embedding) VALUES (ARRAY['[1,2,3]'::vector,'[4,5,6]'::vector]);");
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("SELECT * FROM vector_arrays WHERE id != $1")
             .bind("$1", 1)
@@ -122,7 +122,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
     @Test
     void shouldWriteVector() {
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("INSERT INTO vector_items (embedding) VALUES ($1)")
             .bind("$1", Vector.of(1, 2, 3))
@@ -146,7 +146,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
     @Test
     void shouldWriteVectorArray() {
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("INSERT INTO vector_arrays (embedding) VALUES ($1);")
             .bind("$1", new Vector[]{Vector.of(1, 2, 3), Vector.of(4, 5, 6)})
@@ -175,7 +175,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
 
         JdbcOperations jdbcOperations = SERVER.getJdbcOperations();
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.createStatement("INSERT INTO vector_arrays (embedding) VALUES ($1);")
             .bind("$1", new Vector[]{Vector.of(1, 2, 3), null, Vector.of(4, 5, 6)})

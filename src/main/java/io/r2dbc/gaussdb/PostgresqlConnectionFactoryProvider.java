@@ -51,7 +51,7 @@ import static io.r2dbc.spi.ConnectionFactoryOptions.SSL;
 import static io.r2dbc.spi.ConnectionFactoryOptions.USER;
 
 /**
- * An implementation of {@link ConnectionFactoryProvider} for creating {@link PostgresqlConnectionFactory}s.
+ * An implementation of {@link ConnectionFactoryProvider} for creating {@link GaussDBConnectionFactory}s.
  */
 public final class PostgresqlConnectionFactoryProvider implements ConnectionFactoryProvider {
 
@@ -275,8 +275,8 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
     }
 
     @Override
-    public PostgresqlConnectionFactory create(ConnectionFactoryOptions connectionFactoryOptions) {
-        return new PostgresqlConnectionFactory(builder(connectionFactoryOptions).build());
+    public GaussDBConnectionFactory create(ConnectionFactoryOptions connectionFactoryOptions) {
+        return new GaussDBConnectionFactory(builder(connectionFactoryOptions).build());
     }
 
     @Override

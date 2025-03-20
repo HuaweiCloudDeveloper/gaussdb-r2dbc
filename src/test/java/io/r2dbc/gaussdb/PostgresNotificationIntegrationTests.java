@@ -17,8 +17,8 @@
 package io.r2dbc.gaussdb;
 
 import io.netty.channel.Channel;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.Notification;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.util.ConnectionIntrospector;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for {@link Notification} through {@link PostgresqlConnection#getNotifications()}.
+ * Integration tests for {@link Notification} through {@link GaussDBConnection#getNotifications()}.
  */
 final class PostgresNotificationIntegrationTests extends AbstractIntegrationTests {
 
@@ -67,7 +67,7 @@ final class PostgresNotificationIntegrationTests extends AbstractIntegrationTest
     @Test
     void listenShouldCompleteOnConnectionClose() {
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.getNotifications().as(StepVerifier::create).expectSubscription()
             .then(() -> connection.close().subscribe())
@@ -77,7 +77,7 @@ final class PostgresNotificationIntegrationTests extends AbstractIntegrationTest
     @Test
     void listenShouldFailOnConnectionDisconnected() {
 
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         connection.getNotifications().as(StepVerifier::create).expectSubscription()
             .then(() -> {

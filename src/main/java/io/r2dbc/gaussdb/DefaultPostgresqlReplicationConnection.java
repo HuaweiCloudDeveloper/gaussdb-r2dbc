@@ -45,11 +45,11 @@ final class DefaultPostgresqlReplicationConnection implements io.r2dbc.gaussdb.a
 
     private static final Predicate<BackendMessage> WINDOW_UNTIL = or(ReadyForQuery.class::isInstance, EmptyQueryResponse.class::isInstance, ErrorResponse.class::isInstance);
 
-    private final PostgresqlConnection delegate;
+    private final GaussDBConnection delegate;
 
     private final Client client;
 
-    DefaultPostgresqlReplicationConnection(PostgresqlConnection delegate) {
+    DefaultPostgresqlReplicationConnection(GaussDBConnection delegate) {
         this.delegate = delegate;
         this.client = delegate.getClient();
     }

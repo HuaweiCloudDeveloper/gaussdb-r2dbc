@@ -16,14 +16,14 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.PortalNameSupplier;
 import io.r2dbc.gaussdb.codec.Codecs;
 import io.r2dbc.gaussdb.util.Assert;
 
 /**
- * Value object capturing contextual connection resources such as {@link Client}, {@link Codecs} and the {@link PostgresqlConnection connection facade}.
+ * Value object capturing contextual connection resources such as {@link Client}, {@link Codecs} and the {@link GaussDBConnection connection facade}.
  */
 final class ConnectionResources {
 
@@ -31,7 +31,7 @@ final class ConnectionResources {
 
     private final Codecs codecs;
 
-    private final PostgresqlConnection connection;
+    private final GaussDBConnection connection;
 
     private final PostgresqlConnectionConfiguration configuration;
 
@@ -39,7 +39,7 @@ final class ConnectionResources {
 
     private final PortalNameSupplier portalNameSupplier;
 
-    ConnectionResources(Client client, Codecs codecs, PostgresqlConnection connection, PostgresqlConnectionConfiguration configuration, PortalNameSupplier portalNameSupplier,
+    ConnectionResources(Client client, Codecs codecs, GaussDBConnection connection, PostgresqlConnectionConfiguration configuration, PortalNameSupplier portalNameSupplier,
                         StatementCache statementCache) {
         this.client = client;
         this.codecs = codecs;
@@ -57,7 +57,7 @@ final class ConnectionResources {
         return this.codecs;
     }
 
-    public PostgresqlConnection getConnection() {
+    public GaussDBConnection getConnection() {
         return this.connection;
     }
 

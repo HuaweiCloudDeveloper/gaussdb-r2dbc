@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,12 +41,12 @@ class CachedStatementInvalidationIntegrationTests extends AbstractIntegrationTes
     @MethodSource("fixtures")
     void test(Fixture fixture) throws Exception {
 
-        PostgresqlConnectionFactory connectionFactory = getConnectionFactory(builder -> {
+        GaussDBConnectionFactory connectionFactory = getConnectionFactory(builder -> {
 
             builder.preparedStatementCacheQueries(fixture.preparedStatementQueryCaching).compatibilityMode(fixture.compatibilityMode);
         });
 
-        PostgresqlConnection connection = connectionFactory.create().block();
+        GaussDBConnection connection = connectionFactory.create().block();
 
         JdbcTemplate jdbcOperations = (JdbcTemplate) SERVER.getJdbcOperations();
 
@@ -68,7 +68,7 @@ class CachedStatementInvalidationIntegrationTests extends AbstractIntegrationTes
         connection.close().as(StepVerifier::create).verifyComplete();
     }
 
-    private void runPreparedQuery(PostgresqlConnection connection, Fixture fixture) {
+    private void runPreparedQuery(GaussDBConnection connection, Fixture fixture) {
         runQuery(connection, fixture);
     }
 
@@ -76,11 +76,11 @@ class CachedStatementInvalidationIntegrationTests extends AbstractIntegrationTes
         jdbcOperations.execute("ALTER TABLE table_to_be_changed ALTER COLUMN firstname TYPE varchar(100)");
     }
 
-    private void issueCachedQueryAfterTableChange(PostgresqlConnection connection, Fixture fixture) {
+    private void issueCachedQueryAfterTableChange(GaussDBConnection connection, Fixture fixture) {
         runQuery(connection, fixture);
     }
 
-    private void verifySubsequentQueries(PostgresqlConnection connection, Fixture fixture) {
+    private void verifySubsequentQueries(GaussDBConnection connection, Fixture fixture) {
         connection.createStatement("SELECT firstname FROM table_to_be_changed")
             .execute()
             .concatMap(it -> it.map(r -> r.get(0)))
@@ -91,7 +91,7 @@ class CachedStatementInvalidationIntegrationTests extends AbstractIntegrationTes
         runQuery(connection, fixture);
     }
 
-    private void runQuery(PostgresqlConnection connection, Fixture fixture) {
+    private void runQuery(GaussDBConnection connection, Fixture fixture) {
         connection.createStatement("SELECT firstname FROM table_to_be_changed WHERE $1 = $1")
             .bind("$1", 1)
             .fetchSize(fixture.fetchSize).execute()

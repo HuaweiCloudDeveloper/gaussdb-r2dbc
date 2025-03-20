@@ -25,7 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests for {@link PostgresqlConnectionFactory} through PG Bouncer.
+ * Integration tests for {@link GaussDBConnectionFactory} through PG Bouncer.
  */
 final class PgBouncerIntegrationTests {
 
@@ -36,7 +36,7 @@ final class PgBouncerIntegrationTests {
     @ValueSource(strings = {"transaction", "statement"})
     void disabledCacheWorksWithTransactionAndStatementModes(String poolMode) {
         try (PgBouncer pgBouncer = new PgBouncer(SERVER, poolMode)) {
-            PostgresqlConnectionFactory connectionFactory = this.createConnectionFactory(pgBouncer, 0);
+            GaussDBConnectionFactory connectionFactory = this.createConnectionFactory(pgBouncer, 0);
 
             connectionFactory.create().flatMapMany(connection -> {
                 Flux<Integer> q1 = connection.createStatement("SELECT 1 WHERE $1 = 1").bind(0, 1).execute().flatMap(r -> r.map((row, rowMetadata) -> row.get(0, Integer.class)));
@@ -55,7 +55,7 @@ final class PgBouncerIntegrationTests {
     @ValueSource(ints = {-1, 0, 2})
     void sessionModeWorksWithAllCaches(int statementCacheSize) {
         try (PgBouncer pgBouncer = new PgBouncer(SERVER, "session")) {
-            PostgresqlConnectionFactory connectionFactory = this.createConnectionFactory(pgBouncer, statementCacheSize);
+            GaussDBConnectionFactory connectionFactory = this.createConnectionFactory(pgBouncer, statementCacheSize);
 
             connectionFactory.create().flatMapMany(connection -> {
                 Flux<Integer> q1 = connection.createStatement("SELECT 1 WHERE $1 = 1").bind(0, 1).execute().flatMap(r -> r.map((row, rowMetadata) -> row.get(0, Integer.class)));
@@ -70,8 +70,8 @@ final class PgBouncerIntegrationTests {
         }
     }
 
-    private PostgresqlConnectionFactory createConnectionFactory(PgBouncer pgBouncer, int statementCacheSize) {
-        return new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+    private GaussDBConnectionFactory createConnectionFactory(PgBouncer pgBouncer, int statementCacheSize) {
+        return new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
             .host(pgBouncer.getHost())
             .port(pgBouncer.getPort())
             .username(SERVER.getUsername())

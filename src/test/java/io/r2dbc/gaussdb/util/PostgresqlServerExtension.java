@@ -90,11 +90,13 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
             preference = properties.getProperty("preference", preference);
         }
 
-        if (preference.equals(External.PREFERENCE)) {
-            return new External();
-        }
+        return new External();
 
-        return new TestContainer(this.container.get());
+//        if (preference.equals(External.PREFERENCE)) {
+//            return new External();
+//        }
+//
+//        return new TestContainer(this.container.get());
     }
 
     @Override
@@ -269,17 +271,17 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
 
         @Override
         public String getDatabase() {
-            return "postgres";
+            return "r2dbc_test";
         }
 
         @Override
         public String getUsername() {
-            return "postgres";
+            return "r2dbc_test";
         }
 
         @Override
         public String getPassword() {
-            return "postgres";
+            return "r2dbc_test_12";
         }
 
         @Override

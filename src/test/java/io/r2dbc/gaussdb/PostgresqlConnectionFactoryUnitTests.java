@@ -41,13 +41,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Unit tests for {@link PostgresqlConnectionFactory}.
+ * Unit tests for {@link GaussDBConnectionFactory}.
  */
 final class PostgresqlConnectionFactoryUnitTests {
 
     @Test
     void constructorNoConfiguration() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlConnectionFactory(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBConnectionFactory(null))
             .withMessage("configuration must not be null");
     }
 
@@ -72,7 +72,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .password("test-password")
             .build();
 
-        new PostgresqlConnectionFactory(testClientFactory(client, configuration), configuration)
+        new GaussDBConnectionFactory(testClientFactory(client, configuration), configuration)
             .create()
             .as(StepVerifier::create)
             .expectNextCount(1)
@@ -123,7 +123,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .password("test-password")
             .build();
 
-        new PostgresqlConnectionFactory(testClientFactory(client, configuration), configuration).create()
+        new GaussDBConnectionFactory(testClientFactory(client, configuration), configuration).create()
             .as(StepVerifier::create)
             .verifyErrorMatches(R2dbcNonTransientResourceException.class::isInstance);
     }
@@ -147,7 +147,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .password("test-password")
             .build();
 
-        assertThat(new PostgresqlConnectionFactory(testClientFactory(client, configuration), configuration).getMetadata()).isNotNull();
+        assertThat(new GaussDBConnectionFactory(testClientFactory(client, configuration), configuration).getMetadata()).isNotNull();
     }
 
     private ConnectionFunction testClientFactory(Client client, PostgresqlConnectionConfiguration configuration) {

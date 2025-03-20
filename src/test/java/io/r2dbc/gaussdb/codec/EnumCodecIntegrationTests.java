@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.r2dbc.gaussdb.AbstractIntegrationTests;
 import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
-import io.r2dbc.gaussdb.PostgresqlConnectionFactory;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.GaussDBConnectionFactory;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.spi.Parameters;
 import org.junit.jupiter.api.BeforeAll;
@@ -66,8 +66,8 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
             .codecRegistrar(EnumCodec.builder().build())
             .build();
 
-        PostgresqlConnectionFactory connectionFactory = new PostgresqlConnectionFactory(configuration);
-        connectionFactory.create().flatMap(PostgresqlConnection::close).as(StepVerifier::create).verifyComplete();
+        GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(configuration);
+        connectionFactory.create().flatMap(GaussDBConnection::close).as(StepVerifier::create).verifyComplete();
 
         // we cannot really assert logs so that's up to you.
     }
@@ -84,8 +84,8 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
             .codecRegistrar(EnumCodec.builder().withEnum("do_not_exist", MyEnum.class).build())
             .build();
 
-        PostgresqlConnectionFactory connectionFactory = new PostgresqlConnectionFactory(configuration);
-        connectionFactory.create().flatMap(PostgresqlConnection::close).as(StepVerifier::create).verifyComplete();
+        GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(configuration);
+        connectionFactory.create().flatMap(GaussDBConnection::close).as(StepVerifier::create).verifyComplete();
 
         // we cannot really assert logs so that's up to you.
     }

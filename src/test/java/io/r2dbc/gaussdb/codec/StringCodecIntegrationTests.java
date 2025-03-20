@@ -17,8 +17,8 @@
 package io.r2dbc.gaussdb.codec;
 
 import io.r2dbc.gaussdb.AbstractIntegrationTests;
-import io.r2dbc.gaussdb.PostgresqlConnectionFactory;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.GaussDBConnectionFactory;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.spi.Parameters;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -82,12 +82,12 @@ class StringCodecIntegrationTests extends AbstractIntegrationTests {
         SERVER.getJdbcOperations().execute("CREATE TABLE test ( ci CITEXT, cs VARCHAR)");
         SERVER.getJdbcOperations().execute("INSERT INTO test VALUES('HELLO', 'HELLO')");
 
-        PostgresqlConnectionFactory custom = getConnectionFactory(builder -> builder.codecRegistrar((connection1, allocator, registry) -> {
+        GaussDBConnectionFactory custom = getConnectionFactory(builder -> builder.codecRegistrar((connection1, allocator, registry) -> {
             registry.addFirst(new StringCodec(allocator, PostgresqlObjectId.UNSPECIFIED, PostgresqlObjectId.VARCHAR_ARRAY));
             return Mono.empty();
         }));
 
-        PostgresqlConnection customizedConnection = custom.create().block();
+        GaussDBConnection customizedConnection = custom.create().block();
 
         customizedConnection.createStatement("SELECT cs::citext = $1 FROM test")
             .bind("$1", "Hello")

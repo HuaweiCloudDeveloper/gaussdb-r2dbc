@@ -20,7 +20,7 @@ import io.r2dbc.spi.Closeable;
 import reactor.core.publisher.Mono;
 
 /**
- * A ref cursor value object. Cursor objects can be attached to a {@link PostgresqlConnection} which allows interaction with the cursor object by {@link #fetch() fetching the cursor} and
+ * A ref cursor value object. Cursor objects can be attached to a {@link GaussDBConnection} which allows interaction with the cursor object by {@link #fetch() fetching the cursor} and
  * {@link #close() closing} it.
  * Cursor objects are stateful resources. Obtaining a cursor typically keeps the cursor open on the database server. The cursor object can get invalidated if the transaction is closed. Cursor
  * objects should be {@link #close() closed} if they are no longer required.

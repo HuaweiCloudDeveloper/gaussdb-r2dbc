@@ -17,8 +17,8 @@
 package io.r2dbc.gaussdb.replication;
 
 import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
-import io.r2dbc.gaussdb.PostgresqlConnectionFactory;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.GaussDBConnectionFactory;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlReplicationConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
@@ -41,7 +41,7 @@ final class LogicalDecodeIntegrationTests {
     @RegisterExtension
     static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
 
-    private final PostgresqlConnectionFactory connectionFactory = new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+    private final GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
         .database(SERVER.getDatabase())
         .host(SERVER.getHost())
         .port(SERVER.getPort())
@@ -91,7 +91,7 @@ final class LogicalDecodeIntegrationTests {
     void shouldReceiveReplication() {
 
         PostgresqlReplicationConnection replicationConnection = this.connectionFactory.replication().block();
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         prepare(connection);
 
@@ -121,7 +121,7 @@ final class LogicalDecodeIntegrationTests {
     void replicationShouldFailWithWrongSlotType() {
 
         PostgresqlReplicationConnection replicationConnection = this.connectionFactory.replication().block();
-        PostgresqlConnection connection = this.connectionFactory.create().block();
+        GaussDBConnection connection = this.connectionFactory.create().block();
 
         prepare(connection);
 
@@ -135,7 +135,7 @@ final class LogicalDecodeIntegrationTests {
             .verifyError(R2dbcNonTransientResourceException.class);
     }
 
-    private void prepare(PostgresqlConnection connection) {
+    private void prepare(GaussDBConnection connection) {
         connection.createStatement("DROP TABLE IF EXISTS logical_decode_test").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).verifyComplete();
 
         connection.createStatement("CREATE TABLE logical_decode_test (first_name varchar(255))").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).verifyComplete();

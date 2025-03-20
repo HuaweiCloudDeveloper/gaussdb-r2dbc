@@ -96,9 +96,9 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
             .switchIfEmpty(Mono.error(() -> {
                 Throwable error = exceptionRef.get();
                 if (error == null) {
-                    return new PostgresqlConnectionFactory.PostgresConnectionException(String.format("No server matches target type '%s'", targetServerType), null);
+                    return new GaussDBConnectionFactory.PostgresConnectionException(String.format("No server matches target type '%s'", targetServerType), null);
                 } else {
-                    return new PostgresqlConnectionFactory.PostgresConnectionException(String.format("Cannot connect to a host of %s", this.addresses), error);
+                    return new GaussDBConnectionFactory.PostgresConnectionException(String.format("Cannot connect to a host of %s", this.addresses), error);
                 }
             }));
     }
@@ -158,7 +158,7 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
 
     private static Mono<Boolean> isPrimaryServer(Client client, PostgresqlConnectionConfiguration configuration) {
 
-        PostgresqlConnection connection = new PostgresqlConnection(client, new DefaultCodecs(client.getByteBufAllocator()), DefaultPortalNameSupplier.INSTANCE,
+        GaussDBConnection connection = new GaussDBConnection(client, new DefaultCodecs(client.getByteBufAllocator()), DefaultPortalNameSupplier.INSTANCE,
             DisabledStatementCache.INSTANCE, IsolationLevel.READ_UNCOMMITTED, configuration);
 
         return new io.r2dbc.gaussdb.PostgresqlStatement(connection.getResources(), "SHOW TRANSACTION_READ_ONLY")

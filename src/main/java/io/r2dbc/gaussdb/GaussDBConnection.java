@@ -62,9 +62,9 @@ import static io.r2dbc.gaussdb.client.TransactionStatus.IDLE;
 import static io.r2dbc.gaussdb.client.TransactionStatus.OPEN;
 
 /**
- * An implementation of {@link Connection} for connecting to a PostgreSQL database.
+ * An implementation of {@link Connection} for connecting to a GaussDB database.
  */
-final class PostgresqlConnection implements io.r2dbc.gaussdb.api.PostgresqlConnection, Wrapped<Object> {
+final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection, Wrapped<Object> {
 
     private final Logger logger = Loggers.getLogger(this.getClass());
 
@@ -84,8 +84,8 @@ final class PostgresqlConnection implements io.r2dbc.gaussdb.api.PostgresqlConne
 
     private volatile IsolationLevel previousIsolationLevel;
 
-    PostgresqlConnection(Client client, Codecs codecs, PortalNameSupplier portalNameSupplier, StatementCache statementCache, IsolationLevel isolationLevel,
-                         PostgresqlConnectionConfiguration configuration) {
+    GaussDBConnection(Client client, Codecs codecs, PortalNameSupplier portalNameSupplier, StatementCache statementCache, IsolationLevel isolationLevel,
+                      PostgresqlConnectionConfiguration configuration) {
         this.client = Assert.requireNonNull(client, "client must not be null");
         this.resources = new ConnectionResources(client, codecs, this, configuration, portalNameSupplier, statementCache);
         this.connectionContext = client.getContext();
@@ -202,12 +202,6 @@ final class PostgresqlConnection implements io.r2dbc.gaussdb.api.PostgresqlConne
                     .filter(CommandComplete.class::isInstance)
                     .cast(CommandComplete.class)
                     .<BackendMessage>handle((message, sink) -> {
-
-                        // Certain backend versions (e.g. 12.2, 11.7, 10.12, 9.6.17, 9.5.21, etc)
-                        // silently rollback the transaction in the response to COMMIT statement
-                        // in case the transaction has failed.
-                        // See discussion in pgsql-hackers: https://www.postgresql.org/message-id/b9fb50dc-0f6e-15fb-6555-8ddb86f4aa71%40postgresfriends.org
-
                         if ("ROLLBACK".equalsIgnoreCase(message.getCommand())) {
                             ErrorDetails details = ErrorDetails.fromMessage("The database returned ROLLBACK, so the transaction cannot be committed. Transaction " +
                                 "failure is not known (check server logs?)");
@@ -380,7 +374,7 @@ final class PostgresqlConnection implements io.r2dbc.gaussdb.api.PostgresqlConne
 
     @Override
     public String toString() {
-        return "PostgresqlConnection{" +
+        return "GaussDBConnection{" +
             "client=" + this.client +
             ", codecs=" + this.codecs +
             '}';
@@ -429,7 +423,7 @@ final class PostgresqlConnection implements io.r2dbc.gaussdb.api.PostgresqlConne
 
                 @Override
                 public void onError(Throwable t) {
-                    PostgresqlConnection.this.logger.debug(PostgresqlConnection.this.connectionContext.getMessage("Validation failed"), t);
+                    GaussDBConnection.this.logger.debug(GaussDBConnection.this.connectionContext.getMessage("Validation failed"), t);
                     sink.success(false);
                 }
 

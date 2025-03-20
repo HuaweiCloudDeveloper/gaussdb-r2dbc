@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,32 +26,32 @@ import reactor.test.StepVerifier;
 import java.util.function.Consumer;
 
 /**
- * Support class for integration tests using {@link PostgresqlConnection}.
+ * Support class for integration tests using {@link GaussDBConnection}.
  */
 public abstract class AbstractIntegrationTests {
 
     @RegisterExtension
     public static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
 
-    public PostgresqlConnectionFactory connectionFactory;
+    public GaussDBConnectionFactory connectionFactory;
 
-    public PostgresqlConnection connection;
+    public GaussDBConnection connection;
 
     /**
-     * Entry-point to obtain a {@link PostgresqlConnectionFactory}.
+     * Entry-point to obtain a {@link GaussDBConnectionFactory}.
      *
-     * @return a {@link PostgresqlConnectionFactory}.
+     * @return a {@link GaussDBConnectionFactory}.
      */
-    protected PostgresqlConnectionFactory getConnectionFactory() {
+    protected GaussDBConnectionFactory getConnectionFactory() {
         return getConnectionFactory(this::customize);
     }
 
     /**
-     * Entry-point to obtain a {@link PostgresqlConnectionFactory}.
+     * Entry-point to obtain a {@link GaussDBConnectionFactory}.
      *
-     * @return a {@link PostgresqlConnectionFactory}.
+     * @return a {@link GaussDBConnectionFactory}.
      */
-    protected PostgresqlConnectionFactory getConnectionFactory(Consumer<PostgresqlConnectionConfiguration.Builder> customizer) {
+    protected GaussDBConnectionFactory getConnectionFactory(Consumer<PostgresqlConnectionConfiguration.Builder> customizer) {
 
         PostgresqlConnectionConfiguration.Builder builder = PostgresqlConnectionConfiguration.builder()
             .database(SERVER.getDatabase())
@@ -61,7 +61,7 @@ public abstract class AbstractIntegrationTests {
             .username(SERVER.getUsername());
 
         customizer.accept(builder);
-        return new PostgresqlConnectionFactory(builder.build());
+        return new GaussDBConnectionFactory(builder.build());
     }
 
     /**

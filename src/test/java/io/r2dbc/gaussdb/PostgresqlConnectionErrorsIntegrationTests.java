@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.TransactionStatus;
@@ -30,7 +30,7 @@ import java.lang.reflect.Field;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for various error cases using {@link PostgresqlConnection}.
+ * Integration tests for various error cases using {@link GaussDBConnection}.
  */
 final class PostgresqlConnectionErrorsIntegrationTests extends AbstractIntegrationTests {
 
@@ -52,7 +52,7 @@ final class PostgresqlConnectionErrorsIntegrationTests extends AbstractIntegrati
 
     private Client extractClient() {
         try {
-            Field field = io.r2dbc.gaussdb.PostgresqlConnection.class.getDeclaredField("client");
+            Field field = io.r2dbc.gaussdb.GaussDBConnection.class.getDeclaredField("client");
             field.setAccessible(true);
             return (Client) field.get(this.connection);
         } catch (ReflectiveOperationException e) {

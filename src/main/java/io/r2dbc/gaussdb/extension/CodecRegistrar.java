@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.extension;
 
 import io.netty.buffer.ByteBufAllocator;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.codec.Codec;
 import io.r2dbc.gaussdb.codec.CodecRegistry;
 import org.reactivestreams.Publisher;
@@ -25,7 +25,7 @@ import org.reactivestreams.Subscriber;
 
 /**
  * Registrar interface that is used to register {@link Codec}s as extension to built-in codecs.
- * <p>Implementations may use {@link PostgresqlConnection} to query Postgres information schema to discover type details such as extension type OIDs.</p>
+ * <p>Implementations may use {@link GaussDBConnection} to query Postgres information schema to discover type details such as extension type OIDs.</p>
  *
  * <strong>Constructor Requirements</strong>
  * <p>Extension implementations must have a <em>default constructor</em> if registered via the {@code ServiceLoader}.  When registered through
@@ -46,6 +46,6 @@ public interface CodecRegistrar extends Extension {
      * @param registry   target codec registry that accepts codec registrations
      * @return a {@link Publisher} that activates codec registration upon subscription
      */
-    Publisher<Void> register(PostgresqlConnection connection, ByteBufAllocator allocator, CodecRegistry registry);
+    Publisher<Void> register(GaussDBConnection connection, ByteBufAllocator allocator, CodecRegistry registry);
 
 }

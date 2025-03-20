@@ -17,19 +17,19 @@
 package io.r2dbc.gaussdb.util;
 
 import io.netty.channel.Channel;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.client.ReactorNettyClient;
 import org.springframework.beans.DirectFieldAccessor;
 import reactor.netty.Connection;
 
 /**
- * Utility to introspect a {@link PostgresqlConnection}.
+ * Utility to introspect a {@link GaussDBConnection}.
  */
 public final class ConnectionIntrospector {
 
-    private final PostgresqlConnection connection;
+    private final GaussDBConnection connection;
 
-    private ConnectionIntrospector(PostgresqlConnection connection) {
+    private ConnectionIntrospector(GaussDBConnection connection) {
         this.connection = connection;
     }
 
@@ -39,7 +39,7 @@ public final class ConnectionIntrospector {
      * @param connection
      * @return
      */
-    public static ConnectionIntrospector of(PostgresqlConnection connection) {
+    public static ConnectionIntrospector of(GaussDBConnection connection) {
         return new ConnectionIntrospector(connection);
     }
 

@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.client;
 
 import io.r2dbc.gaussdb.MultiHostConnectionStrategy;
 import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
-import io.r2dbc.gaussdb.PostgresqlConnectionFactory;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.GaussDBConnectionFactory;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.util.PostgresqlHighAvailabilityClusterExtension;
 import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.R2dbcException;
@@ -48,7 +48,7 @@ final class HighAvailabilityClusterIntegrationTests {
 
     @Test
     void testMultipleCallsOnSameFactory() {
-        PostgresqlConnectionFactory connectionFactory = this.multiHostConnectionFactory(MultiHostConnectionStrategy.TargetServerType.PREFER_SECONDARY, SERVERS.getPrimary(), SERVERS.getStandby());
+        GaussDBConnectionFactory connectionFactory = this.multiHostConnectionFactory(MultiHostConnectionStrategy.TargetServerType.PREFER_SECONDARY, SERVERS.getPrimary(), SERVERS.getStandby());
 
         Mono.usingWhen(connectionFactory.create(), this::isPrimary, Connection::close)
             .as(StepVerifier::create)
@@ -176,12 +176,12 @@ final class HighAvailabilityClusterIntegrationTests {
     }
 
     private Mono<Boolean> isConnectedToPrimary(MultiHostConnectionStrategy.TargetServerType targetServerType, PostgreSQLContainer<?>... servers) {
-        PostgresqlConnectionFactory connectionFactory = this.multiHostConnectionFactory(targetServerType, servers);
+        GaussDBConnectionFactory connectionFactory = this.multiHostConnectionFactory(targetServerType, servers);
 
         return Mono.usingWhen(connectionFactory.create(), this::isPrimary, Connection::close);
     }
 
-    private Mono<Boolean> isPrimary(PostgresqlConnection connection) {
+    private Mono<Boolean> isPrimary(GaussDBConnection connection) {
         return connection.createStatement("SHOW TRANSACTION_READ_ONLY")
             .execute()
             .flatMap(result -> result.map((row, meta) -> row.get(0, String.class)))
@@ -189,7 +189,7 @@ final class HighAvailabilityClusterIntegrationTests {
             .next();
     }
 
-    private PostgresqlConnectionFactory multiHostConnectionFactory(MultiHostConnectionStrategy.TargetServerType targetServerType, PostgreSQLContainer<?>... servers) {
+    private GaussDBConnectionFactory multiHostConnectionFactory(MultiHostConnectionStrategy.TargetServerType targetServerType, PostgreSQLContainer<?>... servers) {
         PostgreSQLContainer<?> firstServer = servers[0];
         PostgresqlConnectionConfiguration.Builder builder = PostgresqlConnectionConfiguration.builder();
         for (PostgreSQLContainer<?> server : servers) {
@@ -200,7 +200,7 @@ final class HighAvailabilityClusterIntegrationTests {
             .username(firstServer.getUsername())
             .password(firstServer.getPassword())
             .build();
-        return new PostgresqlConnectionFactory(configuration);
+        return new GaussDBConnectionFactory(configuration);
     }
 
 }

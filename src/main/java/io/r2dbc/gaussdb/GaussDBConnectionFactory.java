@@ -45,9 +45,9 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * An implementation of {@link ConnectionFactory} for creating connections to a PostgreSQL database.
+ * An implementation of {@link ConnectionFactory} for creating connections to a GaussDB database.
  */
-public final class PostgresqlConnectionFactory implements ConnectionFactory {
+public final class GaussDBConnectionFactory implements ConnectionFactory {
 
     private static final ConnectionFunction DEFAULT_CONNECTION_FUNCTION = (endpoint, settings) ->
         ReactorNettyClient.connect(endpoint, settings).cast(Client.class);
@@ -68,7 +68,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
      * @param configuration the configuration to use
      * @throws IllegalArgumentException if {@code configuration} is {@code null}
      */
-    public PostgresqlConnectionFactory(PostgresqlConnectionConfiguration configuration) {
+    public GaussDBConnectionFactory(PostgresqlConnectionConfiguration configuration) {
         this(DEFAULT_CONNECTION_FUNCTION, configuration);
     }
 
@@ -79,7 +79,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
      * @param configuration      the configuration to use
      * @throws IllegalArgumentException if {@code configuration} is {@code null}
      */
-    PostgresqlConnectionFactory(ConnectionFunction connectionFunction, PostgresqlConnectionConfiguration configuration) {
+    GaussDBConnectionFactory(ConnectionFunction connectionFunction, PostgresqlConnectionConfiguration configuration) {
         this.connectionFunction = Assert.requireNonNull(connectionFunction, "connectionFunction must not be null");
         this.configuration = Assert.requireNonNull(configuration, "configuration must not be null");
         this.extensions = getExtensions(configuration);
@@ -96,7 +96,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
     }
 
     @Override
-    public Mono<io.r2dbc.gaussdb.api.PostgresqlConnection> create() {
+    public Mono<io.r2dbc.gaussdb.api.GaussDBConnection> create() {
 
         if (isReplicationConnection()) {
             throw new UnsupportedOperationException("Cannot create replication connection through create(). Use replication() method instead.");
@@ -104,7 +104,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
 
         ConnectionStrategy connectionStrategy = ConnectionStrategyFactory.getConnectionStrategy(this.connectionFunction, this.configuration, this.configuration.getConnectionSettings());
 
-        return doCreateConnection(false, connectionStrategy).cast(io.r2dbc.gaussdb.api.PostgresqlConnection.class);
+        return doCreateConnection(false, connectionStrategy).cast(io.r2dbc.gaussdb.api.GaussDBConnection.class);
     }
 
     /**
@@ -124,7 +124,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
         return doCreateConnection(true, connectionStrategy).map(DefaultPostgresqlReplicationConnection::new);
     }
 
-    private Mono<PostgresqlConnection> doCreateConnection(boolean forReplication, ConnectionStrategy connectionStrategy) {
+    private Mono<GaussDBConnection> doCreateConnection(boolean forReplication, ConnectionStrategy connectionStrategy) {
 
         ZoneId defaultZone = TimeZone.getDefault().toZoneId();
 
@@ -136,7 +136,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
                 StatementCache statementCache = StatementCache.fromPreparedStatementCacheQueries(client, this.configuration.getPreparedStatementCacheQueries());
 
                 // early connection object to retrieve initialization details
-                PostgresqlConnection earlyConnection = new PostgresqlConnection(client, codecs, DefaultPortalNameSupplier.INSTANCE, statementCache, IsolationLevel.READ_COMMITTED,
+                GaussDBConnection earlyConnection = new GaussDBConnection(client, codecs, DefaultPortalNameSupplier.INSTANCE, statementCache, IsolationLevel.READ_COMMITTED,
                     this.configuration);
 
                 Mono<IsolationLevel> isolationLevelMono = Mono.just(IsolationLevel.READ_COMMITTED);
@@ -145,7 +145,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
                 }
                 return isolationLevelMono
                     // actual connection to be used
-                    .map(isolationLevel -> new PostgresqlConnection(client, codecs, DefaultPortalNameSupplier.INSTANCE, statementCache, isolationLevel, this.configuration))
+                    .map(isolationLevel -> new GaussDBConnection(client, codecs, DefaultPortalNameSupplier.INSTANCE, statementCache, isolationLevel, this.configuration))
                     .delayUntil(connection -> {
                         return prepareConnection(connection, client.getByteBufAllocator(), codecs, forReplication);
                     })
@@ -154,7 +154,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
             .flux()
             .as(Operators::discardOnCancel)
             .single()
-            .doOnDiscard(PostgresqlConnection.class, client -> client.close().subscribe());
+            .doOnDiscard(GaussDBConnection.class, client -> client.close().subscribe());
     }
 
     private boolean isReplicationConnection() {
@@ -162,7 +162,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
         return REPLICATION_DATABASE.equalsIgnoreCase(options.get(REPLICATION_OPTION));
     }
 
-    private Publisher<?> prepareConnection(PostgresqlConnection connection, ByteBufAllocator byteBufAllocator, DefaultCodecs codecs, boolean forReplication) {
+    private Publisher<?> prepareConnection(GaussDBConnection connection, ByteBufAllocator byteBufAllocator, DefaultCodecs codecs, boolean forReplication) {
 
         List<Publisher<?>> publishers = new ArrayList<>();
 
@@ -175,7 +175,7 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
         return Flux.concat(publishers).then();
     }
 
-    private Mono<PostgresqlConnection> closeWithError(Client client, Throwable throwable) {
+    private Mono<GaussDBConnection> closeWithError(Client client, Throwable throwable) {
         return client.close().then(Mono.error(throwable));
     }
 
@@ -199,13 +199,13 @@ public final class PostgresqlConnectionFactory implements ConnectionFactory {
 
     @Override
     public String toString() {
-        return "PostgresqlConnectionFactory{" +
+        return "GaussDBConnectionFactory{" +
             ", configuration=" + this.configuration +
             ", extensions=" + this.extensions +
             '}';
     }
 
-    private Mono<IsolationLevel> getIsolationLevel(io.r2dbc.gaussdb.api.PostgresqlConnection connection) {
+    private Mono<IsolationLevel> getIsolationLevel(io.r2dbc.gaussdb.api.GaussDBConnection connection) {
         return connection.createStatement("SHOW TRANSACTION ISOLATION LEVEL")
             .fetchSize(0)
             .execute()

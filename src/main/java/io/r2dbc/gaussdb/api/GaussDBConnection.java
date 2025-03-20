@@ -31,9 +31,9 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * A {@link Connection} for connecting to a PostgreSQL database.
+ * A {@link Connection} for connecting to a GaussDB database.
  */
-public interface PostgresqlConnection extends Connection {
+public interface GaussDBConnection extends Connection {
 
     /**
      * {@inheritDoc}

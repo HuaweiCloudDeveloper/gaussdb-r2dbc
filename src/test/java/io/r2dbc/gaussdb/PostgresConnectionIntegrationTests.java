@@ -24,7 +24,7 @@ import reactor.test.StepVerifier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for {@link io.r2dbc.gaussdb.PostgresqlConnection}.
+ * Integration tests for {@link GaussDBConnection}.
  */
 final class PostgresConnectionIntegrationTests extends AbstractIntegrationTests {
 

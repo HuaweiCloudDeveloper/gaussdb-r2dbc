@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.client;
 
 import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
-import io.r2dbc.gaussdb.PostgresqlConnectionFactory;
+import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.PostgresqlException;
 import org.junit.jupiter.api.Test;
 import reactor.netty.DisposableChannel;
@@ -62,8 +62,8 @@ public class DowntimeIntegrationTests {
             .bindNow();
     }
 
-    static PostgresqlConnectionFactory newConnectionFactory(DisposableServer server, SSLMode sslMode) {
-        return new PostgresqlConnectionFactory(
+    static GaussDBConnectionFactory newConnectionFactory(DisposableServer server, SSLMode sslMode) {
+        return new GaussDBConnectionFactory(
             PostgresqlConnectionConfiguration.builder()
                 .host(server.host())
                 .port(server.port())
@@ -74,7 +74,7 @@ public class DowntimeIntegrationTests {
 
     static void verifyError(SSLMode sslMode, Consumer<Throwable> assertions) {
         DisposableServer server = newServer();
-        PostgresqlConnectionFactory connectionFactory = newConnectionFactory(server, sslMode);
+        GaussDBConnectionFactory connectionFactory = newConnectionFactory(server, sslMode);
         try {
             connectionFactory.create().as(StepVerifier::create).verifyErrorSatisfies(assertions);
         } finally {

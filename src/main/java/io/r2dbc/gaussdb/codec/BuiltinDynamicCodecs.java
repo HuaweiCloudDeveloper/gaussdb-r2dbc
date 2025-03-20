@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBufAllocator;
-import io.r2dbc.gaussdb.api.PostgresqlConnection;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlStatement;
 import io.r2dbc.gaussdb.extension.CodecRegistrar;
 import org.reactivestreams.Publisher;
@@ -97,7 +97,7 @@ public class BuiltinDynamicCodecs implements CodecRegistrar {
     }
 
     @Override
-    public Publisher<Void> register(PostgresqlConnection connection, ByteBufAllocator byteBufAllocator, CodecRegistry registry) {
+    public Publisher<Void> register(GaussDBConnection connection, ByteBufAllocator byteBufAllocator, CodecRegistry registry) {
 
         PostgresqlStatement statement = createQuery(connection);
 
@@ -118,7 +118,7 @@ public class BuiltinDynamicCodecs implements CodecRegistrar {
             ).then();
     }
 
-    private PostgresqlStatement createQuery(PostgresqlConnection connection) {
+    private PostgresqlStatement createQuery(GaussDBConnection connection) {
         return connection.createStatement(String.format("SELECT oid, * FROM pg_catalog.pg_type WHERE typname IN (%s)", getPlaceholders()));
     }
 

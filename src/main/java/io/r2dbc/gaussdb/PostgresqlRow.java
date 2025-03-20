@@ -17,6 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.netty.buffer.ByteBuf;
+import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
 import io.r2dbc.gaussdb.api.RefCursor;
 import io.r2dbc.gaussdb.codec.Codecs;
@@ -233,7 +234,7 @@ final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
     }
 
     /**
-     * Default {@link RefCursor} implementation that is attached to a {@link io.r2dbc.gaussdb.api.PostgresqlConnection}.
+     * Default {@link RefCursor} implementation that is attached to a {@link GaussDBConnection}.
      */
     static class AttachedRefCursor implements RefCursor {
 
