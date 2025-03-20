@@ -34,6 +34,6 @@ public interface GaussDBBatch extends Batch {
      * {@inheritDoc}
      */
     @Override
-    Flux<PostgresqlResult> execute();
+    Flux<GaussDBResult> execute();
 
 }

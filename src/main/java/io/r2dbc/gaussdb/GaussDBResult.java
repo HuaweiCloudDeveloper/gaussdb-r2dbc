@@ -38,10 +38,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * An implementation of {@link Result} representing the results of a query against a PostgreSQL database applying fast-path processing. Processing of {@link Segment} is handled entirely by
- * {@link PostgresqlSegmentResult}.
+ * An implementation of {@link Result} representing the results of a query against a GaussDB database applying fast-path processing. Processing of {@link Result.Segment} is handled entirely by
+ * {@link GaussDBSegmentResult}.
  */
-final class PostgresqlResult extends AbstractReferenceCounted implements io.r2dbc.gaussdb.api.PostgresqlResult {
+final class GaussDBResult extends AbstractReferenceCounted implements io.r2dbc.gaussdb.api.GaussDBResult {
 
     private final ConnectionResources resources;
 
@@ -49,11 +49,11 @@ final class PostgresqlResult extends AbstractReferenceCounted implements io.r2db
 
     private final ExceptionFactory factory;
 
-    private volatile PostgresqlRowMetadata metadata;
+    private volatile GaussDBRowMetadata metadata;
 
     private volatile RowDescription rowDescription;
 
-    PostgresqlResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
+    GaussDBResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
         this.resources = Assert.requireNonNull(resources, "resources must not be null");
         this.messages = Assert.requireNonNull(messages, "messages must not be null");
         this.factory = Assert.requireNonNull(factory, "factory must not be null");
@@ -120,12 +120,12 @@ final class PostgresqlResult extends AbstractReferenceCounted implements io.r2db
 
                     if (message instanceof RowDescription) {
                         this.rowDescription = (RowDescription) message;
-                        this.metadata = PostgresqlRowMetadata.toRowMetadata(this.resources.getCodecs(), (RowDescription) message);
+                        this.metadata = GaussDBRowMetadata.toRowMetadata(this.resources.getCodecs(), (RowDescription) message);
                         return;
                     }
 
                     if (message instanceof DataRow) {
-                        PostgresqlRow row = PostgresqlRow.toRow(this.resources, (DataRow) message, this.metadata, this.rowDescription);
+                        GaussDBRow row = GaussDBRow.toRow(this.resources, (DataRow) message, this.metadata, this.rowDescription);
                         sink.next(f.apply(row, this.metadata));
                     }
 
@@ -136,13 +136,13 @@ final class PostgresqlResult extends AbstractReferenceCounted implements io.r2db
     }
 
     @Override
-    public io.r2dbc.gaussdb.api.PostgresqlResult filter(Predicate<Segment> filter) {
-        return PostgresqlSegmentResult.toResult(this.resources, this.messages, this.factory).filter(filter);
+    public io.r2dbc.gaussdb.api.GaussDBResult filter(Predicate<Segment> filter) {
+        return GaussDBSegmentResult.toResult(this.resources, this.messages, this.factory).filter(filter);
     }
 
     @Override
     public <T> Publisher<T> flatMap(Function<Segment, ? extends Publisher<? extends T>> mappingFunction) {
-        return PostgresqlSegmentResult.toResult(this.resources, this.messages, this.factory).flatMap(mappingFunction);
+        return GaussDBSegmentResult.toResult(this.resources, this.messages, this.factory).flatMap(mappingFunction);
     }
 
     @Override
@@ -165,8 +165,8 @@ final class PostgresqlResult extends AbstractReferenceCounted implements io.r2db
             '}';
     }
 
-    static PostgresqlResult toResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
-        return new PostgresqlResult(resources, messages, factory);
+    static GaussDBResult toResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
+        return new GaussDBResult(resources, messages, factory);
     }
 
 }

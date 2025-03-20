@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package io.r2dbc.gaussdb;
+package io.r2dbc.gaussdb.api;
 
-import io.r2dbc.gaussdb.client.Version;
+import io.r2dbc.spi.R2dbcException;
 
 /**
- * Connection metadata for a connection connected to a PostgreSQL database.
+ * Interface for GaussDB-specific extension to {@link R2dbcException} providing {@link ErrorDetails}.
+ *
+ * @see ErrorDetails
  */
-final class PostgresqlConnectionMetadata implements io.r2dbc.gaussdb.api.PostgresqlConnectionMetadata {
+public interface GaussDBException {
 
-    private final Version version;
-
-    PostgresqlConnectionMetadata(Version version) {
-        this.version = version;
-    }
-
-    @Override
-    public String getDatabaseProductName() {
-        return "PostgreSQL";
-    }
-
-    @Override
-    public String getDatabaseVersion() {
-        return this.version.getVersion();
-    }
+    /**
+     * Returns additional error information.
+     *
+     * @return the {@link ErrorDetails}
+     */
+    ErrorDetails getErrorDetails();
 
 }

@@ -16,7 +16,8 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlConnectionMetadata;
+import io.r2dbc.gaussdb.api.GaussDBConnectionMetadata;
+import io.r2dbc.gaussdb.api.GaussDBReplicationConnection;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.message.backend.BackendMessage;
 import io.r2dbc.gaussdb.message.backend.EmptyQueryResponse;
@@ -39,9 +40,9 @@ import java.util.function.Predicate;
 import static io.r2dbc.gaussdb.util.PredicateUtils.or;
 
 /**
- * Postgres replication connection.
+ * GaussDB replication connection.
  */
-final class DefaultPostgresqlReplicationConnection implements io.r2dbc.gaussdb.api.PostgresqlReplicationConnection {
+final class DefaultGaussDBReplicationConnection implements GaussDBReplicationConnection {
 
     private static final Predicate<BackendMessage> WINDOW_UNTIL = or(ReadyForQuery.class::isInstance, EmptyQueryResponse.class::isInstance, ErrorResponse.class::isInstance);
 
@@ -49,7 +50,7 @@ final class DefaultPostgresqlReplicationConnection implements io.r2dbc.gaussdb.a
 
     private final Client client;
 
-    DefaultPostgresqlReplicationConnection(GaussDBConnection delegate) {
+    DefaultGaussDBReplicationConnection(GaussDBConnection delegate) {
         this.delegate = delegate;
         this.client = delegate.getClient();
     }
@@ -93,14 +94,14 @@ final class DefaultPostgresqlReplicationConnection implements io.r2dbc.gaussdb.a
             .handle(exceptionFactory::handleErrorResponse)
             .windowUntil(WINDOW_UNTIL)
             .map(messages -> {
-                return (ReplicationStream) new PostgresReplicationStream(this.client.getByteBufAllocator(), request, requestSink, messages);
+                return (ReplicationStream) new GaussDBReplicationStream(this.client.getByteBufAllocator(), request, requestSink, messages);
             })).doOnSubscribe(it -> {
             requestSink.emitNext(new Query(sql), Sinks.EmitFailureHandler.FAIL_FAST);
         });
     }
 
     @Override
-    public PostgresqlConnectionMetadata getMetadata() {
+    public GaussDBConnectionMetadata getMetadata() {
         return this.delegate.getMetadata();
     }
 

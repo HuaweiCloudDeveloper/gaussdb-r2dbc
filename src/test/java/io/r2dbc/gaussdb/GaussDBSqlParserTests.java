@@ -26,9 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Unit tests for {@link PostgresqlSqlParser}.
+ * Unit tests for {@link GaussDBSqlParser}.
  */
-class PostgresqlSqlParserTests {
+class GaussDBSqlParserTests {
 
     @Nested
     class SingleStatementTests {
@@ -119,47 +119,47 @@ class PostgresqlSqlParserTests {
 
             @Test
             void unclosedSingleQuotedStringThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("'test"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("'test"));
             }
 
             @Test
             void unclosedDollarQuotedStringThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("$$test"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("$$test"));
             }
 
             @Test
             void unclosedTaggedDollarQuotedStringThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("$abc$test"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("$abc$test"));
             }
 
             @Test
             void unclosedQuotedIdentifierThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("\"test"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("\"test"));
             }
 
             @Test
             void unclosedBlockCommentThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("/*test"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("/*test"));
             }
 
             @Test
             void unclosedNestedBlockCommentThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("/*/*test*/"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("/*/*test*/"));
             }
 
             @Test
             void invalidParameterCharacterThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("$1test"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("$1test"));
             }
 
             @Test
             void invalidTaggedDollarQuoteThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("$a b$test$a b$"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("$a b$test$a b$"));
             }
 
             @Test
             void unclosedTaggedDollarQuoteThrowsIllegalArgumentException() {
-                assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlSqlParser.parse("$abc"));
+                assertThatIllegalArgumentException().isThrownBy(() -> GaussDBSqlParser.parse("$abc"));
             }
 
         }
@@ -269,7 +269,7 @@ class PostgresqlSqlParserTests {
         }
 
         void assertSingleStatementEquals(String sql, ParsedSql.Token... tokens) {
-            ParsedSql parsedSql = PostgresqlSqlParser.parse(sql);
+            ParsedSql parsedSql = GaussDBSqlParser.parse(sql);
             assertThat(parsedSql.getStatements()).hasSize(1);
             ParsedSql.Statement statement = parsedSql.getStatements().get(0);
             assertThat(statement.getTokens()).containsExactly(tokens);
@@ -282,7 +282,7 @@ class PostgresqlSqlParserTests {
 
         @Test
         void simpleMultipleStatementIsTokenized() {
-            ParsedSql parsedSql = PostgresqlSqlParser.parse("DELETE * FROM X; SELECT 1;");
+            ParsedSql parsedSql = GaussDBSqlParser.parse("DELETE * FROM X; SELECT 1;");
             List<ParsedSql.Statement> statements = parsedSql.getStatements();
             assertThat(parsedSql.getStatements()).hasSize(2);
             ParsedSql.Statement statementA = statements.get(0);

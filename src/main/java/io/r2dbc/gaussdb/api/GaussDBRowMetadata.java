@@ -16,20 +16,11 @@
 
 package io.r2dbc.gaussdb.api;
 
-import io.r2dbc.spi.R2dbcException;
+import io.r2dbc.spi.RowMetadata;
 
 /**
- * Interface for Postgres-specific extension to {@link R2dbcException} providing {@link ErrorDetails}.
- *
- * @see ErrorDetails
+ * An {@link RowMetadata} for a GaussDB database.
  */
-public interface PostgresqlException {
-
-    /**
-     * Returns additional error information.
-     *
-     * @return the {@link ErrorDetails}
-     */
-    ErrorDetails getErrorDetails();
+public interface GaussDBRowMetadata extends RowMetadata {
 
 }

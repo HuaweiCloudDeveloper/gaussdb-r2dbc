@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.feature;
 
 import io.r2dbc.gaussdb.AbstractIntegrationTests;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.api.RefCursor;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +76,7 @@ final class RefCursorIntegrationTests extends AbstractIntegrationTests {
         connection.createStatement("SELECT show_cities()").execute()
             .flatMap(result -> result.map((row, rowMetadata) -> row.get(0, RefCursor.class)))
             .flatMap(RefCursor::fetch)
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .verifyError(R2dbcNonTransientResourceException.class);
     }

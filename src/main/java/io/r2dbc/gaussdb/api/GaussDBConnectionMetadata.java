@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.api;
 import io.r2dbc.spi.ConnectionMetadata;
 
 /**
- * Connection metadata for a connection connected to a PostgreSQL database.
+ * Connection metadata for a connection connected to a GaussDB database.
  */
-public interface PostgresqlConnectionMetadata extends ConnectionMetadata {
+public interface GaussDBConnectionMetadata extends ConnectionMetadata {
 
 }

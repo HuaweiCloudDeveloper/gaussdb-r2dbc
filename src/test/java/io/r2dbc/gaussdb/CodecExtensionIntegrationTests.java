@@ -19,7 +19,7 @@ package io.r2dbc.gaussdb;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.client.EncodedParameter;
 import io.r2dbc.gaussdb.codec.Codec;
 import io.r2dbc.gaussdb.codec.CodecRegistry;
@@ -57,11 +57,11 @@ final class CodecExtensionIntegrationTests extends AbstractIntegrationTests {
     void shouldRegisterCodec() {
 
         this.connection.createStatement("DROP TABLE IF EXISTS codec_json_test;CREATE TABLE codec_json_test (my_value json);")
-            .execute().flatMap(PostgresqlResult::getRowsUpdated).then()
+            .execute().flatMap(GaussDBResult::getRowsUpdated).then()
             .as(StepVerifier::create).verifyComplete();
 
         this.connection.createStatement("INSERT INTO codec_json_test VALUES('{ \"customer\": \"John Doe\", \"items\": {\"product\": \"Beer\",\"qty\": 6}}')")
-            .execute().flatMap(PostgresqlResult::getRowsUpdated).then()
+            .execute().flatMap(GaussDBResult::getRowsUpdated).then()
             .as(StepVerifier::create).verifyComplete();
 
         this.connection.createStatement("SELECT * FROM codec_json_test")

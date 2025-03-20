@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.replication;
 import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlReplicationConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBReplicationConnection;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,7 @@ final class LogicalDecodeIntegrationTests {
     @Test
     void shouldCreateReplicationSlot() {
 
-        PostgresqlReplicationConnection replicationConnection = this.connectionFactory.replication().block();
+        GaussDBReplicationConnection replicationConnection = this.connectionFactory.replication().block();
 
         ReplicationSlotRequest request = ReplicationSlotRequest.logical().slotName("rs" + UUID.randomUUID().toString().replace("-", "")).outputPlugin("test_decoding").temporary().build();
         replicationConnection.createSlot(request).as(StepVerifier::create).consumeNextWith(actual -> {
@@ -69,7 +69,7 @@ final class LogicalDecodeIntegrationTests {
     @Test
     void shouldStartReplication() {
 
-        PostgresqlReplicationConnection replicationConnection = this.connectionFactory.replication().block();
+        GaussDBReplicationConnection replicationConnection = this.connectionFactory.replication().block();
         ReplicationSlotRequest request = createSlot(replicationConnection);
 
         ReplicationRequest replicationRequest = ReplicationRequest.logical().slotName(request.getSlotName()).startPosition(LogSequenceNumber.valueOf(0)).slotOption("skip-empty-xacts", true)
@@ -90,7 +90,7 @@ final class LogicalDecodeIntegrationTests {
     @Test
     void shouldReceiveReplication() {
 
-        PostgresqlReplicationConnection replicationConnection = this.connectionFactory.replication().block();
+        GaussDBReplicationConnection replicationConnection = this.connectionFactory.replication().block();
         GaussDBConnection connection = this.connectionFactory.create().block();
 
         prepare(connection);
@@ -102,7 +102,7 @@ final class LogicalDecodeIntegrationTests {
 
         ReplicationStream replicationStream = replicationConnection.startReplication(replicationRequest).block(Duration.ofSeconds(10));
 
-        connection.createStatement("INSERT INTO logical_decode_test VALUES('Hello World')").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).expectNext(1L).verifyComplete();
+        connection.createStatement("INSERT INTO logical_decode_test VALUES('Hello World')").execute().flatMap(GaussDBResult::getRowsUpdated).as(StepVerifier::create).expectNext(1L).verifyComplete();
 
         replicationStream.map(byteBuf -> byteBuf.toString(StandardCharsets.UTF_8))
             .as(StepVerifier::create)
@@ -120,7 +120,7 @@ final class LogicalDecodeIntegrationTests {
     @Test
     void replicationShouldFailWithWrongSlotType() {
 
-        PostgresqlReplicationConnection replicationConnection = this.connectionFactory.replication().block();
+        GaussDBReplicationConnection replicationConnection = this.connectionFactory.replication().block();
         GaussDBConnection connection = this.connectionFactory.create().block();
 
         prepare(connection);
@@ -136,12 +136,12 @@ final class LogicalDecodeIntegrationTests {
     }
 
     private void prepare(GaussDBConnection connection) {
-        connection.createStatement("DROP TABLE IF EXISTS logical_decode_test").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).verifyComplete();
+        connection.createStatement("DROP TABLE IF EXISTS logical_decode_test").execute().flatMap(GaussDBResult::getRowsUpdated).as(StepVerifier::create).verifyComplete();
 
-        connection.createStatement("CREATE TABLE logical_decode_test (first_name varchar(255))").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).verifyComplete();
+        connection.createStatement("CREATE TABLE logical_decode_test (first_name varchar(255))").execute().flatMap(GaussDBResult::getRowsUpdated).as(StepVerifier::create).verifyComplete();
     }
 
-    private ReplicationSlotRequest createSlot(PostgresqlReplicationConnection replicationConnection) {
+    private ReplicationSlotRequest createSlot(GaussDBReplicationConnection replicationConnection) {
         ReplicationSlotRequest request = ReplicationSlotRequest.logical().slotName("RS" + UUID.randomUUID().toString().replace("-", "")).outputPlugin("test_decoding").temporary().build();
         replicationConnection.createSlot(request).as(StepVerifier::create).expectNextCount(1).verifyComplete();
         return request;

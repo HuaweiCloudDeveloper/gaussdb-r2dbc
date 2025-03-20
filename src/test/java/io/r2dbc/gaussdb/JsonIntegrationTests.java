@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.codec.Json;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -39,7 +39,7 @@ final class JsonIntegrationTests extends AbstractIntegrationTests {
 
         connection.createStatement("INSERT INTO my_table (my_json) VALUES($1)")
             .bind("$1", Json.of("{\"hello\": \"world\"}")).execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNextCount(1)
             .verifyComplete();
@@ -66,7 +66,7 @@ final class JsonIntegrationTests extends AbstractIntegrationTests {
 
         connection.createStatement("INSERT INTO my_table (my_json) VALUES($1::JSON)")
             .bind("$1", "{\"hello\": \"world\"}").execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNextCount(1)
             .verifyComplete();

@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-final class PostgresReplicationStream implements ReplicationStream {
+final class GaussDBReplicationStream implements ReplicationStream {
 
     public static final long POSTGRES_EPOCH_2000_01_01 = 946684800000L;
 
@@ -70,8 +70,8 @@ final class PostgresReplicationStream implements ReplicationStream {
 
     private volatile LogSequenceNumber lastFlushedLSN = LogSequenceNumber.INVALID_LSN;
 
-    PostgresReplicationStream(ByteBufAllocator allocator, ReplicationRequest replicationRequest, Sinks.Many<FrontendMessage> requestSink,
-                              Flux<BackendMessage> messages) {
+    GaussDBReplicationStream(ByteBufAllocator allocator, ReplicationRequest replicationRequest, Sinks.Many<FrontendMessage> requestSink,
+                             Flux<BackendMessage> messages) {
         this.allocator = allocator;
         this.replicationRequest = replicationRequest;
         this.requestSink = requestSink;

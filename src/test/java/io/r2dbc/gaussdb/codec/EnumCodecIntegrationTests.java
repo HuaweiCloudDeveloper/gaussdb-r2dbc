@@ -20,7 +20,7 @@ import io.r2dbc.gaussdb.AbstractIntegrationTests;
 import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.spi.Parameters;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -102,7 +102,7 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
         this.connection.createStatement("INSERT INTO enum_test VALUES($1)")
             .bind("$1", Parameters.in(type, "HELLO"))
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();
@@ -123,7 +123,7 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
         this.connection.createStatement("INSERT INTO enum_test VALUES($1)")
             .bind("$1", Parameters.in(type, new String[]{"HELLO", "WORLD"}))
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();
@@ -141,7 +141,7 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
         this.connection.createStatement("INSERT INTO enum_test VALUES($1)")
             .bind("$1", MyEnum.values())
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();

@@ -53,7 +53,7 @@ final class ExceptionFactoryUnitTests {
 
         ExceptionFactory.INSTANCE.handleErrorResponse(message, sink);
 
-        verify(sink, times(1)).error(isA(ExceptionFactory.PostgresqlAuthenticationFailure.class));
+        verify(sink, times(1)).error(isA(ExceptionFactory.GaussDBAuthenticationFailure.class));
         verify(sink, times(0)).next(eq(message));
     }
 

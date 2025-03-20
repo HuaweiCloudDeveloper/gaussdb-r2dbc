@@ -20,6 +20,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ReferenceCounted;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.client.Binding;
 import io.r2dbc.gaussdb.client.ConnectionContext;
 import io.r2dbc.gaussdb.client.EncodedParameter;
@@ -56,7 +57,7 @@ import static io.r2dbc.gaussdb.util.PredicateUtils.or;
  *
  * @since 0.9
  */
-final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatement {
+final class GaussDBStatement implements io.r2dbc.gaussdb.api.GaussDBStatement {
 
     private static final Predicate<BackendMessage> WINDOW_UNTIL = or(CommandComplete.class::isInstance, EmptyQueryResponse.class::isInstance, ErrorResponse.class::isInstance);
 
@@ -72,9 +73,9 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
 
     private String[] generatedColumns;
 
-    PostgresqlStatement(ConnectionResources resources, String sql) {
+    GaussDBStatement(ConnectionResources resources, String sql) {
         this.resources = Assert.requireNonNull(resources, "resources must not be null");
-        this.parsedSql = PostgresqlSqlParser.parse(Assert.requireNonNull(sql, "sql must not be null"));
+        this.parsedSql = GaussDBSqlParser.parse(Assert.requireNonNull(sql, "sql must not be null"));
         this.connectionContext = resources.getClient().getContext();
         this.bindings = new ArrayDeque<>(this.parsedSql.getParameterCount());
 
@@ -86,7 +87,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
     }
 
     @Override
-    public PostgresqlStatement add() {
+    public GaussDBStatement add() {
         Binding binding = this.bindings.peekLast();
         if (binding != null) {
             binding.validate();
@@ -96,12 +97,12 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
     }
 
     @Override
-    public PostgresqlStatement bind(String identifier, Object value) {
+    public GaussDBStatement bind(String identifier, Object value) {
         return bind(getIdentifierIndex(identifier), value);
     }
 
     @Override
-    public PostgresqlStatement bind(int index, Object value) {
+    public GaussDBStatement bind(int index, Object value) {
         Assert.requireNonNull(value, "value must not be null");
 
         BindingLogger.logBind(this.connectionContext, index, value);
@@ -110,12 +111,12 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
     }
 
     @Override
-    public PostgresqlStatement bindNull(String identifier, Class<?> type) {
+    public GaussDBStatement bindNull(String identifier, Class<?> type) {
         return bindNull(getIdentifierIndex(identifier), type);
     }
 
     @Override
-    public PostgresqlStatement bindNull(int index, Class<?> type) {
+    public GaussDBStatement bindNull(int index, Class<?> type) {
         Assert.requireNonNull(type, "type must not be null");
 
         if (index >= this.parsedSql.getParameterCount()) {
@@ -140,7 +141,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
     }
 
     @Override
-    public Flux<io.r2dbc.gaussdb.api.PostgresqlResult> execute() {
+    public Flux<GaussDBResult> execute() {
         if (this.generatedColumns == null) {
             return execute(this.parsedSql.getSql());
         }
@@ -148,7 +149,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
     }
 
     @Override
-    public PostgresqlStatement returnGeneratedValues(String... columns) {
+    public GaussDBStatement returnGeneratedValues(String... columns) {
         Assert.requireNonNull(columns, "columns must not be null");
 
         if (this.parsedSql.hasDefaultTokenValue("RETURNING")) {
@@ -164,7 +165,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
     }
 
     @Override
-    public PostgresqlStatement fetchSize(int rows) {
+    public GaussDBStatement fetchSize(int rows) {
         Assert.isTrue(rows >= 0, "fetch size must be greater or equal zero");
         this.fetchSize = rows;
         return this;
@@ -197,7 +198,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
         }
     }
 
-    private Flux<io.r2dbc.gaussdb.api.PostgresqlResult> execute(String sql) {
+    private Flux<GaussDBResult> execute(String sql) {
         ExceptionFactory factory = ExceptionFactory.withSql(sql);
 
         CompletableFuture<Void> onCancel = new CompletableFuture<>();
@@ -219,7 +220,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
                     Binding binding = this.bindings.peekFirst();
                     Flux<BackendMessage> messages = collectBindingParameters(binding).flatMapMany(values -> ExtendedFlowDelegate.runQuery(this.resources, factory, sql, binding, values, fetchSize,
                         new AtomicBoolean()));
-                    return Flux.just(PostgresqlResult.toResult(this.resources, messages, factory));
+                    return Flux.just(io.r2dbc.gaussdb.GaussDBResult.toResult(this.resources, messages, factory));
                 }
 
                 Iterator<Binding> iterator = this.bindings.iterator();
@@ -234,13 +235,13 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
                         Flux<BackendMessage> messages =
                             collectBindingParameters(it).flatMapMany(values -> ExtendedFlowDelegate.runQuery(this.resources, factory, sql, it, values, this.fetchSize, canceled)).doOnComplete(() -> tryNextBinding(iterator, bindings, canceled));
 
-                        return PostgresqlResult.toResult(this.resources, messages, factory);
+                        return io.r2dbc.gaussdb.GaussDBResult.toResult(this.resources, messages, factory);
                     })
                     .doOnCancel(() -> clearBindings(iterator, canceled))
                     .doOnError(e -> clearBindings(iterator, canceled))
                     .doOnSubscribe(it -> bindings.emitNext(iterator.next(), Sinks.EmitFailureHandler.FAIL_FAST));
 
-            }).cast(io.r2dbc.gaussdb.api.PostgresqlResult.class);
+            }).cast(GaussDBResult.class);
         }
 
         Flux<BackendMessage> exchange;
@@ -253,7 +254,7 @@ final class PostgresqlStatement implements io.r2dbc.gaussdb.api.PostgresqlStatem
 
         return exchange.windowUntil(WINDOW_UNTIL)
             .doOnDiscard(ReferenceCounted.class, ReferenceCountUtil::release) // ensure release of rows within WindowPredicate
-            .map(messages -> PostgresqlResult.toResult(this.resources, messages, factory))
+            .map(messages -> io.r2dbc.gaussdb.GaussDBResult.toResult(this.resources, messages, factory))
             .as(source -> Operators.discardOnCancel(source, () -> {
                 canceled.set(true);
                 onCancel.complete(null);

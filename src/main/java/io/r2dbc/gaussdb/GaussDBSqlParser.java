@@ -26,11 +26,11 @@ import java.util.List;
 import static java.lang.Character.isWhitespace;
 
 /**
- * Utility to tokenize Postgres SQL statements.
+ * Utility to tokenize GaussDB SQL statements.
  *
  * @since 0.9
  */
-class PostgresqlSqlParser {
+class GaussDBSqlParser {
 
     private static final CharObjectMap<Object> SPECIAL_AND_OPERATOR_CHARS = new CharObjectHashMap<>();
 

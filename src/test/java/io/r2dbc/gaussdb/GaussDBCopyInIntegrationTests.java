@@ -18,7 +18,7 @@ package io.r2dbc.gaussdb;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.r2dbc.gaussdb.ExceptionFactory.PostgresqlBadGrammarException;
+import io.r2dbc.gaussdb.ExceptionFactory.GaussDBBadGrammarException;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,9 +36,9 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for {@link PostgresqlCopyIn}.
+ * Integration tests for {@link GaussDBCopyIn}.
  */
-class PostgresqlCopyInIntegrationTests extends AbstractIntegrationTests {
+class GaussDBCopyInIntegrationTests extends AbstractIntegrationTests {
 
     @BeforeEach
     void setUp() {
@@ -159,7 +159,7 @@ class PostgresqlCopyInIntegrationTests extends AbstractIntegrationTests {
         this.connection.copyIn(sql, data)
             .as(StepVerifier::create)
             .consumeErrorWith(e -> assertThat(e)
-                .isInstanceOf(PostgresqlBadGrammarException.class)
+                .isInstanceOf(GaussDBBadGrammarException.class)
                 .hasMessage(message)
             )
             .verify();

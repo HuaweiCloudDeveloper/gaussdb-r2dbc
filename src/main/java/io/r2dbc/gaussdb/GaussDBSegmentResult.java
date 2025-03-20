@@ -20,6 +20,7 @@ import io.netty.util.AbstractReferenceCounted;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ReferenceCounted;
 import io.r2dbc.gaussdb.api.ErrorDetails;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.message.backend.BackendMessage;
 import io.r2dbc.gaussdb.message.backend.CommandComplete;
 import io.r2dbc.gaussdb.message.backend.DataRow;
@@ -45,28 +46,28 @@ import java.util.function.Predicate;
  *
  * @since 0.9
  */
-final class PostgresqlSegmentResult extends AbstractReferenceCounted implements io.r2dbc.gaussdb.api.PostgresqlResult {
+final class GaussDBSegmentResult extends AbstractReferenceCounted implements GaussDBResult {
 
     private final Flux<Segment> segments;
 
-    private PostgresqlSegmentResult(Flux<Segment> segments) {
+    private GaussDBSegmentResult(Flux<Segment> segments) {
         this.segments = segments;
     }
 
-    PostgresqlSegmentResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
+    GaussDBSegmentResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
         Assert.requireNonNull(resources, "resources must not be null");
         Assert.requireNonNull(messages, "messages must not be null");
         Assert.requireNonNull(factory, "factory must not be null");
 
         AtomicReference<RowDescription> rowDescriptionHolder = new AtomicReference<>();
-        AtomicReference<PostgresqlRowMetadata> metadataHolder = new AtomicReference<>();
+        AtomicReference<GaussDBRowMetadata> metadataHolder = new AtomicReference<>();
 
         this.segments = messages
             .doOnNext(message -> {
 
                 if (message instanceof RowDescription) {
                     rowDescriptionHolder.set((RowDescription) message);
-                    metadataHolder.set(PostgresqlRowMetadata.toRowMetadata(resources.getCodecs(), (RowDescription) message));
+                    metadataHolder.set(GaussDBRowMetadata.toRowMetadata(resources.getCodecs(), (RowDescription) message));
                 }
 
             }).handle((message, sink) -> {
@@ -93,7 +94,7 @@ final class PostgresqlSegmentResult extends AbstractReferenceCounted implements 
                 if (message instanceof DataRow) {
 
                     RowDescription rowDescription = rowDescriptionHolder.get();
-                    PostgresqlRowMetadata metadata = metadataHolder.get();
+                    GaussDBRowMetadata metadata = metadataHolder.get();
 
                     if (rowDescription == null) {
                         sink.error(new IllegalStateException("DataRow without RowDescription"));
@@ -105,7 +106,7 @@ final class PostgresqlSegmentResult extends AbstractReferenceCounted implements 
                         return;
                     }
 
-                    sink.next(new PostgresqlRowSegment(PostgresqlRow.toRow(resources, (DataRow) message, metadata, rowDescription), (DataRow) message));
+                    sink.next(new PostgresqlRowSegment(GaussDBRow.toRow(resources, (DataRow) message, metadata, rowDescription), (DataRow) message));
                     return;
                 }
 
@@ -172,9 +173,9 @@ final class PostgresqlSegmentResult extends AbstractReferenceCounted implements 
     }
 
     @Override
-    public PostgresqlSegmentResult filter(Predicate<Segment> filter) {
+    public GaussDBSegmentResult filter(Predicate<Segment> filter) {
         Assert.requireNonNull(filter, "filter must not be null");
-        return new PostgresqlSegmentResult(this.segments.filter(it -> {
+        return new GaussDBSegmentResult(this.segments.filter(it -> {
 
             boolean result = filter.test(it);
 
@@ -226,8 +227,8 @@ final class PostgresqlSegmentResult extends AbstractReferenceCounted implements 
             '}';
     }
 
-    static PostgresqlSegmentResult toResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
-        return new PostgresqlSegmentResult(resources, messages, factory);
+    static GaussDBSegmentResult toResult(ConnectionResources resources, Flux<BackendMessage> messages, ExceptionFactory factory) {
+        return new GaussDBSegmentResult(resources, messages, factory);
     }
 
     static class PostgresqlRowSegment extends AbstractReferenceCounted implements Result.RowSegment {

@@ -161,7 +161,7 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
         GaussDBConnection connection = new GaussDBConnection(client, new DefaultCodecs(client.getByteBufAllocator()), DefaultPortalNameSupplier.INSTANCE,
             DisabledStatementCache.INSTANCE, IsolationLevel.READ_UNCOMMITTED, configuration);
 
-        return new io.r2dbc.gaussdb.PostgresqlStatement(connection.getResources(), "SHOW TRANSACTION_READ_ONLY")
+        return new GaussDBStatement(connection.getResources(), "SHOW TRANSACTION_READ_ONLY")
             .fetchSize(0)
             .execute()
             .flatMap(result -> result.map((row) -> row.get(0, String.class)))

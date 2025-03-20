@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.client.*;
 import io.r2dbc.gaussdb.codec.MockCodecs;
 import io.r2dbc.gaussdb.message.backend.*;
@@ -41,15 +41,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link PostgresqlStatement}.
+ * Unit tests for {@link GaussDBStatement}.
  */
-final class PostgresqlStatementUnitTests {
+final class GaussDBStatementUnitTests {
 
     private final EncodedParameter parameter = new EncodedParameter(FORMAT_BINARY, INT4.getObjectId(), Flux.just(TEST.buffer(4).writeInt(100)));
 
     private final MockCodecs codecs = MockCodecs.builder().encoding(100, this.parameter).build();
 
-    private final PostgresqlStatement statement = new PostgresqlStatement(MockContext.builder().codecs(codecs).build(), "test-query-$1");
+    private final GaussDBStatement statement = new GaussDBStatement(MockContext.builder().codecs(codecs).build(), "test-query-$1");
 
     @Test
     void bind() {
@@ -85,7 +85,7 @@ final class PostgresqlStatementUnitTests {
             .encoding(Integer.class, new EncodedParameter(FORMAT_BINARY, INT4.getObjectId(), NULL_VALUE))
             .build();
 
-        PostgresqlStatement statement = new PostgresqlStatement(MockContext.builder().codecs(codecs).build(), "test-query-$1");
+        GaussDBStatement statement = new GaussDBStatement(MockContext.builder().codecs(codecs).build(), "test-query-$1");
 
         assertThat(statement.bindNull("$1", Integer.class).getCurrentBinding())
             .isEqualTo(new Binding(1).add(0, new EncodedParameter(FORMAT_BINARY, INT4.getObjectId(), NULL_VALUE)));
@@ -123,13 +123,13 @@ final class PostgresqlStatementUnitTests {
 
     @Test
     void constructorNoResources() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlStatement(null, "test-query"))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBStatement(null, "test-query"))
             .withMessage("resources must not be null");
     }
 
     @Test
     void constructorNoSql() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlStatement(MockContext.empty(), null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBStatement(MockContext.empty(), null))
             .withMessage("sql must not be null");
     }
 
@@ -160,10 +160,10 @@ final class PostgresqlStatementUnitTests {
 
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
 
-        new PostgresqlStatement(context, "test-query-$1")
+        new GaussDBStatement(context, "test-query-$1")
             .bind("$1", 100)
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .verifyError(R2dbcNonTransientResourceException.class);
     }
@@ -189,7 +189,7 @@ final class PostgresqlStatementUnitTests {
 
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
 
-        new PostgresqlStatement(context, "test-query-$1")
+        new GaussDBStatement(context, "test-query-$1")
             .bind("$1", 100)
             .execute()
             .flatMap(result -> result.map((row, rowMetadata) -> row))
@@ -218,10 +218,10 @@ final class PostgresqlStatementUnitTests {
 
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
 
-        new PostgresqlStatement(context, "test-query-$1")
+        new GaussDBStatement(context, "test-query-$1")
             .bind("$1", 100)
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .verifyError(R2dbcNonTransientResourceException.class);
     }
@@ -246,10 +246,10 @@ final class PostgresqlStatementUnitTests {
 
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
 
-        new PostgresqlStatement(context, "test-query-$1")
+        new GaussDBStatement(context, "test-query-$1")
             .bind("$1", 100)
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .verifyError(R2dbcNonTransientResourceException.class);
     }
@@ -277,7 +277,7 @@ final class PostgresqlStatementUnitTests {
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
         when(context.getStatementCache().requiresPrepare(any(), any())).thenReturn(true);
 
-        new PostgresqlStatement(context, "test-query-$1")
+        new GaussDBStatement(context, "test-query-$1")
             .bind("$1", 100)
             .execute()
             .as(StepVerifier::create)
@@ -310,11 +310,11 @@ final class PostgresqlStatementUnitTests {
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
         when(context.getStatementCache().requiresPrepare(any(), any())).thenReturn(false);
 
-        new PostgresqlStatement(context, "test-query-$1")
+        new GaussDBStatement(context, "test-query-$1")
                 .bind("$1", 100).add()
                 .bind("$1", 200)
                 .execute()
-                .flatMap(PostgresqlResult::getRowsUpdated)
+                .flatMap(GaussDBResult::getRowsUpdated)
                 .as(StepVerifier::create)
                 .verifyError(R2dbcNonTransientResourceException.class);
 
@@ -344,7 +344,7 @@ final class PostgresqlStatementUnitTests {
         when(context.getStatementCache().getName(any(), any())).thenReturn("test-name");
         when(context.getStatementCache().requiresPrepare(any(), any())).thenReturn(true);
 
-        new PostgresqlStatement(context, "INSERT test-query-$1")
+        new GaussDBStatement(context, "INSERT test-query-$1")
             .bind("$1", 100)
             .returnGeneratedValues()
             .execute()
@@ -356,13 +356,13 @@ final class PostgresqlStatementUnitTests {
 
     @Test
     void returnGeneratedValuesHasReturningClause() {
-        assertThatIllegalStateException().isThrownBy(() -> new PostgresqlStatement(MockContext.empty(), "RETURNING").returnGeneratedValues())
+        assertThatIllegalStateException().isThrownBy(() -> new GaussDBStatement(MockContext.empty(), "RETURNING").returnGeneratedValues())
             .withMessage("Statement already includes RETURNING clause");
     }
 
     @Test
     void returnGeneratedValuesUnsupportedCommand() {
-        assertThatIllegalStateException().isThrownBy(() -> new PostgresqlStatement(MockContext.empty(), "SELECT").returnGeneratedValues())
+        assertThatIllegalStateException().isThrownBy(() -> new GaussDBStatement(MockContext.empty(), "SELECT").returnGeneratedValues())
             .withMessage("Statement is not a DELETE, INSERT, or UPDATE command");
     }
 }

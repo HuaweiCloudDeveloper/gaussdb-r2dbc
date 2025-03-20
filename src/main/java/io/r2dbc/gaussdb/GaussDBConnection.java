@@ -20,8 +20,8 @@ import io.r2dbc.gaussdb.api.CopyInBuilder;
 import io.r2dbc.gaussdb.api.ErrorDetails;
 import io.r2dbc.gaussdb.api.Notification;
 import io.r2dbc.gaussdb.api.PostgresTransactionDefinition;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
-import io.r2dbc.gaussdb.api.PostgresqlStatement;
+import io.r2dbc.gaussdb.api.GaussDBResult;
+import io.r2dbc.gaussdb.api.GaussDBStatement;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.ConnectionContext;
 import io.r2dbc.gaussdb.client.PortalNameSupplier;
@@ -91,7 +91,7 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
         this.connectionContext = client.getContext();
         this.codecs = Assert.requireNonNull(codecs, "codecs must not be null");
         this.isolationLevel = Assert.requireNonNull(isolationLevel, "isolationLevel must not be null");
-        this.validationQuery = new io.r2dbc.gaussdb.PostgresqlStatement(this.resources, "SELECT 1").fetchSize(0).execute().flatMap(PostgresqlResult::getRowsUpdated);
+        this.validationQuery = new io.r2dbc.gaussdb.GaussDBStatement(this.resources, "SELECT 1").fetchSize(0).execute().flatMap(GaussDBResult::getRowsUpdated);
     }
 
     Client getClient() {
@@ -205,7 +205,7 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
                         if ("ROLLBACK".equalsIgnoreCase(message.getCommand())) {
                             ErrorDetails details = ErrorDetails.fromMessage("The database returned ROLLBACK, so the transaction cannot be committed. Transaction " +
                                 "failure is not known (check server logs?)");
-                            ref.set(new ExceptionFactory.PostgresqlRollbackException(details, "COMMIT"));
+                            ref.set(new ExceptionFactory.GaussDBRollbackException(details, "COMMIT"));
                             return;
                         }
 
@@ -224,7 +224,7 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
 
     @Override
     public CopyInBuilder copyIn(String sql) {
-        return new PostgresqlCopyIn.Builder(this.resources, sql);
+        return new GaussDBCopyIn.Builder(this.resources, sql);
     }
 
     @Override
@@ -248,9 +248,9 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
     }
 
     @Override
-    public PostgresqlStatement createStatement(String sql) {
+    public GaussDBStatement createStatement(String sql) {
         Assert.requireNonNull(sql, "sql must not be null");
-        return new io.r2dbc.gaussdb.PostgresqlStatement(this.resources, sql);
+        return new io.r2dbc.gaussdb.GaussDBStatement(this.resources, sql);
     }
 
     /**
@@ -279,8 +279,8 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
     }
 
     @Override
-    public PostgresqlConnectionMetadata getMetadata() {
-        return new PostgresqlConnectionMetadata(this.client.getVersion());
+    public GaussDBConnectionMetadata getMetadata() {
+        return new GaussDBConnectionMetadata(this.client.getVersion());
     }
 
     @Override

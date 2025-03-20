@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.api.ErrorDetails;
-import io.r2dbc.gaussdb.api.PostgresqlException;
+import io.r2dbc.gaussdb.api.GaussDBException;
 import io.r2dbc.gaussdb.message.backend.BackendMessage;
 import io.r2dbc.gaussdb.message.backend.ErrorResponse;
 import io.r2dbc.spi.R2dbcBadGrammarException;
@@ -77,13 +77,13 @@ final class ExceptionFactory {
 
         switch (errorDetails.getCode()) {
             case "42501":
-                return new PostgresqlPermissionDeniedException(errorDetails, sql);
+                return new GaussDBPermissionDeniedException(errorDetails, sql);
             case "40000":
             case "40001":
-                return new PostgresqlRollbackException(errorDetails, sql);
+                return new GaussDBRollbackException(errorDetails, sql);
             case "28000":
             case "28P01":
-                return new PostgresqlAuthenticationFailure(errorDetails, sql);
+                return new GaussDBAuthenticationFailure(errorDetails, sql);
         }
 
         String codeClass = errorDetails.getCode().length() > 2 ? errorDetails.getCode().substring(0, 2) : "99";
@@ -93,20 +93,20 @@ final class ExceptionFactory {
             case "42": // Syntax Error or Access Rule Violation
             case "22": // Data Exception
             case "26": // Invalid SQL Statement Name
-                return new PostgresqlBadGrammarException(errorDetails, sql);
+                return new GaussDBBadGrammarException(errorDetails, sql);
             case "08": // Connection Exception
-                return new PostgresqlNonTransientResourceException(errorDetails, sql);
+                return new GaussDBNonTransientResourceException(errorDetails, sql);
             case "21": // Cardinality Violation
             case "23": // Integrity Constraint Violation
             case "27": // Integrity Constraint Violation
-                return new PostgresqlDataIntegrityViolationException(errorDetails, sql);
+                return new GaussDBDataIntegrityViolationException(errorDetails, sql);
             case "28": // Invalid Authorization Specification
-                return new PostgresqlPermissionDeniedException(errorDetails, sql);
+                return new GaussDBPermissionDeniedException(errorDetails, sql);
             case "40": // Invalid Authorization Specification
-                return new PostgresqlTransientException(errorDetails, sql);
+                return new GaussDBTransientException(errorDetails, sql);
         }
 
-        return new PostgresqlNonTransientResourceException(errorDetails, sql);
+        return new GaussDBNonTransientResourceException(errorDetails, sql);
     }
 
     /**
@@ -138,11 +138,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcBadGrammarException}.
      */
-    static final class PostgresqlBadGrammarException extends R2dbcBadGrammarException implements PostgresqlException {
+    static final class GaussDBBadGrammarException extends R2dbcBadGrammarException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlBadGrammarException(ErrorDetails errorDetails, String sql) {
+        GaussDBBadGrammarException(ErrorDetails errorDetails, String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }
@@ -157,11 +157,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcDataIntegrityViolationException}.
      */
-    static final class PostgresqlDataIntegrityViolationException extends R2dbcDataIntegrityViolationException implements PostgresqlException {
+    static final class GaussDBDataIntegrityViolationException extends R2dbcDataIntegrityViolationException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlDataIntegrityViolationException(ErrorDetails errorDetails, @Nullable String sql) {
+        GaussDBDataIntegrityViolationException(ErrorDetails errorDetails, @Nullable String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }
@@ -176,11 +176,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcNonTransientResourceException}.
      */
-    static final class PostgresqlNonTransientResourceException extends R2dbcNonTransientResourceException implements PostgresqlException {
+    static final class GaussDBNonTransientResourceException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlNonTransientResourceException(ErrorDetails errorDetails, @Nullable String sql) {
+        GaussDBNonTransientResourceException(ErrorDetails errorDetails, @Nullable String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }
@@ -195,11 +195,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcPermissionDeniedException}.
      */
-    static final class PostgresqlPermissionDeniedException extends R2dbcPermissionDeniedException implements PostgresqlException {
+    static final class GaussDBPermissionDeniedException extends R2dbcPermissionDeniedException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlPermissionDeniedException(ErrorDetails errorDetails, @Nullable String sql) {
+        GaussDBPermissionDeniedException(ErrorDetails errorDetails, @Nullable String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }
@@ -214,11 +214,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcRollbackException}.
      */
-    static final class PostgresqlRollbackException extends R2dbcRollbackException implements PostgresqlException {
+    static final class GaussDBRollbackException extends R2dbcRollbackException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlRollbackException(ErrorDetails errorDetails, @Nullable String sql) {
+        GaussDBRollbackException(ErrorDetails errorDetails, @Nullable String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }
@@ -233,11 +233,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcTransientException}.
      */
-    static final class PostgresqlTransientException extends R2dbcTransientException implements PostgresqlException {
+    static final class GaussDBTransientException extends R2dbcTransientException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlTransientException(ErrorDetails errorDetails, @Nullable String sql) {
+        GaussDBTransientException(ErrorDetails errorDetails, @Nullable String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }
@@ -252,11 +252,11 @@ final class ExceptionFactory {
     /**
      * Postgres-specific {@link R2dbcPermissionDeniedException}.
      */
-    static final class PostgresqlAuthenticationFailure extends R2dbcPermissionDeniedException implements PostgresqlException {
+    static final class GaussDBAuthenticationFailure extends R2dbcPermissionDeniedException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlAuthenticationFailure(ErrorDetails errorDetails, @Nullable String sql) {
+        GaussDBAuthenticationFailure(ErrorDetails errorDetails, @Nullable String sql) {
             super(errorDetails.getMessage(), errorDetails.getCode(), 0, sql);
             this.errorDetails = errorDetails;
         }

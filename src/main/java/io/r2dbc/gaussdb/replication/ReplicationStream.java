@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.replication;
 
 import io.netty.buffer.ByteBuf;
-import io.r2dbc.gaussdb.api.PostgresqlReplicationConnection;
+import io.r2dbc.gaussdb.api.GaussDBReplicationConnection;
 import io.r2dbc.spi.Closeable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 /**
- * Postgresql replication stream. Once established, the stream occupies the {@link PostgresqlReplicationConnection} until this stream is {@link #close() closed}. This stream can be consumed by
+ * Postgresql replication stream. Once established, the stream occupies the {@link GaussDBReplicationConnection} until this stream is {@link #close() closed}. This stream can be consumed by
  * applying a {@link Function mapping function} using {@link #map(Function)}.
  */
 public interface ReplicationStream extends Closeable {

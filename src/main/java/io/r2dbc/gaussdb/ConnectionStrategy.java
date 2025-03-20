@@ -20,7 +20,7 @@ import io.r2dbc.gaussdb.client.Client;
 import reactor.core.publisher.Mono;
 
 /**
- * Interface defining a connection strategy on how to obtain a Postgres {@link Client} object.
+ * Interface defining a connection strategy on how to obtain a GaussDB {@link Client} object.
  * <p>
  * Typically, connection strategies use a {@link ConnectionFunction} and are configured with a connection endpoint to establish a client connection to the target server as the {@link #connect()}
  * method does not take any parameters.

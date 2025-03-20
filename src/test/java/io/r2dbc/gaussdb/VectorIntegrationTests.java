@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.codec.Vector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -127,7 +127,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
         connection.createStatement("INSERT INTO vector_items (embedding) VALUES ($1)")
             .bind("$1", Vector.of(1, 2, 3))
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();
@@ -151,7 +151,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
         connection.createStatement("INSERT INTO vector_arrays (embedding) VALUES ($1);")
             .bind("$1", new Vector[]{Vector.of(1, 2, 3), Vector.of(4, 5, 6)})
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();
@@ -180,7 +180,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
         connection.createStatement("INSERT INTO vector_arrays (embedding) VALUES ($1);")
             .bind("$1", new Vector[]{Vector.of(1, 2, 3), null, Vector.of(4, 5, 6)})
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();

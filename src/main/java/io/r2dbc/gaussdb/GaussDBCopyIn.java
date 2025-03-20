@@ -40,16 +40,16 @@ import reactor.util.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static io.r2dbc.gaussdb.PostgresqlResult.toResult;
+import static io.r2dbc.gaussdb.GaussDBResult.toResult;
 
 /**
- * An implementation for {@link CopyData} PostgreSQL queries.
+ * An implementation for {@link CopyData} GaussDB queries.
  */
-final class PostgresqlCopyIn {
+final class GaussDBCopyIn {
 
     private final ConnectionResources context;
 
-    PostgresqlCopyIn(ConnectionResources resources) {
+    GaussDBCopyIn(ConnectionResources resources) {
         this.context = Assert.requireNonNull(resources, "resources must not be null");
     }
 
@@ -161,7 +161,7 @@ final class PostgresqlCopyIn {
                 throw new IllegalArgumentException("No stdin configured for COPY IN");
             }
 
-            return new PostgresqlCopyIn(this.resources).copy(this.sql, this.stdin);
+            return new GaussDBCopyIn(this.resources).copy(this.sql, this.stdin);
         }
 
     }

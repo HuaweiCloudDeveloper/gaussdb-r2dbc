@@ -16,6 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.util.Assert;
 import io.r2dbc.spi.Batch;
 import reactor.core.publisher.Flux;
@@ -40,7 +41,7 @@ final class GaussDBBatch implements io.r2dbc.gaussdb.api.GaussDBBatch {
     public GaussDBBatch add(String sql) {
         Assert.requireNonNull(sql, "sql must not be null");
 
-        if (!(PostgresqlSqlParser.parse(sql).getParameterCount() == 0)) {
+        if (!(GaussDBSqlParser.parse(sql).getParameterCount() == 0)) {
             throw new IllegalArgumentException(String.format("Statement '%s' is not supported.  This is often due to the presence of parameters.", sql));
         }
 
@@ -49,14 +50,14 @@ final class GaussDBBatch implements io.r2dbc.gaussdb.api.GaussDBBatch {
     }
 
     @Override
-    public Flux<io.r2dbc.gaussdb.api.PostgresqlResult> execute() {
-        return new PostgresqlStatement(this.context, String.join("; ", this.statements))
+    public Flux<GaussDBResult> execute() {
+        return new GaussDBStatement(this.context, String.join("; ", this.statements))
             .execute();
     }
 
     @Override
     public String toString() {
-        return "PostgresqlBatch{" +
+        return "GaussDBBatch{" +
             "context=" + this.context +
             ", statements=" + this.statements +
             '}';

@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -214,7 +214,7 @@ abstract class AbstractTemporalCodecIntegrationTests extends AbstractIntegration
         connection.createStatement("INSERT INTO test VALUES($1)")
             .bind("$1", value)
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNext(1L)
             .verifyComplete();

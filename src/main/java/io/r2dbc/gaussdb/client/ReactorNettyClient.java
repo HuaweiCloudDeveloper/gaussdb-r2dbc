@@ -31,7 +31,7 @@ import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.r2dbc.gaussdb.api.ErrorDetails;
-import io.r2dbc.gaussdb.api.PostgresqlException;
+import io.r2dbc.gaussdb.api.GaussDBException;
 import io.r2dbc.gaussdb.message.backend.BackendKeyData;
 import io.r2dbc.gaussdb.message.backend.BackendMessage;
 import io.r2dbc.gaussdb.message.backend.BackendMessageDecoder;
@@ -581,7 +581,7 @@ public final class ReactorNettyClient implements Client {
 
     }
 
-    static class PostgresConnectionClosedException extends R2dbcNonTransientResourceException implements PostgresqlException {
+    static class PostgresConnectionClosedException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
@@ -602,7 +602,7 @@ public final class ReactorNettyClient implements Client {
 
     }
 
-    static class PostgresConnectionException extends R2dbcNonTransientResourceException implements PostgresqlException {
+    static class PostgresConnectionException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private final static ErrorDetails ERROR_DETAILS = ErrorDetails.fromCodeAndMessage(CONNECTION_FAILURE, "An I/O error occurred while sending to the backend or receiving from the backend");
 
@@ -617,7 +617,7 @@ public final class ReactorNettyClient implements Client {
 
     }
 
-    static class RequestQueueException extends R2dbcTransientResourceException implements PostgresqlException {
+    static class RequestQueueException extends R2dbcTransientResourceException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
@@ -633,7 +633,7 @@ public final class ReactorNettyClient implements Client {
 
     }
 
-    static class ResponseQueueException extends R2dbcNonTransientResourceException implements PostgresqlException {
+    static class ResponseQueueException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 

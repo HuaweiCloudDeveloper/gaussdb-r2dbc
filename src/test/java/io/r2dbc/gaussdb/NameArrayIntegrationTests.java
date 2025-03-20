@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcOperations;
 import reactor.test.StepVerifier;
@@ -34,7 +34,7 @@ public class NameArrayIntegrationTests extends AbstractIntegrationTests {
 
         this.connection.createStatement("INSERT INTO name_table (n) VALUES('hello'), ('world'), (null)")
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .as(StepVerifier::create)
             .expectNextCount(1)
             .verifyComplete();

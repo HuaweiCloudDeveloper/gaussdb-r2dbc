@@ -18,7 +18,7 @@ package io.r2dbc.gaussdb;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.r2dbc.gaussdb.ExceptionFactory.PostgresqlNonTransientResourceException;
+import io.r2dbc.gaussdb.ExceptionFactory.GaussDBNonTransientResourceException;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.TestClient;
 import io.r2dbc.gaussdb.client.TransactionStatus;
@@ -43,9 +43,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 
 /**
- * Unit tests for {@link PostgresqlCopyIn}.
+ * Unit tests for {@link GaussDBCopyIn}.
  */
-final class PostgresqlCopyInUnitTests {
+final class GaussDBCopyInUnitTests {
 
     @Test
     void copyIn() {
@@ -58,7 +58,7 @@ final class PostgresqlCopyInUnitTests {
                 new ReadyForQuery(IDLE)
             ).build();
 
-        new PostgresqlCopyIn(MockContext.builder().client(client).build())
+        new GaussDBCopyIn(MockContext.builder().client(client).build())
             .copy("some-sql", Flux.just(Flux.just(byteBuffer)))
             .as(StepVerifier::create)
             .expectNext(1L)
@@ -72,10 +72,10 @@ final class PostgresqlCopyInUnitTests {
             .expectRequest(new Query("some-sql")).thenRespond(new ErrorResponse(emptyList()))
             .build();
 
-        new PostgresqlCopyIn(MockContext.builder().client(client).build())
+        new GaussDBCopyIn(MockContext.builder().client(client).build())
             .copy("some-sql", Flux.just(Flux.just(byteBuffer)))
             .as(StepVerifier::create)
-            .expectError(PostgresqlNonTransientResourceException.class)
+            .expectError(GaussDBNonTransientResourceException.class)
             .verify();
     }
 
@@ -90,7 +90,7 @@ final class PostgresqlCopyInUnitTests {
             )
             .build();
 
-        new PostgresqlCopyIn(MockContext.builder().client(client).build())
+        new GaussDBCopyIn(MockContext.builder().client(client).build())
             .copy("some-sql", Flux.empty())
             .as(StepVerifier::create)
             .expectNext(0L)
@@ -111,7 +111,7 @@ final class PostgresqlCopyInUnitTests {
                 new ReadyForQuery(IDLE)
             ).build();
 
-        new PostgresqlCopyIn(MockContext.builder().client(client).build())
+        new GaussDBCopyIn(MockContext.builder().client(client).build())
             .copy("some-sql", Flux.concat(Mono.just(testPublisher), Mono.just(Mono.error(new RuntimeException("Failed")))))
             .as(StepVerifier::create)
             .verifyError(RuntimeException.class);
@@ -132,7 +132,7 @@ final class PostgresqlCopyInUnitTests {
                 new ReadyForQuery(IDLE)
             ).build();
 
-        new PostgresqlCopyIn(MockContext.builder().client(client).build())
+        new GaussDBCopyIn(MockContext.builder().client(client).build())
             .copy("some-sql", Mono.just(testPublisher.flux()))
             .as(StepVerifier::create)
             .then(() -> {

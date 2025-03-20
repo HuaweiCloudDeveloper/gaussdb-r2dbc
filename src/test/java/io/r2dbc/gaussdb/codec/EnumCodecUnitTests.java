@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBufAllocator;
 import io.r2dbc.gaussdb.api.MockGaussDBConnection;
-import io.r2dbc.gaussdb.api.MockPostgresqlResult;
-import io.r2dbc.gaussdb.api.MockPostgresqlStatement;
+import io.r2dbc.gaussdb.api.MockGaussDBResult;
+import io.r2dbc.gaussdb.api.MockGaussDBStatement;
 import io.r2dbc.gaussdb.extension.CodecRegistrar;
 import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.util.TestByteBufAllocator;
@@ -94,8 +94,8 @@ final class EnumCodecUnitTests {
         ByteBufAllocator mockByteBufAllocator = mock(ByteBufAllocator.class);
         CodecRegistry mockCodecRegistry = mock(CodecRegistry.class);
 
-        MockPostgresqlStatement mockPostgresqlStatement = MockPostgresqlStatement.builder()
-            .result(MockPostgresqlResult.builder()
+        MockGaussDBStatement mockPostgresqlStatement = MockGaussDBStatement.builder()
+            .result(MockGaussDBResult.builder()
                 .row(MockRow.builder()
                     .identified("oid", Long.class, 42L)
                     .identified("typarray", Long.class, 0L)
@@ -124,8 +124,8 @@ final class EnumCodecUnitTests {
         ByteBufAllocator mockByteBufAllocator = mock(ByteBufAllocator.class);
         CodecRegistry mockCodecRegistry = mock(CodecRegistry.class);
 
-        MockPostgresqlStatement mockPostgresqlStatement = MockPostgresqlStatement.builder()
-            .result(MockPostgresqlResult.builder()
+        MockGaussDBStatement mockPostgresqlStatement = MockGaussDBStatement.builder()
+            .result(MockGaussDBResult.builder()
                 .row(MockRow.builder()
                     .identified("oid", Long.class, 42L)
                     .identified("typname", String.class, "foo")
@@ -154,8 +154,8 @@ final class EnumCodecUnitTests {
         ByteBufAllocator mockByteBufAllocator = mock(ByteBufAllocator.class);
         CodecRegistry mockCodecRegistry = mock(CodecRegistry.class);
 
-        MockPostgresqlStatement mockPostgresqlStatement = MockPostgresqlStatement.builder()
-            .result(MockPostgresqlResult.builder()
+        MockGaussDBStatement mockPostgresqlStatement = MockGaussDBStatement.builder()
+            .result(MockGaussDBResult.builder()
                 .row(MockRow.builder()
                     .identified("oid", Long.class, 42L)
                     .identified("typarray", Long.class, 0L)

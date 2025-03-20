@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -112,7 +112,7 @@ final class PostgresCancelIntegrationTests extends AbstractIntegrationTests {
 
         this.connection.createStatement("SELECT pg_sleep(1000)")
             .execute()
-            .flatMap(PostgresqlResult::getRowsUpdated)
+            .flatMap(GaussDBResult::getRowsUpdated)
             .mergeWith(cancel.then(Mono.empty()))
             .as(StepVerifier::create)
             .expectErrorMatches(e -> e instanceof R2dbcNonTransientResourceException && e.getMessage().equals("canceling statement due to user request"))

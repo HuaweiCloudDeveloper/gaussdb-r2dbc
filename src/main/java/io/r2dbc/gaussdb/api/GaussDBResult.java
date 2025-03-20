@@ -26,9 +26,9 @@ import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 /**
- * A {@link Result} representing the results of a query against a PostgreSQL database.
+ * A {@link Result} representing the results of a query against a GaussDB database.
  */
-public interface PostgresqlResult extends Result {
+public interface GaussDBResult extends Result {
 
     /**
      * {@inheritDoc}
@@ -46,6 +46,6 @@ public interface PostgresqlResult extends Result {
      * {@inheritDoc}
      */
     @Override
-    PostgresqlResult filter(Predicate<Segment> predicate);
+    GaussDBResult filter(Predicate<Segment> predicate);
 
 }

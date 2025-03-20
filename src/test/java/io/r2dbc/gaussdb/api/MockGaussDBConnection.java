@@ -26,9 +26,9 @@ import java.time.Duration;
 
 public final class MockGaussDBConnection implements GaussDBConnection {
 
-    private final MockPostgresqlStatement statement;
+    private final MockGaussDBStatement statement;
 
-    public MockGaussDBConnection(MockPostgresqlStatement statement) {
+    public MockGaussDBConnection(MockGaussDBStatement statement) {
         this.statement = statement;
     }
 
@@ -68,7 +68,7 @@ public final class MockGaussDBConnection implements GaussDBConnection {
     }
 
     @Override
-    public PostgresqlStatement createStatement(String sql) {
+    public GaussDBStatement createStatement(String sql) {
         return this.statement;
     }
 
@@ -83,7 +83,7 @@ public final class MockGaussDBConnection implements GaussDBConnection {
     }
 
     @Override
-    public PostgresqlConnectionMetadata getMetadata() {
+    public GaussDBConnectionMetadata getMetadata() {
         return null;
     }
 

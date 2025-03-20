@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.api.RefCursor;
 import io.r2dbc.gaussdb.client.EncodedParameter;
 import io.r2dbc.gaussdb.message.Format;
@@ -87,7 +87,7 @@ final class RefCursorCodec extends AbstractCodec<RefCursor> {
         }
 
         @Override
-        public Mono<PostgresqlResult> fetch() {
+        public Mono<GaussDBResult> fetch() {
             throw new UnsupportedOperationException("Stateless RefCursor does not support fetch()");
         }
 

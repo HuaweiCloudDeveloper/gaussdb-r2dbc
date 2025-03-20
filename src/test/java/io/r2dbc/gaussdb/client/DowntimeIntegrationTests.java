@@ -18,7 +18,7 @@ package io.r2dbc.gaussdb.client;
 
 import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
-import io.r2dbc.gaussdb.api.PostgresqlException;
+import io.r2dbc.gaussdb.api.GaussDBException;
 import org.junit.jupiter.api.Test;
 import reactor.netty.DisposableChannel;
 import reactor.netty.DisposableServer;
@@ -36,7 +36,7 @@ public class DowntimeIntegrationTests {
     void failSslHandshakeIfInboundClosed() {
         verifyError(SSLMode.REQUIRE, error ->
             assertThat(error)
-                .isInstanceOf(AbstractPostgresSSLHandlerAdapter.PostgresqlSslException.class)
+                .isInstanceOf(AbstractPostgresSSLHandlerAdapter.GaussDBSslException.class)
                 .hasMessage("Connection closed during SSL negotiation"));
     }
 
@@ -44,7 +44,7 @@ public class DowntimeIntegrationTests {
     void failSslTunnelIfInboundClosed() {
         verifyError(SSLMode.TUNNEL, error -> {
             assertThat(error)
-                .isInstanceOf(PostgresqlException.class)
+                .isInstanceOf(GaussDBException.class)
                 .cause()
                 .isInstanceOf(ClosedChannelException.class);
 

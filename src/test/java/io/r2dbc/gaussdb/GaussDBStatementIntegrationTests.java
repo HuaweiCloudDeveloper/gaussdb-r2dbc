@@ -27,9 +27,9 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuples;
 
 /**
- * Integration tests for {@link PostgresqlStatement}.
+ * Integration tests for {@link GaussDBStatement}.
  */
-class PostgresqlStatementIntegrationTests extends AbstractIntegrationTests {
+class GaussDBStatementIntegrationTests extends AbstractIntegrationTests {
 
     @BeforeEach
     void setUp() {

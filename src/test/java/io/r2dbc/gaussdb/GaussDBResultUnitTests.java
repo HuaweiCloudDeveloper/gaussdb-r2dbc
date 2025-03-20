@@ -16,6 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.message.backend.CommandComplete;
 import io.r2dbc.gaussdb.message.backend.DataRow;
 import io.r2dbc.gaussdb.message.backend.EmptyQueryResponse;
@@ -29,13 +30,13 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Unit tests for {@link PostgresqlResult}.
+ * Unit tests for {@link io.r2dbc.gaussdb.GaussDBResult}.
  */
-final class PostgresqlResultUnitTests {
+final class GaussDBResultUnitTests {
 
     @Test
     void toResultCommandComplete() {
-        PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(new CommandComplete("test", null, 1L)), ExceptionFactory.INSTANCE);
+        io.r2dbc.gaussdb.GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(new CommandComplete("test", null, 1L)), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
             .as(StepVerifier::create)
@@ -49,7 +50,7 @@ final class PostgresqlResultUnitTests {
 
     @Test
     void toResultCommandCompleteUsingSegments() {
-        io.r2dbc.gaussdb.api.PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(new CommandComplete("test", null, 1L)), ExceptionFactory.INSTANCE).filter(it -> true);
+        GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(new CommandComplete("test", null, 1L)), ExceptionFactory.INSTANCE).filter(it -> true);
 
         result.map((row, rowMetadata) -> row)
             .as(StepVerifier::create)
@@ -63,7 +64,7 @@ final class PostgresqlResultUnitTests {
 
     @Test
     void toResultEmptyQueryResponse() {
-        PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(EmptyQueryResponse.INSTANCE), ExceptionFactory.INSTANCE);
+        io.r2dbc.gaussdb.GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(EmptyQueryResponse.INSTANCE), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
             .as(StepVerifier::create)
@@ -76,19 +77,19 @@ final class PostgresqlResultUnitTests {
 
     @Test
     void toResultNoContext() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlResult.toResult(null, Flux.empty(), ExceptionFactory.INSTANCE))
+        assertThatIllegalArgumentException().isThrownBy(() -> io.r2dbc.gaussdb.GaussDBResult.toResult(null, Flux.empty(), ExceptionFactory.INSTANCE))
             .withMessage("resources must not be null");
     }
 
     @Test
     void toResultNoMessages() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlResult.toResult(MockContext.empty(), null, ExceptionFactory.INSTANCE))
+        assertThatIllegalArgumentException().isThrownBy(() -> io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), null, ExceptionFactory.INSTANCE))
             .withMessage("messages must not be null");
     }
 
     @Test
     void toResultRowDescriptionRowsUpdated() {
-        PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
+        io.r2dbc.gaussdb.GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         result.getRowsUpdated()
@@ -98,7 +99,7 @@ final class PostgresqlResultUnitTests {
 
     @Test
     void toResultRowDescriptionRowsUpdatedUsingSegments() {
-        io.r2dbc.gaussdb.api.PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
+        GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE).filter(it -> true);
 
         result.getRowsUpdated()
@@ -108,7 +109,7 @@ final class PostgresqlResultUnitTests {
 
     @Test
     void toResultRowDescriptionMap() {
-        PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
+        io.r2dbc.gaussdb.GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
@@ -119,7 +120,7 @@ final class PostgresqlResultUnitTests {
 
     @Test
     void toResultRowDescriptionMapUsingSegments() {
-        io.r2dbc.gaussdb.api.PostgresqlResult result = PostgresqlResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
+        GaussDBResult result = io.r2dbc.gaussdb.GaussDBResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE).filter(it -> true);
 
         result.map((row, rowMetadata) -> row)

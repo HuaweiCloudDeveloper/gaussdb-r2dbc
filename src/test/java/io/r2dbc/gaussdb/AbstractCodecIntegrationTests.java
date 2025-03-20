@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
-import io.r2dbc.gaussdb.api.PostgresqlStatement;
+import io.r2dbc.gaussdb.api.GaussDBResult;
+import io.r2dbc.gaussdb.api.GaussDBStatement;
 import io.r2dbc.gaussdb.codec.Box;
 import io.r2dbc.gaussdb.codec.Circle;
 import io.r2dbc.gaussdb.codec.EnumCodec;
@@ -775,7 +775,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
                     .createStatement("INSERT INTO test VALUES (" + insertPlaceholder + ")").bindNull("$1", javaType).execute()
 
-                    .flatMap(PostgresqlResult::getRowsUpdated)
+                    .flatMap(GaussDBResult::getRowsUpdated)
 
                     .concatWith(close(connection))).as(StepVerifier::create).expectNext(1L).verifyComplete();
 
@@ -785,7 +785,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
                     .createStatement("INSERT INTO test VALUES (" + insertPlaceholder + ")").bind("$1", value).execute()
 
-                    .flatMap(PostgresqlResult::getRowsUpdated)
+                    .flatMap(GaussDBResult::getRowsUpdated)
 
                     .concatWith(close(connection))).as(StepVerifier::create).expectNext(1L).verifyComplete();
             } else {
@@ -794,7 +794,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
                     .createStatement("INSERT INTO test VALUES (" + insertPlaceholder + ")").bind("$1", Parameters.in(parameterType)).execute()
 
-                    .flatMap(PostgresqlResult::getRowsUpdated)
+                    .flatMap(GaussDBResult::getRowsUpdated)
 
                     .concatWith(close(connection))).as(StepVerifier::create).expectNext(1L).verifyComplete();
 
@@ -804,7 +804,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
                     .createStatement("INSERT INTO test VALUES (" + insertPlaceholder + ")").bind("$1", Parameters.in(parameterType, value)).execute()
 
-                    .flatMap(PostgresqlResult::getRowsUpdated)
+                    .flatMap(GaussDBResult::getRowsUpdated)
 
                     .concatWith(close(connection))).as(StepVerifier::create).expectNext(1L).verifyComplete();
             }
@@ -815,7 +815,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
             this.connectionFactory.create().flatMapMany(connection -> {
 
-                PostgresqlStatement statement;
+                GaussDBStatement statement;
                 if (insertPlaceholder.equals("$1")) {
                     statement = connection
                         // where clause added to force using extended query instead of simple query
@@ -863,7 +863,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
                 .createStatement("INSERT INTO test VALUES ($1)").bind("$1", toWrite).execute()
 
-                .flatMap(PostgresqlResult::getRowsUpdated)
+                .flatMap(GaussDBResult::getRowsUpdated)
 
                 .concatWith(close(connection))).as(StepVerifier::create).expectNext(1L).verifyComplete();
 

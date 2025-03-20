@@ -33,9 +33,9 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Unit tests for {@link PostgresqlRowMetadata}.
+ * Unit tests for {@link GaussDBRowMetadata}.
  */
-final class PostgresqlRowMetadataUnitTests {
+final class GaussDBRowMetadataUnitTests {
 
     private final List<GaussDBColumnMetadata> columnMetadatas = Arrays.asList(
         new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300),
@@ -44,48 +44,48 @@ final class PostgresqlRowMetadataUnitTests {
 
     @Test
     void constructorNoColumnMetadata() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlRowMetadata(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBRowMetadata(null))
             .withMessage("columnMetadatas must not be null");
     }
 
     @Test
     void getColumnMetadataIndex() {
-        assertThat(new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata(0))
+        assertThat(new GaussDBRowMetadata(this.columnMetadatas).getColumnMetadata(0))
             .isEqualTo(new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300));
     }
 
     @Test
     void getColumnMetadataInvalidIndex() {
-        assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata(2))
+        assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> new GaussDBRowMetadata(this.columnMetadatas).getColumnMetadata(2))
             .withMessage("Column index 2 is larger than the number of columns 2");
     }
 
     @Test
     void getColumnMetadataInvalidName() {
-        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata("test-name-3"))
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> new GaussDBRowMetadata(this.columnMetadatas).getColumnMetadata("test-name-3"))
             .withMessage("Column name 'test-name-3' does not exist in column names [test-name-2, test-name-1]");
     }
 
     @Test
     void getColumnMetadataName() {
-        assertThat(new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata("test-name-2"))
+        assertThat(new GaussDBRowMetadata(this.columnMetadatas).getColumnMetadata("test-name-2"))
             .isEqualTo(new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300));
     }
 
     @Test
     void getColumnMetadataNoIdentifier() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBRowMetadata(this.columnMetadatas).getColumnMetadata(null))
             .withMessage("name must not be null");
     }
 
     @Test
     void getColumnMetadatas() {
-        assertThat(new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadatas()).containsAll(this.columnMetadatas);
+        assertThat(new GaussDBRowMetadata(this.columnMetadatas).getColumnMetadatas()).containsAll(this.columnMetadatas);
     }
 
     @Test
     void getColumnNames() {
-        Collection<String> columnNames = new PostgresqlRowMetadata(this.columnMetadatas);
+        Collection<String> columnNames = new GaussDBRowMetadata(this.columnMetadatas);
 
         assertThat(columnNames.contains("TEST-NAME-1")).isTrue();
         assertThat(columnNames).containsExactly("test-name-2", "test-name-1");
@@ -100,7 +100,7 @@ final class PostgresqlRowMetadataUnitTests {
             new GaussDBColumnMetadata(MockCodecs.empty(), "name", 200, (short) 100)
         );
 
-        Collection<String> columnNames = new PostgresqlRowMetadata(columnMetadatas);
+        Collection<String> columnNames = new GaussDBRowMetadata(columnMetadatas);
 
         assertThat(columnNames).containsSequence("id", "age", "name");
     }
@@ -114,14 +114,14 @@ final class PostgresqlRowMetadataUnitTests {
             new GaussDBColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100)
         );
 
-        Collection<String> columnNames = new PostgresqlRowMetadata(columnMetadatas);
+        Collection<String> columnNames = new GaussDBRowMetadata(columnMetadatas);
 
         assertThat(columnNames).containsSequence("age", "name", "age");
     }
 
     @Test
     void getColumnNamesModify() {
-        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> new PostgresqlRowMetadata(this.columnMetadatas).remove("test-name-1"));
+        assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> new GaussDBRowMetadata(this.columnMetadatas).remove("test-name-1"));
     }
 
     @Test
@@ -130,7 +130,7 @@ final class PostgresqlRowMetadataUnitTests {
             .preferredType(200, FORMAT_TEXT, String.class)
             .build();
 
-        PostgresqlRowMetadata rowMetadata = PostgresqlRowMetadata.toRowMetadata(codecs,
+        GaussDBRowMetadata rowMetadata = GaussDBRowMetadata.toRowMetadata(codecs,
             new RowDescription(Collections.singletonList(new Field((short) 100, 200, 300, (short) 400, FORMAT_TEXT, "test-name", 500))));
 
         assertThat(rowMetadata.getColumnMetadatas()).hasSize(1);
@@ -138,14 +138,14 @@ final class PostgresqlRowMetadataUnitTests {
 
     @Test
     void toRowMetadataNoCodecs() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlRowMetadata.toRowMetadata(null,
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBRowMetadata.toRowMetadata(null,
             new RowDescription(Collections.singletonList(new Field((short) 100, 200, 300, (short) 400, FORMAT_TEXT, "test-name", 500)))))
             .withMessage("codecs must not be null");
     }
 
     @Test
     void toRowMetadataNoRowDescription() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlRowMetadata.toRowMetadata(MockCodecs.empty(), null))
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBRowMetadata.toRowMetadata(MockCodecs.empty(), null))
             .withMessage("rowDescription must not be null");
     }
 

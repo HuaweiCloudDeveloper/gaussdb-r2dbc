@@ -21,11 +21,11 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class MockPostgresqlStatement implements PostgresqlStatement {
+public final class MockGaussDBStatement implements GaussDBStatement {
 
-    private final Flux<PostgresqlResult> results;
+    private final Flux<GaussDBResult> results;
 
-    public MockPostgresqlStatement(Flux<PostgresqlResult> results) {
+    public MockGaussDBStatement(Flux<GaussDBResult> results) {
         this.results = results;
     }
 
@@ -34,52 +34,52 @@ public final class MockPostgresqlStatement implements PostgresqlStatement {
     }
 
     @Override
-    public PostgresqlStatement add() {
+    public GaussDBStatement add() {
         return this;
     }
 
     @Override
-    public PostgresqlStatement bind(String identifier, Object value) {
+    public GaussDBStatement bind(String identifier, Object value) {
         return this;
     }
 
     @Override
-    public PostgresqlStatement bind(int index, Object value) {
+    public GaussDBStatement bind(int index, Object value) {
         return this;
     }
 
     @Override
-    public PostgresqlStatement bindNull(String identifier, Class<?> type) {
+    public GaussDBStatement bindNull(String identifier, Class<?> type) {
         return this;
     }
 
     @Override
-    public PostgresqlStatement bindNull(int index, Class<?> type) {
+    public GaussDBStatement bindNull(int index, Class<?> type) {
         return this;
     }
 
     @Override
-    public Flux<PostgresqlResult> execute() {
+    public Flux<GaussDBResult> execute() {
         return this.results;
     }
 
     @Override
-    public PostgresqlStatement returnGeneratedValues(String... columns) {
+    public GaussDBStatement returnGeneratedValues(String... columns) {
         return this;
     }
 
     public static final class Builder {
 
-        private final List<PostgresqlResult> results = new ArrayList<>();
+        private final List<GaussDBResult> results = new ArrayList<>();
 
         private Builder() {
         }
 
-        public MockPostgresqlStatement build() {
-            return new MockPostgresqlStatement(Flux.fromIterable(this.results));
+        public MockGaussDBStatement build() {
+            return new MockGaussDBStatement(Flux.fromIterable(this.results));
         }
 
-        public Builder result(PostgresqlResult result) {
+        public Builder result(GaussDBResult result) {
             this.results.add(result);
             return this;
         }

@@ -55,7 +55,7 @@ final class SSLSessionHandlerAdapter extends AbstractPostgresSSLHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         if (this.negotiating) {
             // If we receive channel inactive before negotiated, then the inbound has closed early.
-            PostgresqlSslException e = new PostgresqlSslException("Connection closed during SSL negotiation");
+            GaussDBSslException e = new GaussDBSslException("Connection closed during SSL negotiation");
             completeHandshakeExceptionally(e);
         }
         super.channelInactive(ctx);
@@ -88,8 +88,8 @@ final class SSLSessionHandlerAdapter extends AbstractPostgresSSLHandlerAdapter {
 
     private void processSslDisabled() {
         if (this.sslConfig.getSslMode().requireSsl()) {
-            PostgresqlSslException e =
-                new PostgresqlSslException("Server support for SSL connection is disabled, but client was configured with SSL mode " + this.sslConfig.getSslMode());
+            GaussDBSslException e =
+                new GaussDBSslException("Server support for SSL connection is disabled, but client was configured with SSL mode " + this.sslConfig.getSslMode());
             completeHandshakeExceptionally(e);
         } else {
             completeHandshake();
@@ -99,7 +99,7 @@ final class SSLSessionHandlerAdapter extends AbstractPostgresSSLHandlerAdapter {
     private void processSslEnabled(ChannelHandlerContext ctx, ByteBuf msg) {
         if (this.sslConfig.getSslMode() == SSLMode.DISABLE) {
 
-            PostgresqlSslException e = new PostgresqlSslException("Server requires SSL handshake, but client was configured with SSL mode DISABLE");
+            GaussDBSslException e = new GaussDBSslException("Server requires SSL handshake, but client was configured with SSL mode DISABLE");
             completeHandshakeExceptionally(e);
             return;
         }

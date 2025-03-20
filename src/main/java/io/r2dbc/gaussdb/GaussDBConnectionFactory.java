@@ -18,7 +18,8 @@ package io.r2dbc.gaussdb;
 
 import io.netty.buffer.ByteBufAllocator;
 import io.r2dbc.gaussdb.api.ErrorDetails;
-import io.r2dbc.gaussdb.api.PostgresqlException;
+import io.r2dbc.gaussdb.api.GaussDBReplicationConnection;
+import io.r2dbc.gaussdb.api.GaussDBException;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.ConnectionSettings;
 import io.r2dbc.gaussdb.client.ReactorNettyClient;
@@ -108,11 +109,11 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
     }
 
     /**
-     * Create a new {@link io.r2dbc.gaussdb.api.PostgresqlReplicationConnection} for interaction with replication streams.
+     * Create a new {@link GaussDBReplicationConnection} for interaction with replication streams.
      *
-     * @return a new {@link io.r2dbc.gaussdb.api.PostgresqlReplicationConnection} for interaction with replication streams.
+     * @return a new {@link GaussDBReplicationConnection} for interaction with replication streams.
      */
-    public Mono<io.r2dbc.gaussdb.api.PostgresqlReplicationConnection> replication() {
+    public Mono<GaussDBReplicationConnection> replication() {
 
         Map<String, String> options = new LinkedHashMap<>(this.configuration.getOptions());
         options.put(REPLICATION_OPTION, REPLICATION_DATABASE);
@@ -121,7 +122,7 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
 
         ConnectionStrategy connectionStrategy = ConnectionStrategyFactory.getConnectionStrategy(this.connectionFunction, this.configuration, connectionSettings);
 
-        return doCreateConnection(true, connectionStrategy).map(DefaultPostgresqlReplicationConnection::new);
+        return doCreateConnection(true, connectionStrategy).map(DefaultGaussDBReplicationConnection::new);
     }
 
     private Mono<GaussDBConnection> doCreateConnection(boolean forReplication, ConnectionStrategy connectionStrategy) {
@@ -220,7 +221,7 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
             })).defaultIfEmpty(IsolationLevel.READ_COMMITTED).last();
     }
 
-    static class PostgresConnectionException extends R2dbcNonTransientResourceException implements PostgresqlException {
+    static class PostgresConnectionException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private static final String CONNECTION_DOES_NOT_EXIST = "08003";
 

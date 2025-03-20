@@ -20,9 +20,9 @@ import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 
 /**
- * A {@link Row} for a PostgreSQL database.
+ * A {@link Row} for a GaussDB database.
  */
-public interface PostgresqlRow extends Row {
+public interface GaussDBRow extends Row {
 
     /**
      * Returns the {@link RowMetadata} for all columns in this row.
@@ -30,6 +30,6 @@ public interface PostgresqlRow extends Row {
      * @return the {@link RowMetadata} for all columns in this row
      * @since 0.9
      */
-    PostgresqlRowMetadata getMetadata();
+    GaussDBRowMetadata getMetadata();
 
 }

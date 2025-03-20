@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresqlStatement;
+import io.r2dbc.gaussdb.api.GaussDBStatement;
 import io.r2dbc.spi.R2dbcDataIntegrityViolationException;
 import io.r2dbc.spi.Result;
 import org.junit.jupiter.api.AfterEach;
@@ -26,9 +26,9 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests for various error cases using {@link PostgresqlStatement}.
+ * Integration tests for various error cases using {@link GaussDBStatement}.
  */
-final class PostgresqlStatementErrorsIntegrationTests extends AbstractIntegrationTests {
+final class GaussDBStatementErrorsIntegrationTests extends AbstractIntegrationTests {
 
     @BeforeEach
     void setUp() {

@@ -23,7 +23,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.r2dbc.gaussdb.api.ErrorDetails;
-import io.r2dbc.gaussdb.api.PostgresqlException;
+import io.r2dbc.gaussdb.api.GaussDBException;
 import io.r2dbc.spi.R2dbcPermissionDeniedException;
 import reactor.core.publisher.Mono;
 
@@ -72,7 +72,7 @@ abstract class AbstractPostgresSSLHandlerAdapter extends ChannelInboundHandlerAd
         if (this.sslConfig.getHostnameVerifier().verify(hostName, this.sslEngine.getSession())) {
             completeHandshake();
         } else {
-            completeHandshakeExceptionally(new PostgresqlSslException(String.format("The hostname '%s' could not be verified.", socketAddress.getAddress().toString())));
+            completeHandshakeExceptionally(new GaussDBSslException(String.format("The hostname '%s' could not be verified.", socketAddress.getAddress().toString())));
         }
     }
 
@@ -95,11 +95,11 @@ abstract class AbstractPostgresSSLHandlerAdapter extends ChannelInboundHandlerAd
     /**
      * Postgres-specific {@link R2dbcPermissionDeniedException}.
      */
-    static final class PostgresqlSslException extends R2dbcPermissionDeniedException implements PostgresqlException {
+    static final class GaussDBSslException extends R2dbcPermissionDeniedException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        PostgresqlSslException(String reason) {
+        GaussDBSslException(String reason) {
             super(reason, ReactorNettyClient.CONNECTION_FAILURE, 0, (String) null);
             this.errorDetails = ErrorDetails.fromCodeAndMessage(ReactorNettyClient.CONNECTION_FAILURE, reason);
         }

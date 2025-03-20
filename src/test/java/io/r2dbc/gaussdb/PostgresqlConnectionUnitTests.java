@@ -249,7 +249,7 @@ final class PostgresqlConnectionUnitTests {
 
     @Test
     void createStatementExtended() {
-        assertThat(createConnection(NO_OP, MockCodecs.empty(), this.statementCache).createStatement("test-query-$1")).isInstanceOf(PostgresqlStatement.class);
+        assertThat(createConnection(NO_OP, MockCodecs.empty(), this.statementCache).createStatement("test-query-$1")).isInstanceOf(GaussDBStatement.class);
     }
 
     @Test
@@ -261,7 +261,7 @@ final class PostgresqlConnectionUnitTests {
 
     @Test
     void createStatementSimple() {
-        assertThat(createConnection(NO_OP, MockCodecs.empty(), this.statementCache).createStatement("test-query-1; test-query-2")).isInstanceOf(PostgresqlStatement.class);
+        assertThat(createConnection(NO_OP, MockCodecs.empty(), this.statementCache).createStatement("test-query-1; test-query-2")).isInstanceOf(GaussDBStatement.class);
     }
 
     @Test
@@ -410,7 +410,7 @@ final class PostgresqlConnectionUnitTests {
 
         GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
-        PostgresqlConnectionMetadata metadata = connection.getMetadata();
+        GaussDBConnectionMetadata metadata = connection.getMetadata();
 
         assertThat(metadata.getDatabaseProductName()).isEqualTo("PostgreSQL");
         assertThat(metadata.getDatabaseVersion()).isEqualTo("9.4");

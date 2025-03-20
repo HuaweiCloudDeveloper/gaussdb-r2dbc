@@ -50,7 +50,7 @@ final class SslFallbackConnectionFunction implements ConnectionFunction {
 
         if (sslMode == SSLMode.ALLOW || sslMode == SSLMode.PREFER) {
 
-            Predicate<Throwable> isAuthSpecificationError = e -> e instanceof ExceptionFactory.PostgresqlAuthenticationFailure;
+            Predicate<Throwable> isAuthSpecificationError = e -> e instanceof ExceptionFactory.GaussDBAuthenticationFailure;
 
             connect = connect.onErrorResume(isAuthSpecificationError.and(e -> sslMode == SSLMode.ALLOW), fallback(SSLMode.REQUIRE, endpoint, settings))
                 .onErrorResume(isAuthSpecificationError.and(e -> sslMode == SSLMode.PREFER), fallback(SSLMode.DISABLE, endpoint, settings));

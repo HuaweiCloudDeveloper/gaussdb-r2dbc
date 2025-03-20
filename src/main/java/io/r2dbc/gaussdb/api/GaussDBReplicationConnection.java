@@ -24,9 +24,9 @@ import io.r2dbc.spi.Closeable;
 import reactor.core.publisher.Mono;
 
 /**
- * A PostgreSQL replication connection.
+ * A GaussDB replication connection.
  */
-public interface PostgresqlReplicationConnection extends Closeable {
+public interface GaussDBReplicationConnection extends Closeable {
 
     /**
      * {@inheritDoc}
@@ -52,10 +52,10 @@ public interface PostgresqlReplicationConnection extends Closeable {
     Mono<ReplicationStream> startReplication(ReplicationRequest request);
 
     /**
-     * Returns the {@link PostgresqlConnectionMetadata} for this connection.
+     * Returns the {@link GaussDBConnectionMetadata} for this connection.
      *
-     * @return the {@link PostgresqlConnectionMetadata} for this connection
+     * @return the {@link GaussDBConnectionMetadata} for this connection
      */
-    PostgresqlConnectionMetadata getMetadata();
+    GaussDBConnectionMetadata getMetadata();
 
 }

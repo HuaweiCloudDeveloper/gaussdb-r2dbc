@@ -39,14 +39,14 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Unit tests for {@link PostgresqlSegmentResult}.
+ * Unit tests for {@link GaussDBSegmentResult}.
  */
 class PostgresqlSegmentResultUnitTests {
 
     @Test
     void shouldApplyRowMapping() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
@@ -58,7 +58,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void mapShouldIgnoreNotice() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new NoticeResponse(Collections.emptyList())), ExceptionFactory.INSTANCE);
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new NoticeResponse(Collections.emptyList())), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
             .as(StepVerifier::create)
@@ -68,7 +68,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void mapShouldTerminateWithError() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList())), ExceptionFactory.INSTANCE);
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList())), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
             .as(StepVerifier::create)
@@ -78,7 +78,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void getRowsUpdatedShouldTerminateWithError() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList())), ExceptionFactory.INSTANCE);
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList())), ExceptionFactory.INSTANCE);
 
         result.getRowsUpdated()
             .as(StepVerifier::create)
@@ -88,7 +88,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void shouldConsumeRowsUpdated() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new CommandComplete
             ("test", null, 42L)), ExceptionFactory.INSTANCE);
 
         result.getRowsUpdated()
@@ -100,7 +100,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void filterShouldRetainUpdateCount() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new CommandComplete
             ("test", null, 42L)), ExceptionFactory.INSTANCE);
 
         result.filter(Result.UpdateCount.class::isInstance).getRowsUpdated()
@@ -112,7 +112,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void filterShouldSkipRowMapping() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), new DataRow(), new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         result = result.filter(it -> false);
@@ -125,7 +125,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void filterShouldSkipErrorMessage() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList()), new RowDescription(Collections.emptyList()),
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList()), new RowDescription(Collections.emptyList()),
             new DataRow(), new CommandComplete
                 ("test", null, null)), ExceptionFactory.INSTANCE);
 
@@ -142,7 +142,7 @@ class PostgresqlSegmentResultUnitTests {
 
         DataRow dataRow = new DataRow();
         assertThat(dataRow.refCnt()).isOne();
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         result.map((row, rowMetadata) -> row)
@@ -157,7 +157,7 @@ class PostgresqlSegmentResultUnitTests {
     void filterShouldDeallocateResources() {
 
         DataRow dataRow = new DataRow();
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         result = result.filter(it -> false);
@@ -173,7 +173,7 @@ class PostgresqlSegmentResultUnitTests {
     void flatMapShouldDeallocateResourcesAfterConsumption() {
 
         DataRow dataRow = new DataRow();
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         Flux.from(result.flatMap(Mono::just))
@@ -191,7 +191,7 @@ class PostgresqlSegmentResultUnitTests {
     @Test
     void flatMapShouldNotTerminateWithError() {
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList()), new RowDescription(Collections.emptyList()),
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(Collections.emptyList()), new RowDescription(Collections.emptyList()),
             new DataRow(), new CommandComplete
                 ("test", null, 42L)), ExceptionFactory.INSTANCE);
 
@@ -205,7 +205,7 @@ class PostgresqlSegmentResultUnitTests {
     void emptyFlatMapShouldDeallocateResourcesAfterConsumption() {
 
         DataRow dataRow = new DataRow();
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new RowDescription(Collections.emptyList()), dataRow, new CommandComplete
             ("test", null, null)), ExceptionFactory.INSTANCE);
 
         Flux.from(result.flatMap(data -> Mono.empty()))
@@ -223,7 +223,7 @@ class PostgresqlSegmentResultUnitTests {
             new Field(FieldType.MESSAGE, "error message desc")
         );
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(fields)), ExceptionFactory.INSTANCE);
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new ErrorResponse(fields)), ExceptionFactory.INSTANCE);
 
         Flux.from(result.flatMap(data -> {
 
@@ -250,7 +250,7 @@ class PostgresqlSegmentResultUnitTests {
             new Field(FieldType.MESSAGE, "error message desc")
         );
 
-        PostgresqlSegmentResult result = PostgresqlSegmentResult.toResult(MockContext.empty(), Flux.just(new NoticeResponse(fields)), ExceptionFactory.INSTANCE);
+        GaussDBSegmentResult result = GaussDBSegmentResult.toResult(MockContext.empty(), Flux.just(new NoticeResponse(fields)), ExceptionFactory.INSTANCE);
 
         Flux.from(result.flatMap(data -> {
 

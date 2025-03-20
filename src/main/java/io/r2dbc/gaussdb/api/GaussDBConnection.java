@@ -99,7 +99,7 @@ public interface GaussDBConnection extends Connection {
      * {@inheritDoc}
      */
     @Override
-    PostgresqlStatement createStatement(String sql);
+    GaussDBStatement createStatement(String sql);
 
     /**
      * Return a {@link Flux} of {@link Notification} received from {@code LISTEN} registrations. The stream is a hot stream producing messages as they are received. Notifications received by this
@@ -122,7 +122,7 @@ public interface GaussDBConnection extends Connection {
      * {@inheritDoc}
      */
     @Override
-    PostgresqlConnectionMetadata getMetadata();
+    GaussDBConnectionMetadata getMetadata();
 
     /**
      * {@inheritDoc}

@@ -18,7 +18,8 @@ package io.r2dbc.gaussdb;
 
 import io.netty.buffer.ByteBuf;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
+import io.r2dbc.gaussdb.api.GaussDBRowMetadata;
 import io.r2dbc.gaussdb.api.RefCursor;
 import io.r2dbc.gaussdb.codec.Codecs;
 import io.r2dbc.gaussdb.message.backend.DataRow;
@@ -37,13 +38,13 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * An implementation of {@link Row} for a PostgreSQL database.
+ * An implementation of {@link Row} for a GaussDB database.
  */
-final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
+final class GaussDBRow implements io.r2dbc.gaussdb.api.GaussDBRow {
 
     private final ConnectionResources context;
 
-    private final io.r2dbc.gaussdb.api.PostgresqlRowMetadata metadata;
+    private final GaussDBRowMetadata metadata;
 
     private final List<RowDescription.Field> fields;
 
@@ -53,14 +54,14 @@ final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
 
     private final Map<String, Integer> columnNameIndexCacheMap;
 
-    PostgresqlRow(ConnectionResources context, io.r2dbc.gaussdb.api.PostgresqlRowMetadata metadata, List<RowDescription.Field> fields, ByteBuf[] data) {
+    GaussDBRow(ConnectionResources context, GaussDBRowMetadata metadata, List<RowDescription.Field> fields, ByteBuf[] data) {
         this.context = Assert.requireNonNull(context, "context must not be null");
         this.metadata = Assert.requireNonNull(metadata, "metadata must not be null");
         this.fields = Assert.requireNonNull(fields, "fields must not be null");
         this.data = Assert.requireNonNull(data, "data must not be null");
 
-        if (metadata instanceof PostgresqlRowMetadata) {
-            this.columnNameIndexCacheMap = ((PostgresqlRowMetadata) metadata).getColumnNameIndexMap();
+        if (metadata instanceof io.r2dbc.gaussdb.GaussDBRowMetadata) {
+            this.columnNameIndexCacheMap = ((io.r2dbc.gaussdb.GaussDBRowMetadata) metadata).getColumnNameIndexMap();
         } else {
             this.columnNameIndexCacheMap = createColumnNameIndexMap(this.fields);
         }
@@ -74,7 +75,7 @@ final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PostgresqlRow that = (PostgresqlRow) o;
+        GaussDBRow that = (GaussDBRow) o;
         return Objects.equals(this.fields, that.fields);
     }
 
@@ -98,7 +99,7 @@ final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
     }
 
     @Override
-    public io.r2dbc.gaussdb.api.PostgresqlRowMetadata getMetadata() {
+    public GaussDBRowMetadata getMetadata() {
         return this.metadata;
     }
 
@@ -174,20 +175,20 @@ final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
         return columnNameIndexMap;
     }
 
-    static PostgresqlRow toRow(ConnectionResources context, DataRow dataRow, Codecs codecs, RowDescription rowDescription) {
+    static GaussDBRow toRow(ConnectionResources context, DataRow dataRow, Codecs codecs, RowDescription rowDescription) {
         Assert.requireNonNull(dataRow, "dataRow must not be null");
         Assert.requireNonNull(codecs, "rowDescription must not be null");
         Assert.requireNonNull(rowDescription, "rowDescription must not be null");
 
-        return new PostgresqlRow(context, PostgresqlRowMetadata.toRowMetadata(codecs, rowDescription), rowDescription.getFields(), dataRow.getColumns());
+        return new GaussDBRow(context, io.r2dbc.gaussdb.GaussDBRowMetadata.toRowMetadata(codecs, rowDescription), rowDescription.getFields(), dataRow.getColumns());
     }
 
-    static PostgresqlRow toRow(ConnectionResources context, DataRow dataRow, PostgresqlRowMetadata metadata, RowDescription rowDescription) {
+    static GaussDBRow toRow(ConnectionResources context, DataRow dataRow, io.r2dbc.gaussdb.GaussDBRowMetadata metadata, RowDescription rowDescription) {
         Assert.requireNonNull(dataRow, "dataRow must not be null");
         Assert.requireNonNull(metadata, "metadata must not be null");
         Assert.requireNonNull(rowDescription, "rowDescription must not be null");
 
-        return new PostgresqlRow(context, metadata, rowDescription.getFields(), dataRow.getColumns());
+        return new GaussDBRow(context, metadata, rowDescription.getFields(), dataRow.getColumns());
     }
 
     void release() {
@@ -253,13 +254,13 @@ final class PostgresqlRow implements io.r2dbc.gaussdb.api.PostgresqlRow {
         }
 
         @Override
-        public Mono<io.r2dbc.gaussdb.api.PostgresqlResult> fetch() {
+        public Mono<GaussDBResult> fetch() {
             return Mono.fromDirect(this.context.getConnection().createStatement("FETCH ALL IN \"" + getCursorName() + "\"").execute());
         }
 
         @Override
         public Mono<Void> close() {
-            return this.context.getConnection().createStatement("CLOSE \"" + getCursorName() + "\"").execute().flatMap(PostgresqlResult::getRowsUpdated).then();
+            return this.context.getConnection().createStatement("CLOSE \"" + getCursorName() + "\"").execute().flatMap(GaussDBResult::getRowsUpdated).then();
         }
 
         @Override

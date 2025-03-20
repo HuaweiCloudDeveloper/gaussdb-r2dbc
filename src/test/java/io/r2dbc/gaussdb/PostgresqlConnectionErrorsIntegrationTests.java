@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.api.PostgresqlResult;
+import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.TransactionStatus;
 import io.r2dbc.spi.R2dbcBadGrammarException;
@@ -38,7 +38,7 @@ final class PostgresqlConnectionErrorsIntegrationTests extends AbstractIntegrati
     void commitShouldRecoverFromFailedTransaction() {
 
         this.connection.beginTransaction().as(StepVerifier::create).verifyComplete();
-        this.connection.createStatement("error").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).verifyError(R2dbcBadGrammarException.class);
+        this.connection.createStatement("error").execute().flatMap(GaussDBResult::getRowsUpdated).as(StepVerifier::create).verifyError(R2dbcBadGrammarException.class);
 
         this.connection.commitTransaction().as(StepVerifier::create).verifyErrorSatisfies(throwable -> {
             assertThat(throwable).isInstanceOf(R2dbcException.class);
@@ -64,7 +64,7 @@ final class PostgresqlConnectionErrorsIntegrationTests extends AbstractIntegrati
     void rollbackShouldRecoverFromFailedTransaction() {
 
         this.connection.beginTransaction().as(StepVerifier::create).verifyComplete();
-        this.connection.createStatement("error").execute().flatMap(PostgresqlResult::getRowsUpdated).as(StepVerifier::create).verifyError(R2dbcBadGrammarException.class);
+        this.connection.createStatement("error").execute().flatMap(GaussDBResult::getRowsUpdated).as(StepVerifier::create).verifyError(R2dbcBadGrammarException.class);
 
         this.connection.rollbackTransaction().as(StepVerifier::create).verifyComplete();
 

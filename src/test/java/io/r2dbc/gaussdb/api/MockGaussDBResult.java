@@ -28,11 +28,11 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public final class MockPostgresqlResult implements PostgresqlResult {
+public final class MockGaussDBResult implements GaussDBResult {
 
     private final Flux<Row> rows;
 
-    public MockPostgresqlResult(Flux<Row> rows) {
+    public MockGaussDBResult(Flux<Row> rows) {
         this.rows = rows;
     }
 
@@ -55,7 +55,7 @@ public final class MockPostgresqlResult implements PostgresqlResult {
     }
 
     @Override
-    public PostgresqlResult filter(Predicate<Segment> filter) {
+    public GaussDBResult filter(Predicate<Segment> filter) {
         throw new UnsupportedOperationException();
     }
 
@@ -71,8 +71,8 @@ public final class MockPostgresqlResult implements PostgresqlResult {
         private Builder() {
         }
 
-        public MockPostgresqlResult build() {
-            return new MockPostgresqlResult(Flux.fromIterable(this.rows));
+        public MockGaussDBResult build() {
+            return new MockGaussDBResult(Flux.fromIterable(this.rows));
         }
 
         public Builder row(Row row) {

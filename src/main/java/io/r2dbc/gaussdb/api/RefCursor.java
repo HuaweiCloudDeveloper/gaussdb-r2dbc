@@ -38,9 +38,9 @@ public interface RefCursor extends Closeable {
     /**
      * Fetch the contents of the cursor using {@code FETCH ALL IN}.
      *
-     * @return the {@link PostgresqlResult} associated with the ref cursor.
+     * @return the {@link GaussDBResult} associated with the ref cursor.
      */
-    Mono<PostgresqlResult> fetch();
+    Mono<GaussDBResult> fetch();
 
     /**
      * Close the cursor.

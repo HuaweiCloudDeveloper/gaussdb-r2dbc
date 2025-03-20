@@ -38,7 +38,7 @@ final class SSLTunnelHandlerAdapter extends AbstractPostgresSSLHandlerAdapter {
 
         if (this.sslConfig.getSslMode() == SSLMode.DISABLE) {
 
-            PostgresqlSslException e = new PostgresqlSslException("Server requires SSL handshake, but client was configured with SSL mode DISABLE");
+            GaussDBSslException e = new GaussDBSslException("Server requires SSL handshake, but client was configured with SSL mode DISABLE");
             completeHandshakeExceptionally(e);
             return;
         }

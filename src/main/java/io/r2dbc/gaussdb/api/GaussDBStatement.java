@@ -20,29 +20,15 @@ import io.r2dbc.spi.Statement;
 import reactor.core.publisher.Flux;
 
 /**
- * A strongly typed implementation of {@link Statement} for a PostgreSQL database.
+ * A strongly typed implementation of {@link Statement} for a GaussDB database.
  */
-public interface PostgresqlStatement extends Statement {
+public interface GaussDBStatement extends Statement {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    PostgresqlStatement add();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException if {@code identifier} is not a {@link String} like {@code $1}, {@code $2}, …
-     */
-    @Override
-    PostgresqlStatement bind(String identifier, Object value);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    PostgresqlStatement bind(int index, Object value);
+    GaussDBStatement add();
 
     /**
      * {@inheritDoc}
@@ -50,25 +36,39 @@ public interface PostgresqlStatement extends Statement {
      * @throws IllegalArgumentException if {@code identifier} is not a {@link String} like {@code $1}, {@code $2}, …
      */
     @Override
-    PostgresqlStatement bindNull(String identifier, Class<?> type);
+    GaussDBStatement bind(String identifier, Object value);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    PostgresqlStatement bindNull(int index, Class<?> type);
+    GaussDBStatement bind(int index, Object value);
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if {@code identifier} is not a {@link String} like {@code $1}, {@code $2}, …
+     */
+    @Override
+    GaussDBStatement bindNull(String identifier, Class<?> type);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    Flux<PostgresqlResult> execute();
+    GaussDBStatement bindNull(int index, Class<?> type);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    default PostgresqlStatement fetchSize(int rows) {
+    Flux<GaussDBResult> execute();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    default GaussDBStatement fetchSize(int rows) {
         return this;
     }
 
@@ -78,6 +78,6 @@ public interface PostgresqlStatement extends Statement {
      * @throws IllegalStateException if this {@link Statement} already has a {@code RETURNING clause} or isn't a {@code DELETE}, {@code INSERT}, or {@code UPDATE} command
      */
     @Override
-    PostgresqlStatement returnGeneratedValues(String... columns);
+    GaussDBStatement returnGeneratedValues(String... columns);
 
 }

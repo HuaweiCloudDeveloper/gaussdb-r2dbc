@@ -36,9 +36,9 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * An implementation of {@link RowMetadata} for a PostgreSQL database.
+ * An implementation of {@link RowMetadata} for a GaussDB database.
  */
-final class PostgresqlRowMetadata extends AbstractCollection<String> implements io.r2dbc.gaussdb.api.PostgresqlRowMetadata {
+final class GaussDBRowMetadata extends AbstractCollection<String> implements io.r2dbc.gaussdb.api.GaussDBRowMetadata {
 
     private final List<GaussDBColumnMetadata> columnMetadatas;
 
@@ -46,7 +46,7 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
 
     private final Map<String, Integer> columnNameIndexMap;
 
-    PostgresqlRowMetadata(List<GaussDBColumnMetadata> columnMetadatas) {
+    GaussDBRowMetadata(List<GaussDBColumnMetadata> columnMetadatas) {
         this.columnMetadatas = Assert.requireNonNull(columnMetadatas, "columnMetadatas must not be null");
         this.nameKeyedColumns = new LinkedHashMap<>(columnMetadatas.size(), 1);
         this.columnNameIndexMap = new HashMap<>(columnMetadatas.size(), 1);
@@ -89,7 +89,7 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PostgresqlRowMetadata that = (PostgresqlRowMetadata) o;
+        GaussDBRowMetadata that = (GaussDBRowMetadata) o;
         return Objects.equals(this.columnMetadatas, that.columnMetadatas);
     }
 
@@ -132,7 +132,7 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
 
             @Override
             public String next() {
-                return PostgresqlRowMetadata.this.columnMetadatas.get(this.index++).getName();
+                return GaussDBRowMetadata.this.columnMetadatas.get(this.index++).getName();
             }
         };
     }
@@ -192,11 +192,11 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
         return this.columnNameIndexMap;
     }
 
-    static PostgresqlRowMetadata toRowMetadata(Codecs codecs, RowDescription rowDescription) {
+    static GaussDBRowMetadata toRowMetadata(Codecs codecs, RowDescription rowDescription) {
         Assert.requireNonNull(codecs, "codecs must not be null");
         Assert.requireNonNull(rowDescription, "rowDescription must not be null");
 
-        return new PostgresqlRowMetadata(getColumnMetadatas(codecs, rowDescription));
+        return new GaussDBRowMetadata(getColumnMetadatas(codecs, rowDescription));
     }
 
     private static List<GaussDBColumnMetadata> getColumnMetadatas(Codecs codecs, RowDescription rowDescription) {
