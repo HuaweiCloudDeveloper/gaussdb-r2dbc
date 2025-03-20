@@ -23,8 +23,8 @@ import io.r2dbc.gaussdb.util.Assert;
 
 import java.time.OffsetTime;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMETZ;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMETZ_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMETZ;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMETZ_ARRAY;
 
 public class OffsetTimeCodec extends AbstractTemporalCodec<OffsetTime> {
 
@@ -33,7 +33,7 @@ public class OffsetTimeCodec extends AbstractTemporalCodec<OffsetTime> {
     }
 
     @Override
-    OffsetTime doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends OffsetTime> type) {
+    OffsetTime doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends OffsetTime> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return decodeTemporal(buffer, dataType, format, OffsetTime.class, OffsetTime::from);

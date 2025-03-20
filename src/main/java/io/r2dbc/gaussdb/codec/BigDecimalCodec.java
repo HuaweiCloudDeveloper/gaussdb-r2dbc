@@ -26,8 +26,8 @@ import reactor.util.annotation.Nullable;
 
 import java.math.BigDecimal;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 final class BigDecimalCodec extends AbstractNumericCodec<BigDecimal> {
@@ -40,26 +40,26 @@ final class BigDecimalCodec extends AbstractNumericCodec<BigDecimal> {
     }
 
     @Override
-    BigDecimal doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends BigDecimal> type) {
+    BigDecimal doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends BigDecimal> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return decodeNumber(buffer, dataType, format, BigDecimal.class, it -> new BigDecimal(it.doubleValue()));
     }
 
     @Override
-    EncodedParameter doEncode(BigDecimal value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(BigDecimal value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_TEXT, dataType, () -> ByteBufUtils.encode(this.byteBufAllocator, value.toString()));
     }
 
     @Override
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return NUMERIC;
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return NUMERIC_ARRAY;
     }
 

@@ -78,7 +78,7 @@ class CachedCodecLookup implements CodecLookup {
                 CodecMetadata metadata = (CodecMetadata) c;
                 cacheEncode(c, metadata.type());
                 arrayClass.ifPresent(ac -> cacheEncode(c, ac));
-                for (PostgresTypeIdentifier identifier : metadata.getDataTypes()) {
+                for (GaussDBTypeIdentifier identifier : metadata.getDataTypes()) {
                     for (Format format : metadata.getFormats()) {
                         cacheDecode(c, metadata.type(), identifier, format);
                         arrayClass.ifPresent(ac -> cacheDecode(c, ac, identifier, format));
@@ -87,7 +87,7 @@ class CachedCodecLookup implements CodecLookup {
             }
         }
         // Handle decode to Object.class support
-        for (PostgresqlObjectId identifier : PostgresqlObjectId.values()) {
+        for (GaussDBObjectId identifier : GaussDBObjectId.values()) {
             for (Format format : Format.all()) {
                 Codec<?> c = this.delegate.findDecodeCodec(identifier.getObjectId(), format, Object.class);
                 if (c != null) {
@@ -134,7 +134,7 @@ class CachedCodecLookup implements CodecLookup {
         });
     }
 
-    private void cacheDecode(Codec<?> c, Class<?> type, PostgresTypeIdentifier identifier, Format format) {
+    private void cacheDecode(Codec<?> c, Class<?> type, GaussDBTypeIdentifier identifier, Format format) {
         Integer decodeHash = generateCodecHash(identifier.getObjectId(), format, type);
         this.decodeCodecsCache.putIfAbsent(decodeHash, c);
     }

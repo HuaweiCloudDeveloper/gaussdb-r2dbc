@@ -57,7 +57,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
 
     private final Class<T> componentType;
 
-    private final PostgresTypeIdentifier dataType;
+    private final GaussDBTypeIdentifier dataType;
 
     private final byte delimiter;
 
@@ -85,7 +85,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
      * @param delegate         the underlying {@link ArrayCodecDelegate} used to encode/decode data
      * @param componentType    the target component type
      */
-    ArrayCodec(ByteBufAllocator byteBufAllocator, PostgresTypeIdentifier dataType, ArrayCodecDelegate<T> delegate, Class<T> componentType) {
+    ArrayCodec(ByteBufAllocator byteBufAllocator, GaussDBTypeIdentifier dataType, ArrayCodecDelegate<T> delegate, Class<T> componentType) {
         super(Object[].class);
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
         this.dataType = Assert.requireNonNull(dataType, "dataType must not be null");
@@ -103,7 +103,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
      * @param componentType    the target component type
      * @param delimiter        the delimiter to use when encoding
      */
-    ArrayCodec(ByteBufAllocator byteBufAllocator, PostgresTypeIdentifier dataType, ArrayCodecDelegate<T> delegate, Class<T> componentType, byte delimiter) {
+    ArrayCodec(ByteBufAllocator byteBufAllocator, GaussDBTypeIdentifier dataType, ArrayCodecDelegate<T> delegate, Class<T> componentType, byte delimiter) {
         super(Object[].class);
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
         this.dataType = Assert.requireNonNull(dataType, "dataType must not be null");
@@ -153,7 +153,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
     }
 
     @Override
-    Object[] doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends Object[]> type) {
+    Object[] doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends Object[]> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
@@ -181,7 +181,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(type, "type must not be null");
 
         return this.dataType.equals(type);
@@ -193,7 +193,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
     }
 
     @Override
-    EncodedParameter doEncode(Object[] value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(Object[] value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return encodeArray(() -> {
@@ -204,7 +204,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(this.dataType);
     }
 
@@ -215,7 +215,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
      * @param dataType        the Postgres data type
      * @return encoded {@link EncodedParameter} item
      */
-    EncodedParameter encodeArray(Supplier<ByteBuf> encodedSupplier, PostgresTypeIdentifier dataType) {
+    EncodedParameter encodeArray(Supplier<ByteBuf> encodedSupplier, GaussDBTypeIdentifier dataType) {
         return create(Format.FORMAT_TEXT, dataType, encodedSupplier);
     }
 
@@ -258,7 +258,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
     }
 
     @SuppressWarnings("unchecked")
-    static <T> T[] decodeBinary(ByteBuf buffer, PostgresTypeIdentifier dataType, Decoder<T> decoder, Class<T> componentType, Class<?> returnType) {
+    static <T> T[] decodeBinary(ByteBuf buffer, GaussDBTypeIdentifier dataType, Decoder<T> decoder, Class<T> componentType, Class<?> returnType) {
         if (!buffer.isReadable()) {
             return (T[]) Array.newInstance(componentType, 0);
         }
@@ -289,7 +289,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
     }
 
     @SuppressWarnings("unchecked")
-    static <T> T[] decodeText(ByteBuf buffer, PostgresTypeIdentifier dataType, byte delimiter, Decoder<T> decoder, Class<T> componentType, Class<?> returnType) {
+    static <T> T[] decodeText(ByteBuf buffer, GaussDBTypeIdentifier dataType, byte delimiter, Decoder<T> decoder, Class<T> componentType, Class<?> returnType) {
         List<T> elements = (List<T>) decodeText(buffer, delimiter, dataType, decoder, componentType);
 
         if (elements.isEmpty()) {
@@ -324,7 +324,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
         return result.toArray((T[]) Array.newInstance(returnType, list.size()));
     }
 
-    private static <T> List<Object> decodeText(ByteBuf buf, byte delimiter, PostgresTypeIdentifier dataType, Decoder<T> decoder, Class<T> componentType) {
+    private static <T> List<Object> decodeText(ByteBuf buf, byte delimiter, GaussDBTypeIdentifier dataType, Decoder<T> decoder, Class<T> componentType) {
         List<Object> arrayList = new ArrayList<>();
 
         boolean insideString = false;
@@ -467,7 +467,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
         byteBuf.writeByte(CLOSE_CURLY);
     }
 
-    private static <T> void readArrayAsBinary(ByteBuf buffer, PostgresTypeIdentifier dataType, Object[] array, int[] dims, Decoder<T> decoder, Class<T> componentType, int thisDimension) {
+    private static <T> void readArrayAsBinary(ByteBuf buffer, GaussDBTypeIdentifier dataType, Object[] array, int[] dims, Decoder<T> decoder, Class<T> componentType, int thisDimension) {
         if (thisDimension == dims.length - 1) {
             for (int i = 0; i < dims[thisDimension]; ++i) {
                 int len = buffer.readInt();

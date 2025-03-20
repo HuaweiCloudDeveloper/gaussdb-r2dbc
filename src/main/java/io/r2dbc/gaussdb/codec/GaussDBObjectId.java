@@ -34,12 +34,12 @@ import java.time.OffsetTime;
 import reactor.util.annotation.Nullable;
 
 /**
- * Object IDs for well know PostgreSQL data types.
- * <p>Extension Object IDs that are provided by Postgres extensions such as PostGIS are not constants of this enumeration and must be looked up from {@code pg_type}.
+ * Object IDs for well know GaussDB data types.
+ * <p>Extension Object IDs that are provided by GaussDB extensions such as PostGIS are not constants of this enumeration and must be looked up from {@code pg_type}.
  * <p>
- * Lightweight {@link PostgresTypeIdentifier} identifier returning {@code Object.class} when calling {@link #getJavaType()}.
+ * Lightweight {@link GaussDBTypeIdentifier} identifier returning {@code Object.class} when calling {@link #getJavaType()}.
  */
-public enum PostgresqlObjectId implements Type, PostgresTypeIdentifier {
+public enum GaussDBObjectId implements Type, GaussDBTypeIdentifier {
 
     /**
      * The bit object id.
@@ -424,31 +424,31 @@ public enum PostgresqlObjectId implements Type, PostgresTypeIdentifier {
 
     public static final int OID_CACHE_SIZE = 3810; // JSON_ARRAY is currently the highest one
 
-    private static final PostgresqlObjectId[] CACHE = new PostgresqlObjectId[OID_CACHE_SIZE];
+    private static final GaussDBObjectId[] CACHE = new GaussDBObjectId[OID_CACHE_SIZE];
 
     private final int objectId;
 
     private final Class<?> defaultJavaType;
 
     static {
-        for (PostgresqlObjectId oid : values()) {
+        for (GaussDBObjectId oid : values()) {
             CACHE[oid.getObjectId()] = oid;
         }
     }
 
-    PostgresqlObjectId(int objectId) {
+    GaussDBObjectId(int objectId) {
         this(objectId, Object.class);
     }
 
-    PostgresqlObjectId(int objectId, Class<?> defaultJavaType) {
+    GaussDBObjectId(int objectId, Class<?> defaultJavaType) {
         this.objectId = objectId;
         this.defaultJavaType = Assert.requireNonNull(defaultJavaType, "defaultJavaType must not be null");
     }
 
-    public static PostgresqlObjectId from(PostgresTypeIdentifier dataType) {
+    public static GaussDBObjectId from(GaussDBTypeIdentifier dataType) {
 
-        if (dataType instanceof PostgresqlObjectId) {
-            return (PostgresqlObjectId) dataType;
+        if (dataType instanceof GaussDBObjectId) {
+            return (GaussDBObjectId) dataType;
         }
 
         return valueOf(dataType.getObjectId());
@@ -463,7 +463,7 @@ public enum PostgresqlObjectId implements Type, PostgresTypeIdentifier {
     public static boolean isValid(int objectId) {
 
         if (objectId >= 0 && objectId < OID_CACHE_SIZE) {
-            PostgresqlObjectId oid = CACHE[objectId];
+            GaussDBObjectId oid = CACHE[objectId];
             return oid != null;
         }
 
@@ -471,15 +471,15 @@ public enum PostgresqlObjectId implements Type, PostgresTypeIdentifier {
     }
 
     /**
-     * Returns the {@link PostgresqlObjectId} matching a given object id.
+     * Returns the {@link GaussDBObjectId} matching a given object id.
      *
      * @param objectId the object id to match
-     * @return the {@link PostgresqlObjectId} matching a given object id
+     * @return the {@link GaussDBObjectId} matching a given object id
      * @throws IllegalArgumentException if {@code objectId} isn't a valid object id
      */
-    public static PostgresqlObjectId valueOf(int objectId) {
+    public static GaussDBObjectId valueOf(int objectId) {
 
-        PostgresqlObjectId oid = null;
+        GaussDBObjectId oid = null;
 
         if (objectId >= 0 && objectId < OID_CACHE_SIZE) {
             oid = CACHE[objectId];
@@ -493,15 +493,15 @@ public enum PostgresqlObjectId implements Type, PostgresTypeIdentifier {
     }
 
     /**
-     * Returns the {@link PostgresqlObjectId} matching a given {@link R2dbcType R2DBC type}.
+     * Returns the {@link GaussDBObjectId} matching a given {@link R2dbcType R2DBC type}.
      *
      * @param type the R2DBC type
-     * @return the {@link PostgresqlObjectId}
+     * @return the {@link GaussDBObjectId}
      * @throws IllegalArgumentException      if {@code type} is {@code null}
      * @throws UnsupportedOperationException if the given {@code type} is not supported
      * @since 0.9
      */
-    public static PostgresqlObjectId valueOf(R2dbcType type) {
+    public static GaussDBObjectId valueOf(R2dbcType type) {
 
         Assert.requireNonNull(type, "type must not be null");
 

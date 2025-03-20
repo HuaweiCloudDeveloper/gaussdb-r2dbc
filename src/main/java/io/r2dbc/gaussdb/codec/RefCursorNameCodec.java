@@ -25,7 +25,7 @@ import reactor.util.annotation.Nullable;
 
 import java.util.Collections;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.REF_CURSOR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.REF_CURSOR;
 
 final class RefCursorNameCodec extends AbstractCodec<String> {
 
@@ -41,12 +41,12 @@ final class RefCursorNameCodec extends AbstractCodec<String> {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(REF_CURSOR);
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -54,7 +54,7 @@ final class RefCursorNameCodec extends AbstractCodec<String> {
     }
 
     @Override
-    String doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends String> type) {
+    String doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends String> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return ByteBufUtils.decode(buffer);
@@ -66,7 +66,7 @@ final class RefCursorNameCodec extends AbstractCodec<String> {
     }
 
     @Override
-    EncodedParameter doEncode(String value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(String value, GaussDBTypeIdentifier dataType) {
         throw new UnsupportedOperationException("Cannot encode RefCursor");
     }
 

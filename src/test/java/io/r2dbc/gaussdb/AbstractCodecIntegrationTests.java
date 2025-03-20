@@ -24,13 +24,13 @@ import io.r2dbc.gaussdb.api.GaussDBStatement;
 import io.r2dbc.gaussdb.codec.Box;
 import io.r2dbc.gaussdb.codec.Circle;
 import io.r2dbc.gaussdb.codec.EnumCodec;
+import io.r2dbc.gaussdb.codec.GaussDBObjectId;
 import io.r2dbc.gaussdb.codec.Json;
 import io.r2dbc.gaussdb.codec.Line;
 import io.r2dbc.gaussdb.codec.Lseg;
 import io.r2dbc.gaussdb.codec.Path;
 import io.r2dbc.gaussdb.codec.Point;
 import io.r2dbc.gaussdb.codec.Polygon;
-import io.r2dbc.gaussdb.codec.PostgresqlObjectId;
 import io.r2dbc.gaussdb.codec.Vector;
 import io.r2dbc.spi.Blob;
 import io.r2dbc.spi.Clob;
@@ -376,7 +376,7 @@ abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
     void json() {
         testCodec(String.class, "{\"hello\": \"world\"}", "JSON", "$1::json");
 
-        testCodec(String.class, "{\"hello\": \"world\"}", "JSON", PostgresqlObjectId.JSON);
+        testCodec(String.class, "{\"hello\": \"world\"}", "JSON", GaussDBObjectId.JSON);
 
         testCodec(Json.class, Json.of("{\"hello\": \"world\"}"), (actual, expected) -> assertThat(actual.asString()).isEqualTo(("{\"hello\": \"world\"}")), "JSON");
         testCodec(Json.class, Json.of("{\"hello\": \"world\"}".getBytes()), (actual, expected) -> assertThat(actual.asString()).isEqualTo(("{\"hello\": \"world\"}")), "JSON");

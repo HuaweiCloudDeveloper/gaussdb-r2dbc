@@ -29,8 +29,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.function.Supplier;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ_ARRAY;
 
 final class InstantCodec extends AbstractTemporalCodec<Instant> {
 
@@ -42,7 +42,7 @@ final class InstantCodec extends AbstractTemporalCodec<Instant> {
     }
 
     @Override
-    Instant doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, Class<? extends Instant> type) {
+    Instant doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, Class<? extends Instant> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return decodeTemporal(buffer, dataType, format, Instant.class, temporal -> {
@@ -65,7 +65,7 @@ final class InstantCodec extends AbstractTemporalCodec<Instant> {
 
     // Avoid defaulting, use OffsetDateTime as default instead.
     @Override
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return null;
     }
 

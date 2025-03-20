@@ -228,7 +228,7 @@ final class HStoreCodec implements Codec<Map>, CodecMetadata {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(AbstractCodec.getDataType(this.oid));
     }
 

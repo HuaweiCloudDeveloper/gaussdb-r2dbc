@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POLYGON;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POLYGON_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.POLYGON;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.POLYGON_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 
 /**
@@ -74,12 +74,12 @@ final class PolygonArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Polyg
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return POLYGON;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return POLYGON_ARRAY;
     }
 

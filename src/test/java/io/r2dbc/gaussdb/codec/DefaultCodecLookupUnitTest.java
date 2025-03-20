@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT2;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT2;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 import static org.assertj.core.api.Assertions.assertThat;

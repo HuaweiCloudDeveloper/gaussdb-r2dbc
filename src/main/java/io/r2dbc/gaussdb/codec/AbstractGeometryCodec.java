@@ -36,26 +36,26 @@ import java.util.List;
  */
 abstract class AbstractGeometryCodec<T> extends AbstractCodec<T> implements ArrayCodecDelegate<T> {
 
-    protected final PostgresqlObjectId postgresqlObjectId;
+    protected final GaussDBObjectId gaussDBObjectId;
 
     protected final ByteBufAllocator byteBufAllocator;
 
-    AbstractGeometryCodec(Class<T> type, PostgresqlObjectId postgresqlObjectId, ByteBufAllocator byteBufAllocator) {
+    AbstractGeometryCodec(Class<T> type, GaussDBObjectId gaussDBObjectId, ByteBufAllocator byteBufAllocator) {
         super(type);
-        this.postgresqlObjectId = Assert.requireNonNull(postgresqlObjectId, "postgresqlObjectId must not be null");
+        this.gaussDBObjectId = Assert.requireNonNull(gaussDBObjectId, "postgresqlObjectId must not be null");
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(type, "type must not be null");
         Assert.requireNonNull(format, "format must not be null");
 
-        return this.postgresqlObjectId == type;
+        return this.gaussDBObjectId == type;
     }
 
     @Override
-    T doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type) {
+    T doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(type, "type must not be null");
         Assert.requireNonNull(format, "format must not be null");
@@ -85,11 +85,11 @@ abstract class AbstractGeometryCodec<T> extends AbstractCodec<T> implements Arra
 
     @Override
     EncodedParameter doEncode(T value) {
-        return doEncode(value, this.postgresqlObjectId);
+        return doEncode(value, this.gaussDBObjectId);
     }
 
     @Override
-    EncodedParameter doEncode(T value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(T value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(Format.FORMAT_BINARY, dataType, () -> doEncodeBinary(value));
@@ -110,12 +110,12 @@ abstract class AbstractGeometryCodec<T> extends AbstractCodec<T> implements Arra
 
     @Override
     public EncodedParameter encodeNull() {
-        return createNull(Format.FORMAT_BINARY, this.postgresqlObjectId);
+        return createNull(Format.FORMAT_BINARY, this.gaussDBObjectId);
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
-        return Collections.singleton(this.postgresqlObjectId);
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
+        return Collections.singleton(this.gaussDBObjectId);
     }
 
     /**

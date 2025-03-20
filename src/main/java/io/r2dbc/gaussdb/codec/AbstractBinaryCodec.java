@@ -30,8 +30,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BYTEA;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BYTEA_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BYTEA;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BYTEA_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 /**
@@ -56,7 +56,7 @@ abstract class AbstractBinaryCodec<T> extends AbstractCodec<T> implements ArrayC
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(type, "type must not be null");
         Assert.requireNonNull(format, "format must not be null");
 
@@ -71,12 +71,12 @@ abstract class AbstractBinaryCodec<T> extends AbstractCodec<T> implements ArrayC
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return BYTEA_ARRAY;
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(BYTEA);
     }
 

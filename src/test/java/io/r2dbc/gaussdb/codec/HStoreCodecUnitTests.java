@@ -27,9 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSON;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSONB;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSON;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSONB;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;

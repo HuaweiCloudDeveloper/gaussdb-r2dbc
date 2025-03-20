@@ -47,12 +47,12 @@ final class DateCodec extends AbstractCodec<Date> implements ArrayCodecDelegate<
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return this.delegate.getDataTypes();
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -60,7 +60,7 @@ final class DateCodec extends AbstractCodec<Date> implements ArrayCodecDelegate<
     }
 
     @Override
-    Date doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Date> type) {
+    Date doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Date> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         LocalDateTime intermediary = this.delegate.doDecode(buffer, dataType, format, LocalDateTime.class);
@@ -75,7 +75,7 @@ final class DateCodec extends AbstractCodec<Date> implements ArrayCodecDelegate<
     }
 
     @Override
-    EncodedParameter doEncode(Date value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(Date value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return this.delegate.doEncode(normalize(value), dataType);
@@ -89,7 +89,7 @@ final class DateCodec extends AbstractCodec<Date> implements ArrayCodecDelegate<
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return this.delegate.getArrayDataType();
     }
 

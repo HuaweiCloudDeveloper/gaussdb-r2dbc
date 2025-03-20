@@ -51,7 +51,7 @@ public class VectorFloatCodec implements Codec<float[]>, CodecMetadata {
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(AbstractCodec.getDataType(this.oid));
     }
 

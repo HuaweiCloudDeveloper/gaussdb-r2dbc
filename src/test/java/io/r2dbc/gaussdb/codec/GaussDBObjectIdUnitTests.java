@@ -24,22 +24,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Unit tests for {@link PostgresqlObjectId}.
+ * Unit tests for {@link GaussDBObjectId}.
  */
-class PostgresqlObjectIdUnitTests {
+class GaussDBObjectIdUnitTests {
 
     @ParameterizedTest
-    @EnumSource(PostgresqlObjectId.class)
-    void shouldReportValidOidForWellKnownOids(PostgresqlObjectId oid) {
-        assertThat(PostgresqlObjectId.isValid(oid.getObjectId())).isTrue();
-        assertThat(PostgresqlObjectId.valueOf(oid.getObjectId())).isEqualTo(oid);
+    @EnumSource(GaussDBObjectId.class)
+    void shouldReportValidOidForWellKnownOids(GaussDBObjectId oid) {
+        assertThat(GaussDBObjectId.isValid(oid.getObjectId())).isTrue();
+        assertThat(GaussDBObjectId.valueOf(oid.getObjectId())).isEqualTo(oid);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 1, 4096})
     void shouldReportInvalidOid(int oid) {
-        assertThat(PostgresqlObjectId.isValid(oid)).isFalse();
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlObjectId.valueOf(oid));
+        assertThat(GaussDBObjectId.isValid(oid)).isFalse();
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBObjectId.valueOf(oid));
     }
 
 }

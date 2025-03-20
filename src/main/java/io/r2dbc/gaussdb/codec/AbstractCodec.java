@@ -31,7 +31,7 @@ import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 
 /**
  * Abstract codec class that provides a basis for all concrete
- * implementations of a {@link Codec} for well-known {@link PostgresqlObjectId}.
+ * implementations of a {@link Codec} for well-known {@link GaussDBObjectId}.
  *
  * @param <T> the type that is handled by this {@link Codec}
  */
@@ -53,8 +53,8 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
-        return PostgresqlObjectId.isValid(dataType) && (type == Object.class || isTypeAssignable(type)) &&
-            doCanDecode(PostgresqlObjectId.valueOf(dataType), format);
+        return GaussDBObjectId.isValid(dataType) && (type == Object.class || isTypeAssignable(type)) &&
+            doCanDecode(GaussDBObjectId.valueOf(dataType), format);
     }
 
     @Override
@@ -97,8 +97,8 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
         return doEncode((T) value, getDataType(dataType));
     }
 
-    public static PostgresTypeIdentifier getDataType(int dataType) {
-        return PostgresqlObjectId.isValid(dataType) ? PostgresqlObjectId.valueOf(dataType) : () -> dataType;
+    public static GaussDBTypeIdentifier getDataType(int dataType) {
+        return GaussDBObjectId.isValid(dataType) ? GaussDBObjectId.valueOf(dataType) : () -> dataType;
     }
 
     public EncodedParameter encodeNull(int dataType) {
@@ -114,13 +114,13 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
      * Create a {@link EncodedParameter}.
      *
      * @param format the format to use
-     * @param type   the well-known {@link PostgresqlObjectId type OID}
+     * @param type   the well-known {@link GaussDBObjectId type OID}
      * @param value  {@link Publisher} emitting {@link ByteBuf buffers}
      * @return the encoded  {@link EncodedParameter}
      * @implNote use deferred buffer creation instead of {@link Mono#just(Object)} and {@link Flux#just(Object)} to avoid memory
      * leaks
      */
-    static EncodedParameter create(Format format, PostgresTypeIdentifier type, Publisher<? extends ByteBuf> value) {
+    static EncodedParameter create(Format format, GaussDBTypeIdentifier type, Publisher<? extends ByteBuf> value) {
         Assert.requireNonNull(type, "type must not be null");
         return new EncodedParameter(format, type.getObjectId(), value);
     }
@@ -129,11 +129,11 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
      * Create a {@link EncodedParameter}.
      *
      * @param format         the format to use
-     * @param type           the well-known {@link PostgresTypeIdentifier type OID}
+     * @param type           the well-known {@link GaussDBTypeIdentifier type OID}
      * @param bufferSupplier {@link Supplier} supplying the encoded {@link ByteBuf buffer}
      * @return the encoded  {@link EncodedParameter}
      */
-    static EncodedParameter create(Format format, PostgresTypeIdentifier type, Supplier<? extends ByteBuf> bufferSupplier) {
+    static EncodedParameter create(Format format, GaussDBTypeIdentifier type, Supplier<? extends ByteBuf> bufferSupplier) {
         Assert.requireNonNull(type, "type must not be null");
         return create(format, type.getObjectId(), bufferSupplier);
     }
@@ -154,43 +154,43 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
      * Encode a {@code null} value.
      *
      * @param format the data type {@link Format}, text or binary
-     * @param type   the well-known {@link PostgresTypeIdentifier type OID}
+     * @param type   the well-known {@link GaussDBTypeIdentifier type OID}
      * @return the encoded {@code null} value
      */
-    static EncodedParameter createNull(Format format, PostgresTypeIdentifier type) {
+    static EncodedParameter createNull(Format format, GaussDBTypeIdentifier type) {
         return create(format, type, NULL_VALUE);
     }
 
     /**
-     * Determine whether this {@link Codec} is capable of decoding column values based on the given {@link Format} and {@link PostgresTypeIdentifier}.
+     * Determine whether this {@link Codec} is capable of decoding column values based on the given {@link Format} and {@link GaussDBTypeIdentifier}.
      *
-     * @param type   the well-known {@link PostgresTypeIdentifier type OID}
+     * @param type   the well-known {@link GaussDBTypeIdentifier type OID}
      * @param format the data type {@link Format}, text or binary
-     * @return {@code true} if this codec is able to decode values of {@link Format} and {@link PostgresTypeIdentifier}
+     * @return {@code true} if this codec is able to decode values of {@link Format} and {@link GaussDBTypeIdentifier}
      */
-    abstract boolean doCanDecode(PostgresqlObjectId type, Format format);
+    abstract boolean doCanDecode(GaussDBObjectId type, Format format);
 
     /**
      * Decode the {@link ByteBuf data} into the {@link Class value type}.
      *
      * @param buffer   the data buffer
-     * @param dataType the well-known {@link PostgresTypeIdentifier type OID}
+     * @param dataType the well-known {@link GaussDBTypeIdentifier type OID}
      * @param format   data type format
      * @param type     the desired value type
      * @return the decoded value, can be {@code null} if the column value is {@code null}
      */
-    abstract T doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type);
+    abstract T doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type);
 
     /**
-     * Forwarding method to {@link #doDecode(ByteBuf, PostgresTypeIdentifier, Format, Class)} for subclasses that want to implement {@link ArrayCodecDelegate}.
+     * Forwarding method to {@link #doDecode(ByteBuf, GaussDBTypeIdentifier, Format, Class)} for subclasses that want to implement {@link ArrayCodecDelegate}.
      *
      * @param buffer   the data buffer
-     * @param dataType the well-known {@link PostgresTypeIdentifier type OID}
+     * @param dataType the well-known {@link GaussDBTypeIdentifier type OID}
      * @param format   data type format
      * @param type     the desired value type
      * @return the decoded value, can be {@code null} if the column value is {@code null}
      */
-    public T decode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type) {
+    public T decode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type) {
         return doDecode(buffer, dataType, format, type);
     }
 
@@ -206,7 +206,7 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
      * @return the encoded value
      * @since 0.9
      */
-    abstract EncodedParameter doEncode(T value, PostgresTypeIdentifier dataType);
+    abstract EncodedParameter doEncode(T value, GaussDBTypeIdentifier dataType);
 
     boolean isTypeAssignable(Class<?> type) {
         Assert.requireNonNull(type, "type must not be null");

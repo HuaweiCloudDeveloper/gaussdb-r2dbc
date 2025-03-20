@@ -22,7 +22,7 @@ import io.netty.buffer.ByteBufAllocator;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POLYGON_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.POLYGON_ARRAY;
 
 /**
  * @since 0.8.5
@@ -30,7 +30,7 @@ import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POLYGON_ARRAY;
 final class PolygonCodec extends AbstractGeometryCodec<Polygon> {
 
     PolygonCodec(ByteBufAllocator byteBufAllocator) {
-        super(Polygon.class, PostgresqlObjectId.POLYGON, byteBufAllocator);
+        super(Polygon.class, GaussDBObjectId.POLYGON, byteBufAllocator);
     }
 
     @Override
@@ -71,7 +71,7 @@ final class PolygonCodec extends AbstractGeometryCodec<Polygon> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return POLYGON_ARRAY;
     }
 

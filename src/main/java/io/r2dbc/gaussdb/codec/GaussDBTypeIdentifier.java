@@ -17,12 +17,12 @@
 package io.r2dbc.gaussdb.codec;
 
 /**
- * Represents a Postgres type identifier identified by {@link #getObjectId() OID}.
+ * Represents a GaussDB type identifier identified by {@link #getObjectId() OID}.
  *
- * @see PostgresqlObjectId
+ * @see GaussDBObjectId
  * @since 0.9
  */
-public interface PostgresTypeIdentifier {
+public interface GaussDBTypeIdentifier {
 
     /**
      * Postgres type identifier.

@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT4;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT4;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 import static org.assertj.core.api.Assertions.*;

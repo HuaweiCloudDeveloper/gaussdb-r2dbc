@@ -31,7 +31,7 @@ import reactor.core.publisher.SynchronousSink;
 import reactor.util.annotation.Nullable;
 
 /**
- * Factory for Postgres-specific {@link R2dbcException}s.
+ * Factory for GaussDB-specific {@link R2dbcException}s.
  */
 final class ExceptionFactory {
 
@@ -136,7 +136,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcBadGrammarException}.
+     * GaussDB-specific {@link R2dbcBadGrammarException}.
      */
     static final class GaussDBBadGrammarException extends R2dbcBadGrammarException implements GaussDBException {
 
@@ -155,7 +155,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcDataIntegrityViolationException}.
+     * GaussDB-specific {@link R2dbcDataIntegrityViolationException}.
      */
     static final class GaussDBDataIntegrityViolationException extends R2dbcDataIntegrityViolationException implements GaussDBException {
 
@@ -174,7 +174,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcNonTransientResourceException}.
+     * GaussDB-specific {@link R2dbcNonTransientResourceException}.
      */
     static final class GaussDBNonTransientResourceException extends R2dbcNonTransientResourceException implements GaussDBException {
 
@@ -193,7 +193,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcPermissionDeniedException}.
+     * GaussDB-specific {@link R2dbcPermissionDeniedException}.
      */
     static final class GaussDBPermissionDeniedException extends R2dbcPermissionDeniedException implements GaussDBException {
 
@@ -212,7 +212,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcRollbackException}.
+     * GaussDB-specific {@link R2dbcRollbackException}.
      */
     static final class GaussDBRollbackException extends R2dbcRollbackException implements GaussDBException {
 
@@ -231,7 +231,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcTransientException}.
+     * GaussDB-specific {@link R2dbcTransientException}.
      */
     static final class GaussDBTransientException extends R2dbcTransientException implements GaussDBException {
 
@@ -250,7 +250,7 @@ final class ExceptionFactory {
     }
 
     /**
-     * Postgres-specific {@link R2dbcPermissionDeniedException}.
+     * GaussDB-specific {@link R2dbcPermissionDeniedException}.
      */
     static final class GaussDBAuthenticationFailure extends R2dbcPermissionDeniedException implements GaussDBException {
 

@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.r2dbc.gaussdb.api.RefCursor;
 import org.junit.jupiter.api.Test;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.MONEY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.REF_CURSOR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.MONEY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.REF_CURSOR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;

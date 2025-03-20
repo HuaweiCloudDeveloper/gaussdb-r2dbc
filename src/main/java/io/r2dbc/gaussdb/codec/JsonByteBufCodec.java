@@ -23,7 +23,7 @@ import io.r2dbc.gaussdb.client.EncodedParameter;
 import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.util.Assert;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSONB;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSONB;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 
 final class JsonByteBufCodec extends AbstractJsonCodec<ByteBuf> {
@@ -36,7 +36,7 @@ final class JsonByteBufCodec extends AbstractJsonCodec<ByteBuf> {
     }
 
     @Override
-    ByteBuf doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends ByteBuf> type) {
+    ByteBuf doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends ByteBuf> type) {
         return buffer.readRetainedSlice(buffer.readableBytes()).touch("Decoded by JsonByteBufCodec");
     }
 
@@ -46,7 +46,7 @@ final class JsonByteBufCodec extends AbstractJsonCodec<ByteBuf> {
     }
 
     @Override
-    EncodedParameter doEncode(ByteBuf value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(ByteBuf value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_BINARY, dataType, () -> {

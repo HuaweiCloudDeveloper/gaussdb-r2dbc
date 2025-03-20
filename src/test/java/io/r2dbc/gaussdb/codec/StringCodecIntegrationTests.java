@@ -47,7 +47,7 @@ class StringCodecIntegrationTests extends AbstractIntegrationTests {
             .verifyComplete();
 
         this.connection.createStatement("SELECT ci FROM test WHERE ci = $1")
-            .bind("$1", Parameters.in(PostgresqlObjectId.UNSPECIFIED, "Hello"))
+            .bind("$1", Parameters.in(GaussDBObjectId.UNSPECIFIED, "Hello"))
             .execute()
             .flatMap(it -> it.map(r -> r.get("ci")))
             .as(StepVerifier::create)
@@ -55,7 +55,7 @@ class StringCodecIntegrationTests extends AbstractIntegrationTests {
             .verifyComplete();
 
         this.connection.createStatement("SELECT cs::citext = $1 FROM test")
-            .bind("$1", Parameters.in(PostgresqlObjectId.UNSPECIFIED, "Hello"))
+            .bind("$1", Parameters.in(GaussDBObjectId.UNSPECIFIED, "Hello"))
             .execute()
             .flatMap(it -> it.map(r -> r.get(0)))
             .as(StepVerifier::create)
@@ -83,7 +83,7 @@ class StringCodecIntegrationTests extends AbstractIntegrationTests {
         SERVER.getJdbcOperations().execute("INSERT INTO test VALUES('HELLO', 'HELLO')");
 
         GaussDBConnectionFactory custom = getConnectionFactory(builder -> builder.codecRegistrar((connection1, allocator, registry) -> {
-            registry.addFirst(new StringCodec(allocator, PostgresqlObjectId.UNSPECIFIED, PostgresqlObjectId.VARCHAR_ARRAY));
+            registry.addFirst(new StringCodec(allocator, GaussDBObjectId.UNSPECIFIED, GaussDBObjectId.VARCHAR_ARRAY));
             return Mono.empty();
         }));
 

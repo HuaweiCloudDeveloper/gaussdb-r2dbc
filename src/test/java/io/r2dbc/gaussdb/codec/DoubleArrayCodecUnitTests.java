@@ -21,9 +21,9 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import org.junit.jupiter.api.Test;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT4_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT8;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT8_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT4_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT8;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT8_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,12 +64,12 @@ class DoubleArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Double> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return FLOAT8;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return FLOAT8_ARRAY;
     }
 

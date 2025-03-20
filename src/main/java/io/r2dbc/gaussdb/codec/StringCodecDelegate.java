@@ -53,7 +53,7 @@ class StringCodecDelegate<T> extends AbstractCodec<T> implements ArrayCodecDeleg
     }
 
     @Override
-    final boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    final boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -61,7 +61,7 @@ class StringCodecDelegate<T> extends AbstractCodec<T> implements ArrayCodecDeleg
     }
 
     @Override
-    final T doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends T> type) {
+    final T doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends T> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return this.fromTextDecoder.apply(this.delegate.doDecode(buffer, dataType, format, String.class).trim());
@@ -75,7 +75,7 @@ class StringCodecDelegate<T> extends AbstractCodec<T> implements ArrayCodecDeleg
     }
 
     @Override
-    final EncodedParameter doEncode(T value, PostgresTypeIdentifier dataType) {
+    final EncodedParameter doEncode(T value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return this.delegate.doEncode(encodeToText(value), dataType);
@@ -89,8 +89,8 @@ class StringCodecDelegate<T> extends AbstractCodec<T> implements ArrayCodecDeleg
     }
 
     @Override
-    public final PostgresTypeIdentifier getArrayDataType() {
-        return PostgresqlObjectId.VARCHAR_ARRAY;
+    public final GaussDBTypeIdentifier getArrayDataType() {
+        return GaussDBObjectId.VARCHAR_ARRAY;
     }
 
     @Override
@@ -99,7 +99,7 @@ class StringCodecDelegate<T> extends AbstractCodec<T> implements ArrayCodecDeleg
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return this.delegate.getDataTypes();
     }
 

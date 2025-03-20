@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.api.PostgresTransactionDefinition;
+import io.r2dbc.gaussdb.api.GaussDBTransactionDefinition;
 import io.r2dbc.spi.IsolationLevel;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -31,7 +31,7 @@ final class PostgresConnectionIntegrationTests extends AbstractIntegrationTests 
     @Test
     void shouldStartExtendedTransaction() {
 
-        this.connection.beginTransaction(PostgresTransactionDefinition.mutability(true).isolationLevel(IsolationLevel.READ_UNCOMMITTED).deferrable()).as(StepVerifier::create).verifyComplete();
+        this.connection.beginTransaction(GaussDBTransactionDefinition.mutability(true).isolationLevel(IsolationLevel.READ_UNCOMMITTED).deferrable()).as(StepVerifier::create).verifyComplete();
 
         assertThat(this.connection.getTransactionIsolationLevel()).isEqualTo(IsolationLevel.READ_UNCOMMITTED);
 
@@ -100,7 +100,7 @@ final class PostgresConnectionIntegrationTests extends AbstractIntegrationTests 
                 return row.get(0, String.class);
             })).as(StepVerifier::create).expectNext("read committed").verifyComplete();
 
-        this.connection.beginTransaction(PostgresTransactionDefinition.mutability(true).isolationLevel(IsolationLevel.READ_UNCOMMITTED)).as(StepVerifier::create).verifyComplete();
+        this.connection.beginTransaction(GaussDBTransactionDefinition.mutability(true).isolationLevel(IsolationLevel.READ_UNCOMMITTED)).as(StepVerifier::create).verifyComplete();
 
         assertThat(this.connection.getTransactionIsolationLevel()).isEqualTo(IsolationLevel.READ_UNCOMMITTED);
 

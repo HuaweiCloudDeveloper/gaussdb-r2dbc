@@ -21,7 +21,7 @@ import io.r2dbc.gaussdb.message.Format;
 import reactor.util.annotation.Nullable;
 
 /**
- * Decoder for a specific {@link PostgresTypeIdentifier} and {@link Class type}.
+ * Decoder for a specific {@link GaussDBTypeIdentifier} and {@link Class type}.
  *
  * @param <T> the type that is handled by this decoder.
  * @since 0.9
@@ -38,6 +38,6 @@ interface Decoder<T> {
      * @return the decoded value. Can be {@code null} if the value is {@code null}.
      */
     @Nullable
-    T decode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type);
+    T decode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type);
 
 }

@@ -28,13 +28,13 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT4;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT8;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT2;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT4;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT8;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.OID;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT4;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT8;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT2;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT4;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT8;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.OID;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
@@ -45,7 +45,7 @@ import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
  */
 abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> implements ArrayCodecDelegate<T> {
 
-    private static final Set<PostgresqlObjectId> SUPPORTED_TYPES = EnumSet.of(INT2, INT4, INT8, FLOAT4, FLOAT8, NUMERIC, OID);
+    private static final Set<GaussDBObjectId> SUPPORTED_TYPES = EnumSet.of(INT2, INT4, INT8, FLOAT4, FLOAT8, NUMERIC, OID);
 
     private final ByteBufAllocator byteBufAllocator;
 
@@ -60,7 +60,7 @@ abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> i
         Assert.requireNonNull(type, "type must not be null");
 
         if (type == Object.class) {
-            if (PostgresqlObjectId.isValid(dataType) && PostgresqlObjectId.valueOf(dataType) != getDefaultType()) {
+            if (GaussDBObjectId.isValid(dataType) && GaussDBObjectId.valueOf(dataType) != getDefaultType()) {
                 return false;
             }
         }
@@ -68,7 +68,7 @@ abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> i
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(type, "type must not be null");
         Assert.requireNonNull(format, "format must not be null");
         return SUPPORTED_TYPES.contains(type);
@@ -81,7 +81,7 @@ abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> i
         return doEncode(value, getDefaultType());
     }
 
-    EncodedParameter doEncode(T value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(T value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         if (dataType == NUMERIC) {
@@ -98,9 +98,9 @@ abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> i
         return value.toString();
     }
 
-    private ByteBuf doEncodeNumber(Number value, PostgresTypeIdentifier identifier) {
+    private ByteBuf doEncodeNumber(Number value, GaussDBTypeIdentifier identifier) {
 
-        PostgresqlObjectId oid = PostgresqlObjectId.valueOf(identifier.getObjectId());
+        GaussDBObjectId oid = GaussDBObjectId.valueOf(identifier.getObjectId());
 
         switch (oid) {
 
@@ -128,14 +128,14 @@ abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> i
      * Decode {@code buffer} to {@link Number} and potentially convert it to {@link Class expectedType} using {@link Function converter} if the decoded type does not match {@code expectedType}.
      *
      * @param buffer       the data buffer
-     * @param dataType     the well-known {@link PostgresqlObjectId type OID}
+     * @param dataType     the well-known {@link GaussDBObjectId type OID}
      * @param format       the data type {@link Format}, text or binary
      * @param expectedType the expected result type
      * @param converter    the converter function to convert from {@link Number} to {@code expectedType}
      * @return the decoded number
      */
-    T decodeNumber(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, Class<T> expectedType, Function<Number, T> converter) {
-        Number number = NumericDecodeUtils.decodeNumber(buffer, PostgresqlObjectId.from(dataType), format);
+    T decodeNumber(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, Class<T> expectedType, Function<Number, T> converter) {
+        Number number = NumericDecodeUtils.decodeNumber(buffer, GaussDBObjectId.from(dataType), format);
         return potentiallyConvert(number, expectedType, converter);
     }
 
@@ -145,16 +145,16 @@ abstract class AbstractNumericCodec<T extends Number> extends AbstractCodec<T> i
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return SUPPORTED_TYPES;
     }
 
     /**
-     * Returns the {@link PostgresqlObjectId} for to identify whether this codec is the default codec.
+     * Returns the {@link GaussDBObjectId} for to identify whether this codec is the default codec.
      *
-     * @return the {@link PostgresqlObjectId} for to identify whether this codec is the default codec.
+     * @return the {@link GaussDBObjectId} for to identify whether this codec is the default codec.
      */
-    abstract PostgresqlObjectId getDefaultType();
+    abstract GaussDBObjectId getDefaultType();
 
     private static <T> T potentiallyConvert(Number number, Class<T> expectedType, Function<Number, T> converter) {
         return expectedType.isInstance(number) ? expectedType.cast(number) : converter.apply(number);

@@ -29,8 +29,8 @@ import reactor.util.annotation.Nullable;
 
 import java.util.Arrays;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TEXT;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TEXT;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 final class ClobCodec extends AbstractCodec<Clob> {
@@ -48,7 +48,7 @@ final class ClobCodec extends AbstractCodec<Clob> {
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -56,7 +56,7 @@ final class ClobCodec extends AbstractCodec<Clob> {
     }
 
     @Override
-    Clob doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Clob> type) {
+    Clob doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Clob> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return Clob.from(Mono.just(ByteBufUtils.decode(buffer)));
@@ -68,7 +68,7 @@ final class ClobCodec extends AbstractCodec<Clob> {
     }
 
     @Override
-    EncodedParameter doEncode(Clob value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(Clob value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_TEXT, dataType,
@@ -81,7 +81,7 @@ final class ClobCodec extends AbstractCodec<Clob> {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Arrays.asList(VARCHAR, TEXT);
     }
 

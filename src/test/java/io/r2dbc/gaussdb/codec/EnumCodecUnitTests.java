@@ -30,9 +30,9 @@ import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
 import static io.r2dbc.gaussdb.codec.EnumCodec.Builder.RegistrationPriority;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSON;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSONB;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSON;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSONB;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static org.assertj.core.api.Assertions.assertThat;

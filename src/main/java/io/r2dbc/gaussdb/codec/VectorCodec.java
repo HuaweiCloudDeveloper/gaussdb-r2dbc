@@ -44,7 +44,7 @@ public class VectorCodec implements Codec<Vector>, CodecMetadata, ArrayCodecDele
 
     private final int oid;
 
-    private final PostgresTypeIdentifier arrayOid;
+    private final GaussDBTypeIdentifier arrayOid;
 
     VectorCodec(ByteBufAllocator byteBufAllocator, int oid, int arrayOid) {
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
@@ -63,12 +63,12 @@ public class VectorCodec implements Codec<Vector>, CodecMetadata, ArrayCodecDele
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return this.arrayOid;
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(AbstractCodec.getDataType(this.oid));
     }
 
@@ -91,7 +91,7 @@ public class VectorCodec implements Codec<Vector>, CodecMetadata, ArrayCodecDele
     }
 
     @Override
-    public Vector decode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends Vector> type) {
+    public Vector decode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends Vector> type) {
         return decode(buffer, dataType.getObjectId(), format, type);
     }
 
@@ -238,7 +238,7 @@ public class VectorCodec implements Codec<Vector>, CodecMetadata, ArrayCodecDele
                         if (!wasInsideString && slice.readableBytes() == 4 && slice.getByte(0) == 'N' && "NULL".equals(slice.toString(StandardCharsets.US_ASCII))) {
                             decoded.add(null);
                         } else {
-                            decoded.add(NumericDecodeUtils.decodeNumber(slice, PostgresqlObjectId.FLOAT4, FORMAT_TEXT));
+                            decoded.add(NumericDecodeUtils.decodeNumber(slice, GaussDBObjectId.FLOAT4, FORMAT_TEXT));
                         }
                     }
                 } finally {
@@ -275,7 +275,7 @@ public class VectorCodec implements Codec<Vector>, CodecMetadata, ArrayCodecDele
         }
 
         @Override
-        EncodedParameter doEncode(Object[] value, PostgresTypeIdentifier dataType) {
+        EncodedParameter doEncode(Object[] value, GaussDBTypeIdentifier dataType) {
             boolean hasNulls = hasNulls(value);
 
             return new EncodedParameter(FORMAT_BINARY, dataType.getObjectId(), Mono.fromSupplier(() -> {

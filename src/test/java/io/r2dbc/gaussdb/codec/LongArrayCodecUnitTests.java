@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT8;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT8_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT8;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT8_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 
 /**
@@ -58,12 +58,12 @@ final class LongArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Long> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return INT8;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return INT8_ARRAY;
     }
 

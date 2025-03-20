@@ -65,7 +65,7 @@ import static io.r2dbc.gaussdb.util.PredicateUtils.not;
 import static io.r2dbc.gaussdb.util.PredicateUtils.or;
 
 /**
- * Utility to execute the {@code Parse/Bind/Describe/Execute/Sync} portion of the <a href="https://www.postgresql.org/docs/current/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY">Extended query</a>
+ * Utility to execute the {@code Parse/Bind/Describe/Execute/Sync} portion of the Extended query
  * message flow.
  */
 class ExtendedFlowDelegate {
@@ -73,7 +73,7 @@ class ExtendedFlowDelegate {
     static final Predicate<BackendMessage> RESULT_FRAME_FILTER = not(or(BindComplete.class::isInstance, NoData.class::isInstance));
 
     /**
-     * Execute the {@code Parse/Bind/Describe/Execute/Sync} portion of the <a href="https://www.postgresql.org/docs/current/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY">Extended query</a>
+     * Execute the {@code Parse/Bind/Describe/Execute/Sync} portion of the Extended query
      * message flow.
      *
      * @param resources  the {@link ConnectionResources} providing access to the {@link Client}

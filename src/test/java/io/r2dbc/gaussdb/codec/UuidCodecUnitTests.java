@@ -23,7 +23,7 @@ import java.util.UUID;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 import static io.r2dbc.gaussdb.client.ParameterAssert.assertThat;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.MONEY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.MONEY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 final class UuidCodecUnitTests {
 
-    private static final int dataType = PostgresqlObjectId.UUID.getObjectId();
+    private static final int dataType = GaussDBObjectId.UUID.getObjectId();
 
     private static final UUID u1 = UUID.randomUUID();
 
@@ -63,9 +63,9 @@ final class UuidCodecUnitTests {
     void doCanDecode() {
         UuidCodec codec = new UuidCodec(TEST);
 
-        assertThat(codec.doCanDecode(PostgresqlObjectId.UUID, FORMAT_TEXT)).isTrue();
+        assertThat(codec.doCanDecode(GaussDBObjectId.UUID, FORMAT_TEXT)).isTrue();
         assertThat(codec.doCanDecode(MONEY, FORMAT_BINARY)).isFalse();
-        assertThat(codec.doCanDecode(PostgresqlObjectId.UUID, FORMAT_BINARY)).isTrue();
+        assertThat(codec.doCanDecode(GaussDBObjectId.UUID, FORMAT_BINARY)).isTrue();
     }
 
     @Test
@@ -80,7 +80,7 @@ final class UuidCodecUnitTests {
 
         assertThat(new UuidCodec(TEST).doEncode(uuid))
             .hasFormat(FORMAT_TEXT)
-            .hasType(PostgresqlObjectId.UUID.getObjectId())
+            .hasType(GaussDBObjectId.UUID.getObjectId())
             .hasValue(encode(TEST, uuid.toString()));
     }
 
@@ -104,7 +104,7 @@ final class UuidCodecUnitTests {
     @Test
     void encodeNull() {
         assertThat(new UuidCodec(TEST).encodeNull())
-            .isEqualTo(new EncodedParameter(FORMAT_TEXT, PostgresqlObjectId.UUID.getObjectId(), NULL_VALUE));
+            .isEqualTo(new EncodedParameter(FORMAT_TEXT, GaussDBObjectId.UUID.getObjectId(), NULL_VALUE));
     }
 
 }

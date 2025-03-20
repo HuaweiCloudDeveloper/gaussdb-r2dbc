@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LINE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LINE_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LINE;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LINE_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 
 /**
@@ -64,12 +64,12 @@ final class LineArrayCodecUnitTest extends AbstractArrayCodecUnitTests<Line> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return LINE;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return LINE_ARRAY;
     }
 

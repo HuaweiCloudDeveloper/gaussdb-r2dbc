@@ -33,11 +33,11 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.DATE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIME;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMP;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMETZ;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.DATE;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIME;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMP;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMETZ;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 
 /**
@@ -47,16 +47,16 @@ import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
  */
 abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSupport<T> {
 
-    private static final Set<PostgresqlObjectId> SUPPORTED_TYPES = EnumSet.of(DATE, TIMESTAMP, TIMESTAMPTZ, TIME, TIMETZ);
+    private static final Set<GaussDBObjectId> SUPPORTED_TYPES = EnumSet.of(DATE, TIMESTAMP, TIMESTAMPTZ, TIME, TIMETZ);
 
-    private final PostgresqlObjectId postgresType;
+    private final GaussDBObjectId postgresType;
 
     /**
      * Create a new {@link AbstractTemporalCodec}.
      *
      * @param type the type handled by this codec
      */
-    AbstractTemporalCodec(Class<T> type, ByteBufAllocator byteBufAllocator, PostgresqlObjectId postgresType, PostgresqlObjectId postgresArrayType, Function<T, String> toTextEncoder) {
+    AbstractTemporalCodec(Class<T> type, ByteBufAllocator byteBufAllocator, GaussDBObjectId postgresType, GaussDBObjectId postgresArrayType, Function<T, String> toTextEncoder) {
         super(type, byteBufAllocator, postgresType, postgresArrayType, toTextEncoder);
         this.postgresType = postgresType;
     }
@@ -67,7 +67,7 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
         Assert.requireNonNull(type, "type must not be null");
 
         if (type == Object.class) {
-            if (PostgresqlObjectId.isValid(dataType) && PostgresqlObjectId.valueOf(dataType) != getDefaultType()) {
+            if (GaussDBObjectId.isValid(dataType) && GaussDBObjectId.valueOf(dataType) != getDefaultType()) {
                 return false;
             }
         }
@@ -75,7 +75,7 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
     }
 
     @Override
-    final boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    final boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -92,20 +92,20 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
      * @param converter    converter to convert from {@link Temporal} into {@code expectedType}
      * @return the decoded value
      */
-    T decodeTemporal(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, Class<T> expectedType, Function<Temporal, T> converter) {
-        Temporal number = decodeTemporal(buffer, PostgresqlObjectId.from(dataType), format);
+    T decodeTemporal(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, Class<T> expectedType, Function<Temporal, T> converter) {
+        Temporal number = decodeTemporal(buffer, GaussDBObjectId.from(dataType), format);
         return potentiallyConvert(number, expectedType, converter);
     }
 
     /**
-     * Decode {@code buffer} to {@link Temporal} according to {@link PostgresqlObjectId}.
+     * Decode {@code buffer} to {@link Temporal} according to {@link GaussDBObjectId}.
      *
      * @param buffer   the buffer
      * @param dataType the Postgres type
      * @param format   value format
      * @return the decoded value
      */
-    private Temporal decodeTemporal(ByteBuf buffer, PostgresqlObjectId dataType, @Nullable Format format) {
+    private Temporal decodeTemporal(ByteBuf buffer, GaussDBObjectId dataType, @Nullable Format format) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         switch (dataType) {
@@ -153,12 +153,12 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
     }
 
     /**
-     * Returns the {@link PostgresqlObjectId} for to identify whether this codec is the default codec.
+     * Returns the {@link GaussDBObjectId} for to identify whether this codec is the default codec.
      *
-     * @return the {@link PostgresqlObjectId} for to identify whether this codec is the default codec
+     * @return the {@link GaussDBObjectId} for to identify whether this codec is the default codec
      */
     @Nullable
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return this.postgresType;
     }
 

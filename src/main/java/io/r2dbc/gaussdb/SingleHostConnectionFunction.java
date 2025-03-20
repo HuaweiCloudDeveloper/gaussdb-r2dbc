@@ -22,7 +22,7 @@ import io.r2dbc.gaussdb.authentication.SASLAuthenticationHandler;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.ConnectionContext;
 import io.r2dbc.gaussdb.client.ConnectionSettings;
-import io.r2dbc.gaussdb.client.PostgresStartupParameterProvider;
+import io.r2dbc.gaussdb.client.GaussDBStartupParameterProvider;
 import io.r2dbc.gaussdb.client.StartupMessageFlow;
 import io.r2dbc.gaussdb.message.backend.AuthenticationMessage;
 import io.r2dbc.gaussdb.util.Assert;
@@ -52,8 +52,8 @@ final class SingleHostConnectionFunction implements ConnectionFunction {
                 .handle(ExceptionFactory.INSTANCE::handleErrorResponse));
     }
 
-    private static PostgresStartupParameterProvider getParameterProvider(GaussDBConnectionConfiguration configuration, ConnectionSettings settings) {
-        return new PostgresStartupParameterProvider(configuration.getApplicationName(), configuration.getTimeZone(), settings);
+    private static GaussDBStartupParameterProvider getParameterProvider(GaussDBConnectionConfiguration configuration, ConnectionSettings settings) {
+        return new GaussDBStartupParameterProvider(configuration.getApplicationName(), configuration.getTimeZone(), settings);
     }
 
     protected AuthenticationHandler getAuthenticationHandler(AuthenticationMessage message, UsernameAndPassword usernameAndPassword, ConnectionContext context) {

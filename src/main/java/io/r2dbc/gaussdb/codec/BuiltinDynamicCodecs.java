@@ -108,8 +108,8 @@ public class BuiltinDynamicCodecs implements CodecRegistrar {
 
                     BuiltinCodec lookup = BuiltinCodec.lookup(typname);
                     if (lookup.isSupported()) {
-                        int oid = PostgresqlObjectId.toInt(row.get("oid", Long.class));
-                        int typarray = rowMetadata.contains("typarray") ? PostgresqlObjectId.toInt(row.get("typarray", Long.class)) : PostgresTypes.NO_SUCH_TYPE;
+                        int oid = GaussDBObjectId.toInt(row.get("oid", Long.class));
+                        int typarray = rowMetadata.contains("typarray") ? GaussDBObjectId.toInt(row.get("typarray", Long.class)) : PostgresTypes.NO_SUCH_TYPE;
                         lookup.createCodec(byteBufAllocator, oid, typarray).forEach(registry::addLast);
                     }
 

@@ -26,8 +26,8 @@ import reactor.util.annotation.Nullable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INET;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INET_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INET;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INET_ARRAY;
 
 final class InetAddressCodec extends BuiltinCodecSupport<InetAddress> {
 
@@ -36,7 +36,7 @@ final class InetAddressCodec extends BuiltinCodecSupport<InetAddress> {
     }
 
     @Override
-    InetAddress doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends InetAddress> type) {
+    InetAddress doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends InetAddress> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         try {

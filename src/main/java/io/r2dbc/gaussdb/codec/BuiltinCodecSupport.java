@@ -34,9 +34,9 @@ abstract class BuiltinCodecSupport<T> extends AbstractCodec<T> implements ArrayC
 
     private final ByteBufAllocator byteBufAllocator;
 
-    private final PostgresqlObjectId postgresType;
+    private final GaussDBObjectId postgresType;
 
-    private final PostgresqlObjectId postgresArrayType;
+    private final GaussDBObjectId postgresArrayType;
 
     private final Function<T, String> toTextEncoder;
 
@@ -49,7 +49,7 @@ abstract class BuiltinCodecSupport<T> extends AbstractCodec<T> implements ArrayC
      * @param postgresArrayType Postgres array type OID variant of {@code postgresType}
      * @param toTextEncoder     function to encode a value to {@link String}
      */
-    BuiltinCodecSupport(Class<T> type, ByteBufAllocator byteBufAllocator, PostgresqlObjectId postgresType, PostgresqlObjectId postgresArrayType, Function<T, String> toTextEncoder) {
+    BuiltinCodecSupport(Class<T> type, ByteBufAllocator byteBufAllocator, GaussDBObjectId postgresType, GaussDBObjectId postgresArrayType, Function<T, String> toTextEncoder) {
         super(type);
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
         this.postgresType = Assert.requireNonNull(postgresType, "postgresType must not be null");
@@ -58,7 +58,7 @@ abstract class BuiltinCodecSupport<T> extends AbstractCodec<T> implements ArrayC
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(type, "type must not be null");
 
         return this.postgresType == type;
@@ -70,7 +70,7 @@ abstract class BuiltinCodecSupport<T> extends AbstractCodec<T> implements ArrayC
     }
 
     @Override
-    final EncodedParameter doEncode(T value, PostgresTypeIdentifier dataType) {
+    final EncodedParameter doEncode(T value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_TEXT, dataType, () -> ByteBufUtils.encode(this.byteBufAllocator, encodeToText(value)));
@@ -89,12 +89,12 @@ abstract class BuiltinCodecSupport<T> extends AbstractCodec<T> implements ArrayC
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(this.postgresType);
     }
 
     @Override
-    public final PostgresTypeIdentifier getArrayDataType() {
+    public final GaussDBTypeIdentifier getArrayDataType() {
         return this.postgresArrayType;
     }
 

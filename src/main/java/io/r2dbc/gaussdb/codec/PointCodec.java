@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POINT;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POINT_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.POINT;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.POINT_ARRAY;
 
 /**
  * @since 0.8.5
@@ -49,7 +49,7 @@ final class PointCodec extends AbstractGeometryCodec<Point> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return POINT_ARRAY;
     }
 

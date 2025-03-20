@@ -45,14 +45,14 @@ final class ByteCodec extends AbstractCodec<Byte> implements ArrayCodecDelegate<
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, @Nullable Format format) {
+    boolean doCanDecode(GaussDBObjectId type, @Nullable Format format) {
         Assert.requireNonNull(type, "type must not be null");
 
         return this.delegate.doCanDecode(type, format);
     }
 
     @Override
-    Byte doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, @Nullable Class<? extends Byte> type) {
+    Byte doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, @Nullable Class<? extends Byte> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
 
@@ -67,7 +67,7 @@ final class ByteCodec extends AbstractCodec<Byte> implements ArrayCodecDelegate<
     }
 
     @Override
-    EncodedParameter doEncode(Byte value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(Byte value, GaussDBTypeIdentifier dataType) {
         return this.delegate.doEncode((short) value, dataType);
     }
 
@@ -79,8 +79,8 @@ final class ByteCodec extends AbstractCodec<Byte> implements ArrayCodecDelegate<
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
-        return PostgresqlObjectId.INT2_ARRAY;
+    public GaussDBTypeIdentifier getArrayDataType() {
+        return GaussDBObjectId.INT2_ARRAY;
     }
 
     @Override
@@ -89,7 +89,7 @@ final class ByteCodec extends AbstractCodec<Byte> implements ArrayCodecDelegate<
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return this.delegate.getDataTypes();
     }
 

@@ -30,7 +30,7 @@ import reactor.util.annotation.Nullable;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BYTEA;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BYTEA;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 final class BlobCodec extends AbstractCodec<Blob> {
@@ -48,7 +48,7 @@ final class BlobCodec extends AbstractCodec<Blob> {
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -56,7 +56,7 @@ final class BlobCodec extends AbstractCodec<Blob> {
     }
 
     @Override
-    Blob doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Blob> type) {
+    Blob doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Blob> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return new ByteABlob(buffer, format);
@@ -68,7 +68,7 @@ final class BlobCodec extends AbstractCodec<Blob> {
     }
 
     @Override
-    EncodedParameter doEncode(Blob value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(Blob value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_TEXT, dataType,
@@ -81,7 +81,7 @@ final class BlobCodec extends AbstractCodec<Blob> {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(BYTEA);
     }
 

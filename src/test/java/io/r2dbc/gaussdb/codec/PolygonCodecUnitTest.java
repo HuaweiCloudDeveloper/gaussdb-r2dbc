@@ -21,9 +21,9 @@ import io.r2dbc.gaussdb.client.ParameterAssert;
 import org.junit.jupiter.api.Test;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LINE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.PATH;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.POLYGON;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LINE;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.PATH;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.POLYGON;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;

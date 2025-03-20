@@ -28,7 +28,7 @@ import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSONB;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSONB;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 
 final class JsonInputStreamCodec extends AbstractJsonCodec<InputStream> {
@@ -41,7 +41,7 @@ final class JsonInputStreamCodec extends AbstractJsonCodec<InputStream> {
     }
 
     @Override
-    InputStream doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends InputStream> type) {
+    InputStream doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends InputStream> type) {
         return new ByteBufInputStream(buffer.retain().touch("Decoded by JsonInputStreamCodec"), true);
     }
 
@@ -51,7 +51,7 @@ final class JsonInputStreamCodec extends AbstractJsonCodec<InputStream> {
     }
 
     @Override
-    EncodedParameter doEncode(InputStream value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(InputStream value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_BINARY, dataType, () -> doEncode(value, this.byteBufAllocator));

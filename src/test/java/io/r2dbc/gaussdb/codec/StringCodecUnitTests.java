@@ -21,11 +21,11 @@ import org.junit.jupiter.api.Test;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 import static io.r2dbc.gaussdb.client.ParameterAssert.assertThat;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BPCHAR;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CHAR;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.MONEY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.UNKNOWN;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BPCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.MONEY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.UNKNOWN;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;
@@ -65,7 +65,7 @@ final class StringCodecUnitTests {
         assertThat(codec.doCanDecode(MONEY, FORMAT_TEXT)).isFalse();
         assertThat(codec.doCanDecode(BPCHAR, FORMAT_TEXT)).isTrue();
         assertThat(codec.doCanDecode(CHAR, FORMAT_TEXT)).isTrue();
-        assertThat(codec.doCanDecode(PostgresqlObjectId.TEXT, FORMAT_TEXT)).isTrue();
+        assertThat(codec.doCanDecode(GaussDBObjectId.TEXT, FORMAT_TEXT)).isTrue();
         assertThat(codec.doCanDecode(UNKNOWN, FORMAT_TEXT)).isTrue();
         assertThat(codec.doCanDecode(VARCHAR, FORMAT_TEXT)).isTrue();
     }

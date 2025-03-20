@@ -27,7 +27,7 @@ import reactor.util.annotation.Nullable;
  * indicates the interchange type that is handled by this codec.
  *
  * @param <T> the type that is handled by this codec.
- * @see PostgresqlObjectId
+ * @see GaussDBObjectId
  */
 public interface Codec<T> {
 

@@ -23,10 +23,10 @@ import java.util.TimeZone;
 
 public final class TestStartupParameterProvider implements StartupMessage.StartupParameterProvider {
 
-    private final PostgresStartupParameterProvider provider;
+    private final GaussDBStartupParameterProvider provider;
 
     public TestStartupParameterProvider() {
-        this.provider = new PostgresStartupParameterProvider("test-application-name", TimeZone.getDefault(), (Map<String, String>) null);
+        this.provider = new GaussDBStartupParameterProvider("test-application-name", TimeZone.getDefault(), (Map<String, String>) null);
     }
 
     @Override

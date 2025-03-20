@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT2;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT2_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT2;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT2_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,12 +62,12 @@ final class ShortArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Short> 
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return INT2;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return INT2_ARRAY;
     }
 

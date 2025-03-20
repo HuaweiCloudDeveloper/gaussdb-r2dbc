@@ -20,11 +20,11 @@ import io.netty.buffer.ByteBufAllocator;
 import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.util.Assert;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BPCHAR_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CHAR_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NAME_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TEXT_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BPCHAR_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CHAR_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NAME_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TEXT_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR_ARRAY;
 
 final class StringArrayCodec extends ArrayCodec<String> {
 
@@ -34,11 +34,11 @@ final class StringArrayCodec extends ArrayCodec<String> {
 
     @Override
     public boolean canDecode(int dataType, Format format, Class<?> type) {
-        return PostgresqlObjectId.isValid(dataType) && doCanDecode(PostgresqlObjectId.valueOf(dataType), format);
+        return GaussDBObjectId.isValid(dataType) && doCanDecode(GaussDBObjectId.valueOf(dataType), format);
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 

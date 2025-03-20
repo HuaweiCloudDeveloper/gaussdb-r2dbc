@@ -22,7 +22,7 @@ import io.r2dbc.gaussdb.message.Format;
  * Metadata for a codec.
  * <p>Codecs implementing this interface expose their supported {@link Format formats} and {@link #getDataTypes() data types}. This metadata can be used for cache warming of the actual codec lookup.
  *
- * @see PostgresTypeIdentifier
+ * @see GaussDBTypeIdentifier
  * @see Format
  * @see Codec
  * @since 0.9
@@ -46,10 +46,10 @@ public interface CodecMetadata {
     }
 
     /**
-     * Returns the collection of {@link PostgresTypeIdentifier} this codec can handle
+     * Returns the collection of {@link GaussDBTypeIdentifier} this codec can handle
      *
      * @return the datatypes
      */
-    Iterable<? extends PostgresTypeIdentifier> getDataTypes();
+    Iterable<? extends GaussDBTypeIdentifier> getDataTypes();
 
 }

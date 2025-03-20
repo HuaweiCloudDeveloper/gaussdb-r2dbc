@@ -23,8 +23,8 @@ import io.r2dbc.gaussdb.util.Assert;
 import io.r2dbc.gaussdb.util.ByteBufUtils;
 import reactor.util.annotation.Nullable;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOOL;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOOL_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOOL;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOOL_ARRAY;
 
 final class BooleanCodec extends BuiltinCodecSupport<Boolean> implements PrimitiveWrapperCodecProvider<Boolean> {
 
@@ -38,7 +38,7 @@ final class BooleanCodec extends BuiltinCodecSupport<Boolean> implements Primiti
     }
 
     @Override
-    Boolean doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Boolean> type) {
+    Boolean doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Boolean> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         if (format == Format.FORMAT_BINARY) {

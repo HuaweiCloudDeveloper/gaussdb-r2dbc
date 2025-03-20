@@ -30,11 +30,11 @@ import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 final class UuidCodec extends BuiltinCodecSupport<UUID> {
 
     UuidCodec(ByteBufAllocator byteBufAllocator) {
-        super(UUID.class, byteBufAllocator, PostgresqlObjectId.UUID, PostgresqlObjectId.UUID_ARRAY, UUID::toString);
+        super(UUID.class, byteBufAllocator, GaussDBObjectId.UUID, GaussDBObjectId.UUID_ARRAY, UUID::toString);
     }
 
     @Override
-    UUID doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends UUID> type) {
+    UUID doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends UUID> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         if (format == FORMAT_BINARY) {

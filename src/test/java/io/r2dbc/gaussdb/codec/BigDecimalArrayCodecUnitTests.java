@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;

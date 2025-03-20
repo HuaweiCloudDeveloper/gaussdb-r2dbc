@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LSEG;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LSEG_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LSEG;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LSEG_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 
 /**
@@ -67,12 +67,12 @@ final class LsegArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Lseg> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return LSEG;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return LSEG_ARRAY;
     }
 

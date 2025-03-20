@@ -70,9 +70,9 @@ public class PostgresTypes {
      * injection.
      *
      * @param typeName the type name. Must comply with the pattern {@code [a-zA-Z0-9_]+}
-     * @return a mono emitting the {@link PostgresType} if found or {@link Mono#empty()}  if not found
+     * @return a mono emitting the {@link GaussDBType} if found or {@link Mono#empty()}  if not found
      */
-    public Mono<PostgresType> lookupType(String typeName) {
+    public Mono<GaussDBType> lookupType(String typeName) {
         if (!TYPENAME.matcher(Assert.requireNonNull(typeName, "typeName must not be null")).matches()) {
             throw new IllegalArgumentException(String.format("Invalid typename %s", typeName));
         }
@@ -81,7 +81,7 @@ public class PostgresTypes {
             .flatMap(it -> it.map(PostgresTypes::createType)).singleOrEmpty();
     }
 
-    public Flux<PostgresType> lookupTypes(Iterable<String> typeNames) {
+    public Flux<GaussDBType> lookupTypes(Iterable<String> typeNames) {
 
         StringJoiner joiner = new StringJoiner(",", "(", ")");
         AtomicBoolean hasType = new AtomicBoolean();
@@ -104,18 +104,18 @@ public class PostgresTypes {
             .flatMap(it -> it.map(PostgresTypes::createType));
     }
 
-    private static PostgresType createType(Row row, RowMetadata rowMetadata) {
+    private static GaussDBType createType(Row row, RowMetadata rowMetadata) {
         Long oid = row.get("oid", Long.class);
         String typname = row.get("typname", String.class);
         String typcategory = row.get("typcategory", String.class);
         Long typarrayOid = rowMetadata.contains("typarray") ? row.get("typarray", Long.class) : null;
 
         long unsignedTyparray = typarrayOid != null ? typarrayOid : NO_SUCH_TYPE;
-        int typarray = typarrayOid != null ? PostgresqlObjectId.toInt(typarrayOid) : NO_SUCH_TYPE;
-        return new PostgresType(PostgresqlObjectId.toInt(oid), oid, typarray, unsignedTyparray, typname, typcategory);
+        int typarray = typarrayOid != null ? GaussDBObjectId.toInt(typarrayOid) : NO_SUCH_TYPE;
+        return new GaussDBType(GaussDBObjectId.toInt(oid), oid, typarray, unsignedTyparray, typname, typcategory);
     }
 
-    public static class PostgresType implements Type, PostgresTypeIdentifier {
+    public static class GaussDBType implements Type, GaussDBTypeIdentifier {
 
         private final int oid;
 
@@ -130,16 +130,16 @@ public class PostgresTypes {
         private final String category;
 
         @Nullable
-        private final PostgresqlObjectId objectId;
+        private final GaussDBObjectId objectId;
 
-        public PostgresType(int oid, long unsignedOid, int typarray, long unsignedTyparray, String name, String category) {
+        public GaussDBType(int oid, long unsignedOid, int typarray, long unsignedTyparray, String name, String category) {
             this.oid = oid;
             this.unsignedOid = unsignedOid;
             this.typarray = typarray;
             this.unsignedTyparray = unsignedTyparray;
             this.name = name;
             this.category = category;
-            this.objectId = PostgresqlObjectId.isValid(oid) ? PostgresqlObjectId.valueOf(oid) : null;
+            this.objectId = GaussDBObjectId.isValid(oid) ? GaussDBObjectId.valueOf(oid) : null;
         }
 
         @Override
@@ -152,7 +152,7 @@ public class PostgresTypes {
          *
          * @return this type as array type.
          */
-        public PostgresType asArrayType() {
+        public GaussDBType asArrayType() {
 
             if (isArray()) {
                 return this;
@@ -160,7 +160,7 @@ public class PostgresTypes {
 
             if (this.typarray > 0) {
 
-                return new PostgresType(this.typarray, this.unsignedTyparray, this.typarray, this.unsignedTyparray, this.name, this.category);
+                return new GaussDBType(this.typarray, this.unsignedTyparray, this.typarray, this.unsignedTyparray, this.name, this.category);
             }
 
             throw new IllegalStateException("No array type available for " + this);
@@ -294,10 +294,10 @@ public class PostgresTypes {
             if (this == o) {
                 return true;
             }
-            if (!(o instanceof PostgresType)) {
+            if (!(o instanceof GaussDBType)) {
                 return false;
             }
-            PostgresType that = (PostgresType) o;
+            GaussDBType that = (GaussDBType) o;
             return this.oid == that.oid &&
                 this.unsignedOid == that.unsignedOid &&
                 this.typarray == that.typarray &&

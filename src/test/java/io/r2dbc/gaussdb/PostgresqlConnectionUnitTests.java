@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.netty.buffer.Unpooled;
-import io.r2dbc.gaussdb.api.PostgresTransactionDefinition;
+import io.r2dbc.gaussdb.api.GaussDBTransactionDefinition;
 import io.r2dbc.gaussdb.client.Client;
 import io.r2dbc.gaussdb.client.TestClient;
 import io.r2dbc.gaussdb.client.Version;
@@ -80,7 +80,7 @@ final class PostgresqlConnectionUnitTests {
 
         GaussDBConnection connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
-        connection.beginTransaction(PostgresTransactionDefinition.from(IsolationLevel.SERIALIZABLE).readOnly().notDeferrable())
+        connection.beginTransaction(GaussDBTransactionDefinition.from(IsolationLevel.SERIALIZABLE).readOnly().notDeferrable())
             .as(StepVerifier::create)
             .verifyComplete();
 
@@ -92,7 +92,7 @@ final class PostgresqlConnectionUnitTests {
 
         connection = createConnection(client, MockCodecs.empty(), this.statementCache);
 
-        connection.beginTransaction(PostgresTransactionDefinition.mutability(true).deferrable())
+        connection.beginTransaction(GaussDBTransactionDefinition.mutability(true).deferrable())
             .as(StepVerifier::create)
             .verifyComplete();
     }
@@ -412,7 +412,7 @@ final class PostgresqlConnectionUnitTests {
 
         GaussDBConnectionMetadata metadata = connection.getMetadata();
 
-        assertThat(metadata.getDatabaseProductName()).isEqualTo("PostgreSQL");
+        assertThat(metadata.getDatabaseProductName()).isEqualTo("GaussDB");
         assertThat(metadata.getDatabaseVersion()).isEqualTo("9.4");
     }
 

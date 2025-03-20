@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * {@link StartupMessage.StartupParameterProvider} for generic Postgres options.
+ * {@link StartupMessage.StartupParameterProvider} for generic GaussDB options.
  *
  * @since 1.0
  */
-public final class PostgresStartupParameterProvider implements StartupMessage.StartupParameterProvider {
+public final class GaussDBStartupParameterProvider implements StartupMessage.StartupParameterProvider {
 
     private final String applicationName;
 
@@ -37,13 +37,13 @@ public final class PostgresStartupParameterProvider implements StartupMessage.St
     @Nullable
     private final Map<String, String> options;
 
-    public PostgresStartupParameterProvider(String applicationName, TimeZone timeZone, @Nullable Map<String, String> options) {
+    public GaussDBStartupParameterProvider(String applicationName, TimeZone timeZone, @Nullable Map<String, String> options) {
         this.applicationName = Assert.requireNonNull(applicationName, "applicationName must not be null");
         this.timeZone = Assert.requireNonNull(timeZone, "timeZone must not be null");
         this.options = options;
     }
 
-    public PostgresStartupParameterProvider(String applicationName, TimeZone timeZone, ConnectionSettings settings) {
+    public GaussDBStartupParameterProvider(String applicationName, TimeZone timeZone, ConnectionSettings settings) {
         this.applicationName = Assert.requireNonNull(applicationName, "applicationName must not be null");
         this.timeZone = Assert.requireNonNull(timeZone, "timeZone must not be null");
         this.options = settings.getStartupOptions();

@@ -121,7 +121,7 @@ final class PostgisGeometryCodec implements Codec<Geometry>, CodecMetadata {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(AbstractCodec.getDataType(this.oid));
     }
 

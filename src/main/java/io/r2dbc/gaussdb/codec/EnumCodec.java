@@ -116,7 +116,7 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return Collections.singleton(AbstractCodec.getDataType(this.oid));
     }
 
@@ -131,9 +131,9 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
 
     static class EnumArrayCodec<T extends Enum<T>> extends EnumCodec<T> implements ArrayCodecDelegate<T> {
 
-        private final PostgresTypeIdentifier arrayType;
+        private final GaussDBTypeIdentifier arrayType;
 
-        public EnumArrayCodec(ByteBufAllocator byteBufAllocator, Class<T> type, int oid, PostgresTypeIdentifier arrayType) {
+        public EnumArrayCodec(ByteBufAllocator byteBufAllocator, Class<T> type, int oid, GaussDBTypeIdentifier arrayType) {
             super(byteBufAllocator, type, oid);
             this.arrayType = arrayType;
         }
@@ -144,12 +144,12 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
         }
 
         @Override
-        public PostgresTypeIdentifier getArrayDataType() {
+        public GaussDBTypeIdentifier getArrayDataType() {
             return this.arrayType;
         }
 
         @Override
-        public T decode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type) {
+        public T decode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type) {
             return decode(buffer, dataType.getObjectId(), format, type);
         }
 
@@ -220,7 +220,7 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
 
                 List<String> missing = new ArrayList<>(mapping.keySet());
                 return PostgresTypes.from(connection).lookupTypes(mapping.keySet())
-                    .filter(PostgresTypes.PostgresType::isEnum)
+                    .filter(PostgresTypes.GaussDBType::isEnum)
                     .doOnNext(it -> {
 
                         Class<? extends Enum<?>> enumClass = mapping.get(it.getName());

@@ -25,8 +25,8 @@ import reactor.util.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC_ARRAY;
 
 final class BigIntegerCodec extends AbstractNumericCodec<BigInteger> {
 
@@ -35,7 +35,7 @@ final class BigIntegerCodec extends AbstractNumericCodec<BigInteger> {
     }
 
     @Override
-    BigInteger doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends BigInteger> type) {
+    BigInteger doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends BigInteger> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return this.decodeNumber(buffer, dataType, format, BigInteger.class, it -> {
@@ -44,12 +44,12 @@ final class BigIntegerCodec extends AbstractNumericCodec<BigInteger> {
     }
 
     @Override
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return NUMERIC;
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return NUMERIC_ARRAY;
     }
 

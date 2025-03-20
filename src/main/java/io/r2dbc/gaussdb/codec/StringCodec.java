@@ -29,13 +29,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BPCHAR;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CHAR;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NAME;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TEXT;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.UNKNOWN;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BPCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NAME;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TEXT;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.UNKNOWN;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
@@ -45,19 +45,19 @@ public final class StringCodec extends AbstractCodec<String> implements ArrayCod
 
     static final Codec<String[]> STRING_ARRAY_DECODER = StringArrayDecoder.INSTANCE;
 
-    private static final Set<PostgresqlObjectId> SUPPORTED_TYPES = EnumSet.of(BPCHAR, CHAR, TEXT, UNKNOWN, VARCHAR, NAME);
+    private static final Set<GaussDBObjectId> SUPPORTED_TYPES = EnumSet.of(BPCHAR, CHAR, TEXT, UNKNOWN, VARCHAR, NAME);
 
     private final ByteBufAllocator byteBufAllocator;
 
-    private final PostgresTypeIdentifier defaultType;
+    private final GaussDBTypeIdentifier defaultType;
 
-    private final PostgresTypeIdentifier arrayType;
+    private final GaussDBTypeIdentifier arrayType;
 
     public StringCodec(ByteBufAllocator byteBufAllocator) {
         this(byteBufAllocator, VARCHAR, VARCHAR_ARRAY);
     }
 
-    public StringCodec(ByteBufAllocator byteBufAllocator, PostgresTypeIdentifier defaultType, PostgresTypeIdentifier arrayType) {
+    public StringCodec(ByteBufAllocator byteBufAllocator, GaussDBTypeIdentifier defaultType, GaussDBTypeIdentifier arrayType) {
         super(String.class);
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
         this.defaultType = Assert.requireNonNull(defaultType, "defaultType must not be null");
@@ -70,7 +70,7 @@ public final class StringCodec extends AbstractCodec<String> implements ArrayCod
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -78,7 +78,7 @@ public final class StringCodec extends AbstractCodec<String> implements ArrayCod
     }
 
     @Override
-    String doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends String> type) {
+    String doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends String> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return ByteBufUtils.decode(buffer);
@@ -90,7 +90,7 @@ public final class StringCodec extends AbstractCodec<String> implements ArrayCod
     }
 
     @Override
-    EncodedParameter doEncode(String value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(String value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_TEXT, dataType, () -> ByteBufUtils.encode(this.byteBufAllocator, value));
@@ -104,12 +104,12 @@ public final class StringCodec extends AbstractCodec<String> implements ArrayCod
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return this.arrayType;
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return Stream.concat(Stream.of(this.defaultType), SUPPORTED_TYPES.stream()).collect(Collectors.toSet());
     }
 
@@ -143,7 +143,7 @@ public final class StringCodec extends AbstractCodec<String> implements ArrayCod
         }
 
         @Override
-        public String decode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends String> type) {
+        public String decode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends String> type) {
             Assert.requireNonNull(buffer, "byteBuf must not be null");
             return ByteBufUtils.decode(buffer);
         }

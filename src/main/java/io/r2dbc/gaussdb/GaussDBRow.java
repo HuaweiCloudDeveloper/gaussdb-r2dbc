@@ -159,7 +159,7 @@ final class GaussDBRow implements io.r2dbc.gaussdb.api.GaussDBRow {
 
     @Override
     public String toString() {
-        return "PostgresqlRow{" +
+        return "GaussDBRow{" +
             "context=" + this.context +
             ", columns=" + this.fields +
             ", isReleased=" + this.isReleased +

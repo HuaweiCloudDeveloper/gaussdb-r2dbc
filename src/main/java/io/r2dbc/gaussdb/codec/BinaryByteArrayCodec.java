@@ -33,12 +33,12 @@ final class BinaryByteArrayCodec extends AbstractBinaryCodec<byte[]> {
     }
 
     @Override
-    byte[] doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends byte[]> type) {
+    byte[] doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends byte[]> type) {
         return decode(format, buffer);
     }
 
     @Override
-    EncodedParameter doEncode(byte[] value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(byte[] value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
 
         return create(FORMAT_TEXT, dataType, () -> encodeToHex(Unpooled.wrappedBuffer(value)));

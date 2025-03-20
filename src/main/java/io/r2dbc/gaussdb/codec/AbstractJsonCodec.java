@@ -23,13 +23,13 @@ import io.r2dbc.gaussdb.util.Assert;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSON;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSONB;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSON;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSONB;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 
 abstract class AbstractJsonCodec<T> extends AbstractCodec<T> {
 
-    private static final Set<PostgresqlObjectId> SUPPORTED_TYPES = EnumSet.of(JSON, JSONB);
+    private static final Set<GaussDBObjectId> SUPPORTED_TYPES = EnumSet.of(JSON, JSONB);
 
     AbstractJsonCodec(Class<T> type) {
         super(type);
@@ -46,7 +46,7 @@ abstract class AbstractJsonCodec<T> extends AbstractCodec<T> {
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -54,7 +54,7 @@ abstract class AbstractJsonCodec<T> extends AbstractCodec<T> {
     }
 
     @Override
-    public Iterable<? extends PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<? extends GaussDBTypeIdentifier> getDataTypes() {
         return SUPPORTED_TYPES;
     }
 

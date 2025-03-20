@@ -27,8 +27,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIME;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIME_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIME;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIME_ARRAY;
 
 final class LocalTimeCodec extends AbstractTemporalCodec<LocalTime> {
 
@@ -37,7 +37,7 @@ final class LocalTimeCodec extends AbstractTemporalCodec<LocalTime> {
     }
 
     @Override
-    LocalTime doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, Class<? extends LocalTime> type) {
+    LocalTime doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, Class<? extends LocalTime> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return decodeTemporal(buffer, dataType, format, LocalTime.class, temporal -> {

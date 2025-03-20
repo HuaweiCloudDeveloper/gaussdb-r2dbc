@@ -24,8 +24,8 @@ import java.net.UnknownHostException;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 import static io.r2dbc.gaussdb.client.ParameterAssert.assertThat;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INET;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.MONEY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INET;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.MONEY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;

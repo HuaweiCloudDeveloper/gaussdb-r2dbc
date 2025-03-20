@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOX;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOX_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOX;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOX_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 
 /**
@@ -67,12 +67,12 @@ final class BoxArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Box> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return BOX;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return BOX_ARRAY;
     }
 

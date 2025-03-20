@@ -22,8 +22,8 @@ import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.util.Assert;
 import reactor.util.annotation.Nullable;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT4;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT4_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT4;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT4_ARRAY;
 
 final class IntegerCodec extends AbstractNumericCodec<Integer> implements PrimitiveWrapperCodecProvider<Integer> {
 
@@ -37,7 +37,7 @@ final class IntegerCodec extends AbstractNumericCodec<Integer> implements Primit
     }
 
     @Override
-    Integer doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Integer> type) {
+    Integer doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends Integer> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
 
@@ -45,12 +45,12 @@ final class IntegerCodec extends AbstractNumericCodec<Integer> implements Primit
     }
 
     @Override
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return INT4;
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return INT4_ARRAY;
     }
 

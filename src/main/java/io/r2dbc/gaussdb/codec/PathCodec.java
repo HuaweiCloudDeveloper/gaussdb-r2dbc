@@ -22,8 +22,8 @@ import io.netty.buffer.ByteBufAllocator;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.PATH;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.PATH_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.PATH;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.PATH_ARRAY;
 
 /**
  * @since 0.8.5
@@ -75,7 +75,7 @@ final class PathCodec extends AbstractGeometryCodec<Path> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return PATH_ARRAY;
     }
 

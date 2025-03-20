@@ -29,7 +29,7 @@ import io.r2dbc.gaussdb.util.ByteBufUtils;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.JSONB;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.JSONB;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 
 final class JsonCodec extends AbstractJsonCodec<Json> {
@@ -45,7 +45,7 @@ final class JsonCodec extends AbstractJsonCodec<Json> {
     }
 
     @Override
-    Json doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends Json> type) {
+    Json doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends Json> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
@@ -67,7 +67,7 @@ final class JsonCodec extends AbstractJsonCodec<Json> {
     }
 
     @Override
-    EncodedParameter doEncode(Json value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(Json value, GaussDBTypeIdentifier dataType) {
         Assert.requireNonNull(value, "value must not be null");
         if (!(value instanceof Json.JsonInput || value instanceof Json.JsonOutput)) {
             throw new IllegalArgumentException("value must be JsonInput or JsonOutput");

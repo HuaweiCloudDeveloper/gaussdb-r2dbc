@@ -20,7 +20,7 @@ import io.netty.buffer.ByteBuf;
 import io.r2dbc.gaussdb.client.EncodedParameter;
 import io.r2dbc.gaussdb.message.Format;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.UNSPECIFIED;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.UNSPECIFIED;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 final class ObjectCodec implements Codec<Object> {

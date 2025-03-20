@@ -25,7 +25,7 @@ import java.util.UUID;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 import static io.r2dbc.gaussdb.client.ParameterAssert.assertThat;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.UUID_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.UUID_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;
@@ -82,7 +82,7 @@ final class UuidArrayCodecUnitTests {
 
     @Test
     void doCanDecode() {
-        assertThat(codec.doCanDecode(PostgresqlObjectId.UUID, FORMAT_TEXT)).isFalse();
+        assertThat(codec.doCanDecode(GaussDBObjectId.UUID, FORMAT_TEXT)).isFalse();
         assertThat(codec.doCanDecode(UUID_ARRAY, FORMAT_TEXT)).isTrue();
         assertThat(codec.doCanDecode(UUID_ARRAY, FORMAT_BINARY)).isTrue();
     }

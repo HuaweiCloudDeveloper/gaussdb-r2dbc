@@ -44,7 +44,7 @@ public interface GaussDBConnection extends Connection {
     /**
      * {@inheritDoc}
      *
-     * @see PostgresTransactionDefinition
+     * @see GaussDBTransactionDefinition
      */
     @Override
     Mono<Void> beginTransaction(TransactionDefinition definition);

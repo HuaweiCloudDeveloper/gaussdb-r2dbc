@@ -22,8 +22,8 @@ import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.util.Assert;
 import reactor.util.annotation.Nullable;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT8;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT8_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT8;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT8_ARRAY;
 
 final class DoubleCodec extends AbstractNumericCodec<Double> implements PrimitiveWrapperCodecProvider<Double> {
 
@@ -37,7 +37,7 @@ final class DoubleCodec extends AbstractNumericCodec<Double> implements Primitiv
     }
 
     @Override
-    Double doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, @Nullable Class<? extends Double> type) {
+    Double doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, @Nullable Class<? extends Double> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
 
@@ -45,12 +45,12 @@ final class DoubleCodec extends AbstractNumericCodec<Double> implements Primitiv
     }
 
     @Override
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return FLOAT8;
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return FLOAT8_ARRAY;
     }
 

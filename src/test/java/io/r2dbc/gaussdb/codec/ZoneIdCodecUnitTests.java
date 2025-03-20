@@ -23,9 +23,9 @@ import java.time.ZoneId;
 
 import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 import static io.r2dbc.gaussdb.client.ParameterAssert.assertThat;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BPCHAR;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.MONEY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BPCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.MONEY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;

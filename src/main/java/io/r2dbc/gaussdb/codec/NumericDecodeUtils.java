@@ -36,14 +36,14 @@ final class NumericDecodeUtils {
     }
 
     /**
-     * Decode {@code buffer} to {@link Number} according to {@link PostgresqlObjectId}.
+     * Decode {@code buffer} to {@link Number} according to {@link GaussDBObjectId}.
      *
      * @param buffer   the data buffer
-     * @param dataType the well-known {@link PostgresqlObjectId type OID}
+     * @param dataType the well-known {@link GaussDBObjectId type OID}
      * @param format   the data type {@link Format}, text or binary
      * @return the decoded number
      */
-    public static Number decodeNumber(ByteBuf buffer, PostgresqlObjectId dataType, @Nullable Format format) {
+    public static Number decodeNumber(ByteBuf buffer, GaussDBObjectId dataType, @Nullable Format format) {
 
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 

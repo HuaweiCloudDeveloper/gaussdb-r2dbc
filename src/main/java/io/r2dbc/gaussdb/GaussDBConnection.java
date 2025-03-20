@@ -19,7 +19,7 @@ package io.r2dbc.gaussdb;
 import io.r2dbc.gaussdb.api.CopyInBuilder;
 import io.r2dbc.gaussdb.api.ErrorDetails;
 import io.r2dbc.gaussdb.api.Notification;
-import io.r2dbc.gaussdb.api.PostgresTransactionDefinition;
+import io.r2dbc.gaussdb.api.GaussDBTransactionDefinition;
 import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.api.GaussDBStatement;
 import io.r2dbc.gaussdb.client.Client;
@@ -116,7 +116,7 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
 
                 IsolationLevel isolationLevel = definition.getAttribute(TransactionDefinition.ISOLATION_LEVEL);
                 Boolean readOnly = definition.getAttribute(TransactionDefinition.READ_ONLY);
-                Boolean deferrable = definition.getAttribute(PostgresTransactionDefinition.DEFERRABLE);
+                Boolean deferrable = definition.getAttribute(GaussDBTransactionDefinition.DEFERRABLE);
 
                 String begin = "BEGIN";
                 String transactionMode = "";

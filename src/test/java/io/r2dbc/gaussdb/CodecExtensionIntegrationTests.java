@@ -23,7 +23,7 @@ import io.r2dbc.gaussdb.api.GaussDBResult;
 import io.r2dbc.gaussdb.client.EncodedParameter;
 import io.r2dbc.gaussdb.codec.Codec;
 import io.r2dbc.gaussdb.codec.CodecRegistry;
-import io.r2dbc.gaussdb.codec.PostgresqlObjectId;
+import io.r2dbc.gaussdb.codec.GaussDBObjectId;
 import io.r2dbc.gaussdb.extension.CodecRegistrar;
 import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.util.ByteBufUtils;
@@ -101,7 +101,7 @@ final class CodecExtensionIntegrationTests extends AbstractIntegrationTests {
 
         @Override
         public boolean canDecode(int dataType, Format format, Class<?> type) {
-            return dataType == PostgresqlObjectId.JSON.getObjectId();
+            return dataType == GaussDBObjectId.JSON.getObjectId();
         }
 
         @Override

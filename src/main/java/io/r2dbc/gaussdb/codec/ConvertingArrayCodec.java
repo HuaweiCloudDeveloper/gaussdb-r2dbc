@@ -24,18 +24,18 @@ import io.r2dbc.gaussdb.util.Assert;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.DATE_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT4_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.FLOAT8_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT2_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT4_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT8_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.NUMERIC_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.OID_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMP_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMETZ_ARRAY;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIME_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.DATE_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT4_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.FLOAT8_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT2_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT4_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT8_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.NUMERIC_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.OID_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMP_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMETZ_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIME_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
 
 /**
@@ -45,17 +45,17 @@ import static io.r2dbc.gaussdb.message.Format.FORMAT_BINARY;
  */
 final class ConvertingArrayCodec<T> extends ArrayCodec<T> {
 
-    static final Set<PostgresqlObjectId> NUMERIC_ARRAY_TYPES = EnumSet.of(INT2_ARRAY, INT4_ARRAY, INT8_ARRAY, FLOAT4_ARRAY, FLOAT8_ARRAY, NUMERIC_ARRAY, OID_ARRAY);
+    static final Set<GaussDBObjectId> NUMERIC_ARRAY_TYPES = EnumSet.of(INT2_ARRAY, INT4_ARRAY, INT8_ARRAY, FLOAT4_ARRAY, FLOAT8_ARRAY, NUMERIC_ARRAY, OID_ARRAY);
 
-    static final Set<PostgresqlObjectId> DATE_ARRAY_TYPES = EnumSet.of(DATE_ARRAY, TIMESTAMP_ARRAY, TIMESTAMPTZ_ARRAY, TIME_ARRAY, TIMETZ_ARRAY);
+    static final Set<GaussDBObjectId> DATE_ARRAY_TYPES = EnumSet.of(DATE_ARRAY, TIMESTAMP_ARRAY, TIMESTAMPTZ_ARRAY, TIME_ARRAY, TIMETZ_ARRAY);
 
     private final ArrayCodecDelegate<T> delegate;
 
     private final Class<T> componentType;
 
-    private final Set<PostgresqlObjectId> supportedTypes;
+    private final Set<GaussDBObjectId> supportedTypes;
 
-    public ConvertingArrayCodec(ByteBufAllocator byteBufAllocator, ArrayCodecDelegate<T> delegate, Class<T> componentType, Set<PostgresqlObjectId> supportedTypes) {
+    public ConvertingArrayCodec(ByteBufAllocator byteBufAllocator, ArrayCodecDelegate<T> delegate, Class<T> componentType, Set<GaussDBObjectId> supportedTypes) {
         super(byteBufAllocator, delegate, componentType);
         this.delegate = delegate;
         this.componentType = componentType;
@@ -70,12 +70,12 @@ final class ConvertingArrayCodec<T> extends ArrayCodec<T> {
             return true;
         }
 
-        return PostgresqlObjectId.isValid(dataType) && this.supportedTypes.contains(PostgresqlObjectId.valueOf(dataType)) &&
+        return GaussDBObjectId.isValid(dataType) && this.supportedTypes.contains(GaussDBObjectId.valueOf(dataType)) &&
             type.isArray() && getActualComponentType(type).isAssignableFrom(getComponentType());
     }
 
     @Override
-    Object[] doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends Object[]> type) {
+    Object[] doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends Object[]> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");

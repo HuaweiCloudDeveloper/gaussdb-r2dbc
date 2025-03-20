@@ -24,8 +24,8 @@ import reactor.util.annotation.Nullable;
 
 import java.time.OffsetDateTime;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ_ARRAY;
 
 final class OffsetDateTimeCodec extends AbstractTemporalCodec<OffsetDateTime> {
 
@@ -34,7 +34,7 @@ final class OffsetDateTimeCodec extends AbstractTemporalCodec<OffsetDateTime> {
     }
 
     @Override
-    OffsetDateTime doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends OffsetDateTime> type) {
+    OffsetDateTime doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, @Nullable Class<? extends OffsetDateTime> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return decodeTemporal(buffer, dataType, format, OffsetDateTime.class, OffsetDateTime::from);

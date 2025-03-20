@@ -35,12 +35,12 @@ final class BinaryByteBufferCodec extends AbstractBinaryCodec<ByteBuffer> {
     }
 
     @Override
-    ByteBuffer doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends ByteBuffer> type) {
+    ByteBuffer doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends ByteBuffer> type) {
         return ByteBuffer.wrap(decode(format, buffer));
     }
 
     @Override
-    EncodedParameter doEncode(ByteBuffer value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(ByteBuffer value, GaussDBTypeIdentifier dataType) {
         return create(FORMAT_TEXT, dataType, () -> encodeToHex(Unpooled.wrappedBuffer(value)));
     }
 

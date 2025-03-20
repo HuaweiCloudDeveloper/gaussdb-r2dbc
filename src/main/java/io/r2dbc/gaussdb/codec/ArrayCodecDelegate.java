@@ -40,7 +40,7 @@ interface ArrayCodecDelegate<T> extends CodecMetadata, Decoder<T> {
      *
      * @return the array data type to be used when creating the encoded form of the array.
      */
-    PostgresTypeIdentifier getArrayDataType();
+    GaussDBTypeIdentifier getArrayDataType();
 
     /**
      * Decode the {@link ByteBuf buffer} and return it as the requested {@link Class type}.
@@ -53,6 +53,6 @@ interface ArrayCodecDelegate<T> extends CodecMetadata, Decoder<T> {
      */
     @Nullable
     @Override
-    T decode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type);
+    T decode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type);
 
 }

@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.netty.buffer.ByteBuf;
 import org.junit.jupiter.api.Test;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CIRCLE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CIRCLE_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CIRCLE;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CIRCLE_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
@@ -70,12 +70,12 @@ final class CircleArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Circle
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return CIRCLE;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return CIRCLE_ARRAY;
     }
 

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
-final class SimpleTransactionDefinition implements PostgresTransactionDefinition {
+final class SimpleTransactionDefinition implements GaussDBTransactionDefinition {
 
     public static final SimpleTransactionDefinition EMPTY = new SimpleTransactionDefinition(Collections.emptyMap());
 
@@ -40,7 +40,7 @@ final class SimpleTransactionDefinition implements PostgresTransactionDefinition
         return (T) this.options.get(option);
     }
 
-    public PostgresTransactionDefinition with(Option<?> option, Object value) {
+    public GaussDBTransactionDefinition with(Option<?> option, Object value) {
 
         Map<Option<?>, Object> options = new HashMap<>(this.options);
         options.put(Assert.requireNonNull(option, "option must not be null"), Assert.requireNonNull(value, "value must not be null"));
@@ -49,28 +49,28 @@ final class SimpleTransactionDefinition implements PostgresTransactionDefinition
     }
 
     @Override
-    public PostgresTransactionDefinition deferrable() {
-        return with(PostgresTransactionDefinition.DEFERRABLE, true);
+    public GaussDBTransactionDefinition deferrable() {
+        return with(GaussDBTransactionDefinition.DEFERRABLE, true);
     }
 
     @Override
-    public PostgresTransactionDefinition notDeferrable() {
-        return with(PostgresTransactionDefinition.DEFERRABLE, false);
+    public GaussDBTransactionDefinition notDeferrable() {
+        return with(GaussDBTransactionDefinition.DEFERRABLE, false);
     }
 
     @Override
-    public PostgresTransactionDefinition isolationLevel(IsolationLevel isolationLevel) {
-        return with(PostgresTransactionDefinition.ISOLATION_LEVEL, isolationLevel);
+    public GaussDBTransactionDefinition isolationLevel(IsolationLevel isolationLevel) {
+        return with(GaussDBTransactionDefinition.ISOLATION_LEVEL, isolationLevel);
     }
 
     @Override
-    public PostgresTransactionDefinition readOnly() {
-        return with(PostgresTransactionDefinition.READ_ONLY, true);
+    public GaussDBTransactionDefinition readOnly() {
+        return with(GaussDBTransactionDefinition.READ_ONLY, true);
     }
 
     @Override
-    public PostgresTransactionDefinition readWrite() {
-        return with(PostgresTransactionDefinition.READ_ONLY, false);
+    public GaussDBTransactionDefinition readWrite() {
+        return with(GaussDBTransactionDefinition.READ_ONLY, false);
     }
 
 }

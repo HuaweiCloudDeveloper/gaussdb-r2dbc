@@ -18,8 +18,8 @@ package io.r2dbc.gaussdb.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.PATH;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.PATH_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.PATH;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.PATH_ARRAY;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 
 /**
@@ -79,12 +79,12 @@ final class PathArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Path> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return PATH;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return PATH_ARRAY;
     }
 

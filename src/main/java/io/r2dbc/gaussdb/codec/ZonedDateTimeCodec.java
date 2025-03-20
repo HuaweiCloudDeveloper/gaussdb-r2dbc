@@ -24,8 +24,8 @@ import reactor.util.annotation.Nullable;
 
 import java.time.ZonedDateTime;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.TIMESTAMPTZ_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ_ARRAY;
 
 final class ZonedDateTimeCodec extends AbstractTemporalCodec<ZonedDateTime> implements ArrayCodecDelegate<ZonedDateTime> {
 
@@ -34,7 +34,7 @@ final class ZonedDateTimeCodec extends AbstractTemporalCodec<ZonedDateTime> impl
     }
 
     @Override
-    ZonedDateTime doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, @Nullable Format format, Class<? extends ZonedDateTime> type) {
+    ZonedDateTime doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, @Nullable Format format, Class<? extends ZonedDateTime> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
 
         return decodeTemporal(buffer, dataType, format, ZonedDateTime.class, ZonedDateTime::from);
@@ -42,7 +42,7 @@ final class ZonedDateTimeCodec extends AbstractTemporalCodec<ZonedDateTime> impl
 
     // Avoid defaulting, use OffsetDateTime as default instead.
     @Override
-    PostgresqlObjectId getDefaultType() {
+    GaussDBObjectId getDefaultType() {
         return null;
     }
 

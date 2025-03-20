@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CIRCLE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.CIRCLE_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CIRCLE;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.CIRCLE_ARRAY;
 
 /**
  * @since 0.8.5
@@ -52,7 +52,7 @@ final class CircleCodec extends AbstractGeometryCodec<Circle> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return CIRCLE_ARRAY;
     }
 

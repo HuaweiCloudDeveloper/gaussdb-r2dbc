@@ -222,7 +222,7 @@ public final class DefaultCodecs implements Codecs, CodecRegistry {
         }
 
         if (String.class == type) {
-            int varcharType = PostgresqlObjectId.VARCHAR.getObjectId();
+            int varcharType = GaussDBObjectId.VARCHAR.getObjectId();
             Codec<T> varcharFallback = this.codecLookup.findDecodeCodec(varcharType, format, type);
             if (varcharFallback != null) {
                 return varcharFallback.decode(buffer, varcharType, format, type);
@@ -244,7 +244,7 @@ public final class DefaultCodecs implements Codecs, CodecRegistry {
     public EncodedParameter encode(Object value) {
         Assert.requireNonNull(value, "value must not be null");
 
-        PostgresTypeIdentifier dataType = null;
+        GaussDBTypeIdentifier dataType = null;
         Object parameterValue = value;
 
         if (value instanceof Parameter) {
@@ -257,18 +257,18 @@ public final class DefaultCodecs implements Codecs, CodecRegistry {
             }
 
             if (parameter.getType() instanceof R2dbcType) {
-                dataType = PostgresqlObjectId.valueOf((R2dbcType) parameter.getType());
+                dataType = GaussDBObjectId.valueOf((R2dbcType) parameter.getType());
             }
 
-            if (parameter.getType() instanceof PostgresTypeIdentifier) {
-                dataType = (PostgresTypeIdentifier) parameter.getType();
+            if (parameter.getType() instanceof GaussDBTypeIdentifier) {
+                dataType = (GaussDBTypeIdentifier) parameter.getType();
             }
         }
 
         return encodeParameterValue(value, dataType, parameterValue);
     }
 
-    EncodedParameter encodeParameterValue(Object value, @Nullable PostgresTypeIdentifier dataType, @Nullable Object parameterValue) {
+    EncodedParameter encodeParameterValue(Object value, @Nullable GaussDBTypeIdentifier dataType, @Nullable Object parameterValue) {
         if (dataType == null) {
 
             if (parameterValue == null) {

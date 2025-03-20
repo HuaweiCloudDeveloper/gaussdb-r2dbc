@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOX;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOX_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOX;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOX_ARRAY;
 
 /**
  * @since 0.8.5
@@ -59,7 +59,7 @@ final class BoxCodec extends AbstractGeometryCodec<Box> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return BOX_ARRAY;
     }
 

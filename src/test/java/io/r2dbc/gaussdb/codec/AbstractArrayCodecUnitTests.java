@@ -45,9 +45,9 @@ abstract class AbstractArrayCodecUnitTests<T> {
         codec = createInstance();
     }
 
-    abstract PostgresqlObjectId getPostgresqlObjectId();
+    abstract GaussDBObjectId getPostgresqlObjectId();
 
-    abstract PostgresqlObjectId getArrayPostgresqlObjectId();
+    abstract GaussDBObjectId getArrayPostgresqlObjectId();
 
     abstract ByteBuf getSingleDimensionBinaryArray();
 

@@ -22,8 +22,8 @@ import io.netty.buffer.ByteBufAllocator;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LINE;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LINE_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LINE;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LINE_ARRAY;
 
 /**
  * @since 0.8.5
@@ -78,7 +78,7 @@ final class LineCodec extends AbstractGeometryCodec<Line> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return LINE_ARRAY;
     }
 

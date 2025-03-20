@@ -24,8 +24,8 @@ import io.r2dbc.gaussdb.util.ByteBufUtils;
 
 import java.util.EnumSet;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INTERVAL;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INTERVAL_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INTERVAL;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INTERVAL_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 final class IntervalCodec extends BuiltinCodecSupport<Interval> {
@@ -35,7 +35,7 @@ final class IntervalCodec extends BuiltinCodecSupport<Interval> {
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(type, "type must not be null");
         Assert.requireNonNull(format, "format must not be null");
 
@@ -43,7 +43,7 @@ final class IntervalCodec extends BuiltinCodecSupport<Interval> {
     }
 
     @Override
-    Interval doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends Interval> type) {
+    Interval doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends Interval> type) {
         return Interval.parse(ByteBufUtils.decode(buffer));
     }
 

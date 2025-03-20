@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.codec.Codecs;
-import io.r2dbc.gaussdb.codec.PostgresqlObjectId;
+import io.r2dbc.gaussdb.codec.GaussDBObjectId;
 import io.r2dbc.gaussdb.message.Format;
 import io.r2dbc.gaussdb.message.backend.RowDescription.Field;
 import io.r2dbc.gaussdb.util.Assert;
@@ -27,7 +27,7 @@ import io.r2dbc.spi.Type;
 import java.util.Objects;
 
 /**
- * An implementation of {@link ColumnMetadata} for a PostgreSQL database.
+ * An implementation of {@link ColumnMetadata} for a GaussDB database.
  */
 final class GaussDBColumnMetadata implements io.r2dbc.gaussdb.api.GaussDBColumnMetadata {
 
@@ -81,8 +81,8 @@ final class GaussDBColumnMetadata implements io.r2dbc.gaussdb.api.GaussDBColumnM
     @Override
     public Type getType() {
 
-        if (PostgresqlObjectId.isValid(this.nativeType)) {
-            return new OidType(PostgresqlObjectId.valueOf(this.nativeType), getJavaType());
+        if (GaussDBObjectId.isValid(this.nativeType)) {
+            return new OidType(GaussDBObjectId.valueOf(this.nativeType), getJavaType());
         }
 
         return new UnknownOidType(this.nativeType, getJavaType());
@@ -123,11 +123,11 @@ final class GaussDBColumnMetadata implements io.r2dbc.gaussdb.api.GaussDBColumnM
 
     static class OidType implements Type {
 
-        private final PostgresqlObjectId objectId;
+        private final GaussDBObjectId objectId;
 
         private final Class<?> javaType;
 
-        OidType(PostgresqlObjectId objectId, Class<?> javaType) {
+        OidType(GaussDBObjectId objectId, Class<?> javaType) {
             this.objectId = objectId;
             this.javaType = javaType;
         }

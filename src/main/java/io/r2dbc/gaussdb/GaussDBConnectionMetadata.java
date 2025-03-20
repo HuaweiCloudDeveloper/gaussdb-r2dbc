@@ -31,7 +31,7 @@ final class GaussDBConnectionMetadata implements io.r2dbc.gaussdb.api.GaussDBCon
 
     @Override
     public String getDatabaseProductName() {
-        return "PostgreSQL";
+        return "GaussDB";
     }
 
     @Override

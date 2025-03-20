@@ -63,7 +63,7 @@ public final class MockCodec<T> extends AbstractCodec<T> {
     }
 
     @Override
-    public Iterable<PostgresTypeIdentifier> getDataTypes() {
+    public Iterable<GaussDBTypeIdentifier> getDataTypes() {
         return canDecodes.stream().map(cd -> cd.type).collect(Collectors.toList());
     }
 
@@ -77,7 +77,7 @@ public final class MockCodec<T> extends AbstractCodec<T> {
     }
 
     @Override
-    boolean doCanDecode(PostgresqlObjectId type, Format format) {
+    boolean doCanDecode(GaussDBObjectId type, Format format) {
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
 
@@ -85,7 +85,7 @@ public final class MockCodec<T> extends AbstractCodec<T> {
     }
 
     @Override
-    T doDecode(ByteBuf buffer, PostgresTypeIdentifier dataType, Format format, Class<? extends T> type) {
+    T doDecode(ByteBuf buffer, GaussDBTypeIdentifier dataType, Format format, Class<? extends T> type) {
         Assert.requireNonNull(buffer, "byteBuf must not be null");
         Assert.requireNonNull(format, "format must not be null");
         Assert.requireNonNull(type, "type must not be null");
@@ -110,7 +110,7 @@ public final class MockCodec<T> extends AbstractCodec<T> {
     }
 
     @Override
-    EncodedParameter doEncode(T value, PostgresTypeIdentifier dataType) {
+    EncodedParameter doEncode(T value, GaussDBTypeIdentifier dataType) {
         if (!this.encodings.containsKey(value)) {
             throw new AssertionError(String.format("Unexpected call to doEncode(T) with value '%s'", value));
         }
@@ -136,7 +136,7 @@ public final class MockCodec<T> extends AbstractCodec<T> {
             return new MockCodec<>(this.canDecodes, this.decodings, this.encodings, this.type);
         }
 
-        public Builder<T> canDecode(Format format, PostgresqlObjectId type) {
+        public Builder<T> canDecode(Format format, GaussDBObjectId type) {
             Assert.requireNonNull(format, "format must not be null");
             Assert.requireNonNull(type, "type must not be null");
 
@@ -176,9 +176,9 @@ public final class MockCodec<T> extends AbstractCodec<T> {
 
         private final Format format;
 
-        private final PostgresqlObjectId type;
+        private final GaussDBObjectId type;
 
-        private CanDecode(Format format, PostgresqlObjectId type) {
+        private CanDecode(Format format, GaussDBObjectId type) {
             this.format = Assert.requireNonNull(format, "format must not be null");
             this.type = Assert.requireNonNull(type, "type must not be null");
         }

@@ -53,7 +53,7 @@ public final class StartupMessageFlow {
      */
     public static Flux<BackendMessage> exchange(String applicationName, Function<AuthenticationMessage, AuthenticationHandler> authenticationHandlerProvider, Client client,
                                                 @Nullable String database, String username) {
-        return exchange(authenticationHandlerProvider, client, database, username, new PostgresStartupParameterProvider(applicationName, TimeZone.getDefault(), (Map<String, String>) null));
+        return exchange(authenticationHandlerProvider, client, database, username, new GaussDBStartupParameterProvider(applicationName, TimeZone.getDefault(), (Map<String, String>) null));
     }
 
     /**

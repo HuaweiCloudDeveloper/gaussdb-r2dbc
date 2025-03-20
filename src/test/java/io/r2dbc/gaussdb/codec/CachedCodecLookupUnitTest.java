@@ -32,10 +32,10 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT2;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.INT4;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.UNKNOWN;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.VARCHAR;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT2;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.INT4;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.UNKNOWN;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.VARCHAR;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +49,7 @@ import static org.mockito.Mockito.spy;
 @ExtendWith(MockitoExtension.class)
 class CachedCodecLookupUnitTest {
 
-    private static final int SOME_OID = PostgresqlObjectId.OID_CACHE_SIZE * 2;
+    private static final int SOME_OID = GaussDBObjectId.OID_CACHE_SIZE * 2;
 
     DefaultCodecs codecs;
 
@@ -78,10 +78,10 @@ class CachedCodecLookupUnitTest {
     void findCodec() {
         List<Codec<?>> codecList = Arrays.asList(this.stringCodec, this.integerCodec);
         doReturn(String.class).when(this.stringCodec).type();
-        doReturn(Collections.singleton((PostgresTypeIdentifier) VARCHAR)).when(this.stringCodec).getDataTypes();
+        doReturn(Collections.singleton((GaussDBTypeIdentifier) VARCHAR)).when(this.stringCodec).getDataTypes();
         doReturn(EnumSet.of(FORMAT_TEXT)).when(this.stringCodec).getFormats();
         doReturn(Integer.class).when(this.integerCodec).type();
-        doReturn(Collections.singleton((PostgresTypeIdentifier) INT4)).when(this.integerCodec).getDataTypes();
+        doReturn(Collections.singleton((GaussDBTypeIdentifier) INT4)).when(this.integerCodec).getDataTypes();
         doReturn(EnumSet.of(FORMAT_TEXT)).when(this.integerCodec).getFormats();
         codecList.forEach(this.codecs::addFirst);
         this.codecFinder.afterCodecAdded();

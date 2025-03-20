@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LSEG;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.LSEG_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LSEG;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.LSEG_ARRAY;
 
 /**
  * @since 0.8.5
@@ -55,7 +55,7 @@ final class LsegCodec extends AbstractGeometryCodec<Lseg> {
     }
 
     @Override
-    public PostgresTypeIdentifier getArrayDataType() {
+    public GaussDBTypeIdentifier getArrayDataType() {
         return LSEG_ARRAY;
     }
 

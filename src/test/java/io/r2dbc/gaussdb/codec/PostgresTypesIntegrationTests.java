@@ -37,7 +37,7 @@ class PostgresTypesIntegrationTests extends AbstractIntegrationTests {
 
         Mono.usingWhen(getConnectionFactory().create(), c -> {
             return PostgresTypes.from(c).lookupType("varchar");
-        }, Connection::close).map(PostgresTypes.PostgresType::getName).map(String::toLowerCase)
+        }, Connection::close).map(PostgresTypes.GaussDBType::getName).map(String::toLowerCase)
             .as(StepVerifier::create).expectNext("varchar").verifyComplete();
     }
 
@@ -46,7 +46,7 @@ class PostgresTypesIntegrationTests extends AbstractIntegrationTests {
 
         Flux.usingWhen(getConnectionFactory().create(), c -> {
             return PostgresTypes.from(c).lookupTypes(Arrays.asList("varchar", "int4"));
-        }, Connection::close).map(PostgresTypes.PostgresType::getName).map(String::toLowerCase).collectList()
+        }, Connection::close).map(PostgresTypes.GaussDBType::getName).map(String::toLowerCase).collectList()
             .as(StepVerifier::create).consumeNextWith(actual -> {
             assertThat(actual).contains("varchar", "int4");
         }).verifyComplete();

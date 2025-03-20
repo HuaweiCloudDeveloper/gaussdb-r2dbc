@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.codec;
 import io.netty.buffer.ByteBuf;
 import org.junit.jupiter.api.Test;
 
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOOL;
-import static io.r2dbc.gaussdb.codec.PostgresqlObjectId.BOOL_ARRAY;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOOL;
+import static io.r2dbc.gaussdb.codec.GaussDBObjectId.BOOL_ARRAY;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static io.r2dbc.gaussdb.util.ByteBufUtils.encode;
 import static io.r2dbc.gaussdb.util.TestByteBufAllocator.TEST;
@@ -70,12 +70,12 @@ class BooleanArrayCodecUnitTests extends AbstractArrayCodecUnitTests<Boolean> {
     }
 
     @Override
-    PostgresqlObjectId getPostgresqlObjectId() {
+    GaussDBObjectId getPostgresqlObjectId() {
         return BOOL;
     }
 
     @Override
-    PostgresqlObjectId getArrayPostgresqlObjectId() {
+    GaussDBObjectId getArrayPostgresqlObjectId() {
         return BOOL_ARRAY;
     }
 
