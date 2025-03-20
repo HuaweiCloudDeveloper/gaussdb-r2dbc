@@ -54,7 +54,7 @@ import static org.mockito.Mockito.mock;
 /**
  * Unit tests for {@link GaussDBConnection}.
  */
-final class PostgresqlConnectionUnitTests {
+final class GaussDBConnectionUnitTests {
 
     private final StatementCache statementCache = mock(StatementCache.class, RETURNS_SMART_NULLS);
 

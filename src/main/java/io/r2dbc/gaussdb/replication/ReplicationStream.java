@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 /**
- * Postgresql replication stream. Once established, the stream occupies the {@link GaussDBReplicationConnection} until this stream is {@link #close() closed}. This stream can be consumed by
+ * GaussDB replication stream. Once established, the stream occupies the {@link GaussDBReplicationConnection} until this stream is {@link #close() closed}. This stream can be consumed by
  * applying a {@link Function mapping function} using {@link #map(Function)}.
  */
 public interface ReplicationStream extends Closeable {

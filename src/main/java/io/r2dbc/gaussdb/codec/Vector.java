@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Value object that maps to the {@code vector} datatype provided by Postgres pgvector.
+ * Value object that maps to the {@code vector} datatype provided by GaussDB pgvector.
  *
  * @since 1.0.3
  */

@@ -29,7 +29,7 @@ import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMETZ_ARRAY;
 public class OffsetTimeCodec extends AbstractTemporalCodec<OffsetTime> {
 
     OffsetTimeCodec(ByteBufAllocator byteBufAllocator) {
-        super(OffsetTime.class, byteBufAllocator, TIMETZ, TIMETZ_ARRAY, PostgresqlTimeFormatter::toString);
+        super(OffsetTime.class, byteBufAllocator, TIMETZ, TIMETZ_ARRAY, GaussDBTimeFormatter::toString);
     }
 
     @Override

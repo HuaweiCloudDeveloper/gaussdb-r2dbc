@@ -159,7 +159,7 @@ final class GaussDBResult extends AbstractReferenceCounted implements io.r2dbc.g
 
     @Override
     public String toString() {
-        return "PostgresqlResult{" +
+        return "GaussDBResult{" +
             "context=" + this.resources +
             ", messages=" + this.messages +
             '}';

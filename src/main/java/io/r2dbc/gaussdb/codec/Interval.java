@@ -46,7 +46,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Value object that maps to the {@code interval} datatype in Postgres.
+ * Value object that maps to the {@code interval} datatype in GaussDB.
  * <p>
  * This class models a quantity or amount of time in terms of years, months, days, hours, minutes, seconds, and microseconds.
  * In addition to accessing its individual properties, its values can be retrieved as {@link #getPeriod() Period} and {@link Duration}.
@@ -58,7 +58,7 @@ import java.util.concurrent.TimeUnit;
  * normalization (e.g. more than 28/29/30/31 days) can only be applied in the context of an actual date hence it's not supported by this class.
  * Normalizing an interval of 14 months and 43 days results in an interval of 1 year, 2 months, and 43 days.
  * <p>
- * An {@code interval} can be created either from a {@code ISO-8601} or Postgres representation using {@link #parse(String)}. It can also be created from a {@link TemporalAmount} or as function
+ * An {@code interval} can be created either from a {@code ISO-8601} or GaussDB representation using {@link #parse(String)}. It can also be created from a {@link TemporalAmount} or as function
  * accepting {@link TemporalAmount temporal} {@code start} and {@code end} values through {@link #between(Temporal, Temporal)}.
  * <p>This class is immutable and thread-safe.
  *
@@ -377,7 +377,7 @@ public final class Interval implements ChronoPeriod, Serializable {
 
     /**
      * Parse the {@code value} representing a {@link Interval}. This method
-     * only supports values that Postgres returns.
+     * only supports values that GaussDB returns.
      *
      * @param value a string that represents the interval value
      * @return the new {@link Interval} object
@@ -388,7 +388,7 @@ public final class Interval implements ChronoPeriod, Serializable {
 
         return value.startsWith("P") ?
             parseISO8601IntervalValue(value) :
-            parsePostgresIntervalValue(value);
+            parseGaussDBIntervalValue(value);
     }
 
     /**
@@ -755,13 +755,13 @@ public final class Interval implements ChronoPeriod, Serializable {
     }
 
     /**
-     * Parse the {@code value} representing an {@link Interval} in postgres
+     * Parse the {@code value} representing an {@link Interval} in GaussDB
      * or postgres_verbose format.
      *
      * @param value the value in postgres or postgres_verbose format
      * @return the new {@link Interval} object
      */
-    private static Interval parsePostgresIntervalValue(String value) {
+    private static Interval parseGaussDBIntervalValue(String value) {
 
         boolean isVerbose = value.startsWith("@");
 

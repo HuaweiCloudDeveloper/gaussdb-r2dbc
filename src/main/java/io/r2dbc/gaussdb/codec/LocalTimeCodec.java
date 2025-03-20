@@ -33,7 +33,7 @@ import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIME_ARRAY;
 final class LocalTimeCodec extends AbstractTemporalCodec<LocalTime> {
 
     LocalTimeCodec(ByteBufAllocator byteBufAllocator) {
-        super(LocalTime.class, byteBufAllocator, TIME, TIME_ARRAY, PostgresqlTimeFormatter::toString);
+        super(LocalTime.class, byteBufAllocator, TIME, TIME_ARRAY, GaussDBTimeFormatter::toString);
     }
 
     @Override

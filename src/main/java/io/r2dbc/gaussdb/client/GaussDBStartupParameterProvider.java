@@ -56,7 +56,7 @@ public final class GaussDBStartupParameterProvider implements StartupMessage.Sta
         writer.write("client_encoding", "utf8");
         writer.write("DateStyle", "ISO");
         writer.write("extra_float_digits", "2");
-        writer.write("TimeZone", TimeZoneUtils.createPostgresTimeZone(this.timeZone));
+        writer.write("TimeZone", TimeZoneUtils.createGaussDBTimeZone(this.timeZone));
 
         if (this.options != null) {
             for (Map.Entry<String, String> option : this.options.entrySet()) {

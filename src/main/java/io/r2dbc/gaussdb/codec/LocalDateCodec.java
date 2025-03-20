@@ -33,7 +33,7 @@ import static io.r2dbc.gaussdb.codec.GaussDBObjectId.DATE_ARRAY;
 final class LocalDateCodec extends AbstractTemporalCodec<LocalDate> {
 
     LocalDateCodec(ByteBufAllocator byteBufAllocator) {
-        super(LocalDate.class, byteBufAllocator, DATE, DATE_ARRAY, PostgresqlDateTimeFormatter::toString);
+        super(LocalDate.class, byteBufAllocator, DATE, DATE_ARRAY, GaussDBDateTimeFormatter::toString);
     }
 
     @Override

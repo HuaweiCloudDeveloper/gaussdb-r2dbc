@@ -30,7 +30,7 @@ import static io.r2dbc.gaussdb.codec.GaussDBObjectId.TIMESTAMPTZ_ARRAY;
 final class OffsetDateTimeCodec extends AbstractTemporalCodec<OffsetDateTime> {
 
     OffsetDateTimeCodec(ByteBufAllocator byteBufAllocator) {
-        super(OffsetDateTime.class, byteBufAllocator, TIMESTAMPTZ, TIMESTAMPTZ_ARRAY, PostgresqlDateTimeFormatter::toString);
+        super(OffsetDateTime.class, byteBufAllocator, TIMESTAMPTZ, TIMESTAMPTZ_ARRAY, GaussDBDateTimeFormatter::toString);
     }
 
     @Override

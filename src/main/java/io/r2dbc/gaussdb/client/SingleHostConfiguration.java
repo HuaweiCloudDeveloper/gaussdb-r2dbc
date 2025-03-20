@@ -22,7 +22,7 @@ import reactor.util.annotation.Nullable;
 import static io.r2dbc.gaussdb.GaussDBConnectionConfiguration.DEFAULT_PORT;
 
 /**
- * Connection configuration information for connecting to a single Postgres server.
+ * Connection configuration information for connecting to a single GaussDB server.
  *
  * @since 1.0
  */

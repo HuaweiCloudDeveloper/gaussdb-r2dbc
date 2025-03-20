@@ -96,9 +96,9 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
             .switchIfEmpty(Mono.error(() -> {
                 Throwable error = exceptionRef.get();
                 if (error == null) {
-                    return new GaussDBConnectionFactory.PostgresConnectionException(String.format("No server matches target type '%s'", targetServerType), null);
+                    return new GaussDBConnectionFactory.GaussDBConnectionException(String.format("No server matches target type '%s'", targetServerType), null);
                 } else {
-                    return new GaussDBConnectionFactory.PostgresConnectionException(String.format("Cannot connect to a host of %s", this.addresses), error);
+                    return new GaussDBConnectionFactory.GaussDBConnectionException(String.format("Cannot connect to a host of %s", this.addresses), error);
                 }
             }));
     }

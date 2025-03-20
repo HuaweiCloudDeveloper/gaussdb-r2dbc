@@ -49,16 +49,16 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
 
     private static final Set<GaussDBObjectId> SUPPORTED_TYPES = EnumSet.of(DATE, TIMESTAMP, TIMESTAMPTZ, TIME, TIMETZ);
 
-    private final GaussDBObjectId postgresType;
+    private final GaussDBObjectId gaussDBType;
 
     /**
      * Create a new {@link AbstractTemporalCodec}.
      *
      * @param type the type handled by this codec
      */
-    AbstractTemporalCodec(Class<T> type, ByteBufAllocator byteBufAllocator, GaussDBObjectId postgresType, GaussDBObjectId postgresArrayType, Function<T, String> toTextEncoder) {
-        super(type, byteBufAllocator, postgresType, postgresArrayType, toTextEncoder);
-        this.postgresType = postgresType;
+    AbstractTemporalCodec(Class<T> type, ByteBufAllocator byteBufAllocator, GaussDBObjectId gaussDBType, GaussDBObjectId gaussDBArrayType, Function<T, String> toTextEncoder) {
+        super(type, byteBufAllocator, gaussDBType, gaussDBArrayType, toTextEncoder);
+        this.gaussDBType = gaussDBType;
     }
 
     @Override
@@ -86,7 +86,7 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
      * Decode {@code buffer} to {@link Temporal} and potentially convert it to {@link Class expectedType} using {@link Function converter} if the decoded type does not match {@code expectedType}.
      *
      * @param buffer       the buffer
-     * @param dataType     the Postgres type
+     * @param dataType     the GaussDB type
      * @param format       value format
      * @param expectedType expected result type
      * @param converter    converter to convert from {@link Temporal} into {@code expectedType}
@@ -101,7 +101,7 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
      * Decode {@code buffer} to {@link Temporal} according to {@link GaussDBObjectId}.
      *
      * @param buffer   the buffer
-     * @param dataType the Postgres type
+     * @param dataType the GaussDB type
      * @param format   value format
      * @return the decoded value
      */
@@ -116,28 +116,28 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
                     return EpochTime.fromLong(buffer.readLong()).toLocalDateTime();
                 }
 
-                return PostgresqlDateTimeFormatter.parseLocalDateTime(ByteBufUtils.decode(buffer));
+                return GaussDBDateTimeFormatter.parseLocalDateTime(ByteBufUtils.decode(buffer));
             case DATE:
             case DATE_ARRAY:
                 if (FORMAT_BINARY == format) {
                     return LocalDate.ofEpochDay(EpochTime.fromInt(buffer.readInt()).getJavaDays());
                 }
 
-                return PostgresqlDateTimeFormatter.parseLocalDate(ByteBufUtils.decode(buffer));
+                return GaussDBDateTimeFormatter.parseLocalDate(ByteBufUtils.decode(buffer));
             case TIME:
             case TIME_ARRAY:
                 if (FORMAT_BINARY == format) {
                     return LocalTime.ofNanoOfDay(buffer.readLong() * 1000);
                 }
 
-                return PostgresqlTimeFormatter.parseLocalTime(ByteBufUtils.decode(buffer));
+                return GaussDBTimeFormatter.parseLocalTime(ByteBufUtils.decode(buffer));
             case TIMESTAMPTZ:
             case TIMESTAMPTZ_ARRAY:
                 if (FORMAT_BINARY == format) {
                     return EpochTime.fromLong(buffer.readLong()).toInstant().atOffset(OffsetDateTime.now().getOffset());
                 }
 
-                return PostgresqlDateTimeFormatter.parseOffsetDateTime(ByteBufUtils.decode(buffer));
+                return GaussDBDateTimeFormatter.parseOffsetDateTime(ByteBufUtils.decode(buffer));
             case TIMETZ:
             case TIMETZ_ARRAY:
                 if (FORMAT_BINARY == format) {
@@ -146,7 +146,7 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
                     return OffsetTime.of(LocalTime.ofNanoOfDay(timeNano), ZoneOffset.ofTotalSeconds(offsetSec));
                 }
 
-                return PostgresqlTimeFormatter.parseOffsetTime(ByteBufUtils.decode(buffer));
+                return GaussDBTimeFormatter.parseOffsetTime(ByteBufUtils.decode(buffer));
         }
 
         throw new UnsupportedOperationException(String.format("Cannot decode value for type %s, format %s", dataType, format));
@@ -159,7 +159,7 @@ abstract class AbstractTemporalCodec<T extends Temporal> extends BuiltinCodecSup
      */
     @Nullable
     GaussDBObjectId getDefaultType() {
-        return this.postgresType;
+        return this.gaussDBType;
     }
 
     static <T> T potentiallyConvert(Temporal temporal, Class<T> expectedType, Function<Temporal, T> converter) {

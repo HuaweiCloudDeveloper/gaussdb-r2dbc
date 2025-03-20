@@ -186,7 +186,7 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
             return throwable;
         }
 
-        return new PostgresConnectionException(String.format("Cannot connect to %s", strategy), throwable);
+        return new GaussDBConnectionException(String.format("Cannot connect to %s", strategy), throwable);
     }
 
     @Override
@@ -221,13 +221,13 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
             })).defaultIfEmpty(IsolationLevel.READ_COMMITTED).last();
     }
 
-    static class PostgresConnectionException extends R2dbcNonTransientResourceException implements GaussDBException {
+    static class GaussDBConnectionException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private static final String CONNECTION_DOES_NOT_EXIST = "08003";
 
         private final ErrorDetails errorDetails;
 
-        public PostgresConnectionException(String reason, @Nullable Throwable cause) {
+        public GaussDBConnectionException(String reason, @Nullable Throwable cause) {
             super(reason, CONNECTION_DOES_NOT_EXIST, 0, null, cause);
             this.errorDetails = ErrorDetails.fromCodeAndMessage(CONNECTION_DOES_NOT_EXIST, reason);
         }

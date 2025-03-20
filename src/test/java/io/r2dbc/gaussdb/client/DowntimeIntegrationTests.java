@@ -36,7 +36,7 @@ public class DowntimeIntegrationTests {
     void failSslHandshakeIfInboundClosed() {
         verifyError(SSLMode.REQUIRE, error ->
             assertThat(error)
-                .isInstanceOf(AbstractPostgresSSLHandlerAdapter.GaussDBSslException.class)
+                .isInstanceOf(AbstractGaussDBSSLHandlerAdapter.GaussDBSslException.class)
                 .hasMessage("Connection closed during SSL negotiation"));
     }
 

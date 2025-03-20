@@ -37,7 +37,7 @@ final class LocalDateTimeCodec extends AbstractTemporalCodec<LocalDateTime> {
     private final Supplier<ZoneId> zoneIdSupplier;
 
     LocalDateTimeCodec(ByteBufAllocator byteBufAllocator, Supplier<ZoneId> zoneIdSupplier) {
-        super(LocalDateTime.class, byteBufAllocator, TIMESTAMP, TIMESTAMP_ARRAY, PostgresqlDateTimeFormatter::toString);
+        super(LocalDateTime.class, byteBufAllocator, TIMESTAMP, TIMESTAMP_ARRAY, GaussDBDateTimeFormatter::toString);
         this.zoneIdSupplier = Assert.requireNonNull(zoneIdSupplier, "zoneIdSupplier must not be null");
     }
 

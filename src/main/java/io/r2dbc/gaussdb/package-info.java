@@ -15,7 +15,7 @@
  */
 
 /**
- * An implementation of the Reactive Relational Database Connection API for PostgreSQL servers.
+ * An implementation of the Reactive Relational Database Connection API for GaussDB servers.
  */
 
 @NonNullApi

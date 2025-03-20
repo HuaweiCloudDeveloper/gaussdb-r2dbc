@@ -25,11 +25,11 @@ import reactor.core.publisher.Mono;
 import java.net.SocketAddress;
 
 /**
- * SSL handler assuming the endpoint a Postgres endpoint following the {@link SSLRequest} flow.
+ * SSL handler assuming the endpoint a GaussDB endpoint following the {@link SSLRequest} flow.
  *
  * @see <a href="https://www.postgresql.org/docs/current/protocol-flow.html#id-1.10.5.7.11">https://www.postgresql.org/docs/current/protocol-flow.html#id-1.10.5.7.11</a>
  */
-final class SSLSessionHandlerAdapter extends AbstractPostgresSSLHandlerAdapter {
+final class SSLSessionHandlerAdapter extends AbstractGaussDBSSLHandlerAdapter {
 
     private final ByteBufAllocator alloc;
 

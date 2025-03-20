@@ -22,9 +22,9 @@ import io.netty.channel.ChannelHandlerContext;
 import java.net.SocketAddress;
 
 /**
- * SSL handler assuming the endpoint is a SSL tunnel and not a Postgres endpoint.
+ * SSL handler assuming the endpoint is a SSL tunnel and not a GaussDB endpoint.
  */
-final class SSLTunnelHandlerAdapter extends AbstractPostgresSSLHandlerAdapter {
+final class SSLTunnelHandlerAdapter extends AbstractGaussDBSSLHandlerAdapter {
 
     private final SSLConfig sslConfig;
 

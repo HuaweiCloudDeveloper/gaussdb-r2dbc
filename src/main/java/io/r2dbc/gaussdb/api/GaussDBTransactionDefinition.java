@@ -28,7 +28,7 @@ import io.r2dbc.spi.TransactionDefinition;
 public interface GaussDBTransactionDefinition extends TransactionDefinition {
 
     /**
-     * The {@code DEFERRABLE} transaction_mode is a PostgreSQL language extension.
+     * The {@code DEFERRABLE} transaction_mode is a GaussDB language extension.
      */
     Option<Boolean> DEFERRABLE = Option.valueOf("deferrable");
 

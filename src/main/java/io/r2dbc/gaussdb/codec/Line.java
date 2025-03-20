@@ -5,7 +5,7 @@ import io.r2dbc.gaussdb.util.Assert;
 import java.util.Objects;
 
 /**
- * Value object that maps to the {@code line} datatype in Postgres.
+ * Value object that maps to the {@code line} datatype in GaussDB.
  * Lines are represented by the linear equation Ax + By + C = 0.
  * <p>
  * Uses {@code double} to represent the coordinates.

@@ -31,11 +31,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 /**
- * Utility to look up Postgres types using {@code pg_type}.
+ * Utility to look up GaussDB types using {@code pg_type}.
  *
  * @since 0.8.4
  */
-public class PostgresTypes {
+public class GaussDBTypes {
 
     public final static int NO_SUCH_TYPE = -1;
 
@@ -57,16 +57,16 @@ public class PostgresTypes {
 
     private final GaussDBConnection connection;
 
-    private PostgresTypes(GaussDBConnection connection) {
+    private GaussDBTypes(GaussDBConnection connection) {
         this.connection = connection;
     }
 
-    public static PostgresTypes from(GaussDBConnection connection) {
-        return new PostgresTypes(Assert.requireNonNull(connection, "connection must not be null"));
+    public static GaussDBTypes from(GaussDBConnection connection) {
+        return new GaussDBTypes(Assert.requireNonNull(connection, "connection must not be null"));
     }
 
     /**
-     * Lookup Postgres types by {@code typname}. Please note that {@code typname} inlined to use simple statements. Therefore, {@code typname} gets verified against {@link #TYPENAME} to prevent SQL
+     * Lookup GaussDB types by {@code typname}. Please note that {@code typname} inlined to use simple statements. Therefore, {@code typname} gets verified against {@link #TYPENAME} to prevent SQL
      * injection.
      *
      * @param typeName the type name. Must comply with the pattern {@code [a-zA-Z0-9_]+}
@@ -78,7 +78,7 @@ public class PostgresTypes {
         }
 
         return this.connection.createStatement(String.format(SELECT_PG_TYPE, "=", "'" + typeName + "'", "LIMIT 1")).execute()
-            .flatMap(it -> it.map(PostgresTypes::createType)).singleOrEmpty();
+            .flatMap(it -> it.map(GaussDBTypes::createType)).singleOrEmpty();
     }
 
     public Flux<GaussDBType> lookupTypes(Iterable<String> typeNames) {
@@ -101,7 +101,7 @@ public class PostgresTypes {
         }
 
         return this.connection.createStatement(String.format(SELECT_PG_TYPE, "IN", joiner, "")).execute()
-            .flatMap(it -> it.map(PostgresTypes::createType));
+            .flatMap(it -> it.map(GaussDBTypes::createType));
     }
 
     private static GaussDBType createType(Row row, RowMetadata rowMetadata) {
@@ -313,7 +313,7 @@ public class PostgresTypes {
 
         @Override
         public String toString() {
-            return "PostgresType{" +
+            return "GaussDBType{" +
                 "oid=" + this.oid +
                 "unsignedOid=" + this.unsignedOid +
                 "typarray=" + this.typarray +

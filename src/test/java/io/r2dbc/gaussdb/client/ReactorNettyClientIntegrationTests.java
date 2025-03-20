@@ -158,7 +158,7 @@ final class ReactorNettyClientIntegrationTests {
             future.get(5, TimeUnit.SECONDS);
             fail("Expected PostgresConnectionClosedException");
         } catch (ExecutionException e) {
-            assertThat(e).hasCauseInstanceOf(ReactorNettyClient.PostgresConnectionClosedException.class).hasMessageContaining("Cannot exchange messages");
+            assertThat(e).hasCauseInstanceOf(ReactorNettyClient.GaussDBConnectionClosedException.class).hasMessageContaining("Cannot exchange messages");
         }
     }
 
@@ -181,7 +181,7 @@ final class ReactorNettyClientIntegrationTests {
             future.get(5, TimeUnit.SECONDS);
             fail("Expected PostgresConnectionClosedException");
         } catch (ExecutionException e) {
-            assertThat(e).hasCauseInstanceOf(ReactorNettyClient.PostgresConnectionClosedException.class);
+            assertThat(e).hasCauseInstanceOf(ReactorNettyClient.GaussDBConnectionClosedException.class);
         }
     }
 

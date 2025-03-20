@@ -25,9 +25,9 @@ package io.r2dbc.gaussdb.codec;
 public interface GaussDBTypeIdentifier {
 
     /**
-     * Postgres type identifier.
+     * GaussDB type identifier.
      *
-     * @return the Postgres type OID.
+     * @return the GaussDB type OID.
      */
     int getObjectId();
 

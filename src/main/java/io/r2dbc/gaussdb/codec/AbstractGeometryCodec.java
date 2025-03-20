@@ -42,7 +42,7 @@ abstract class AbstractGeometryCodec<T> extends AbstractCodec<T> implements Arra
 
     AbstractGeometryCodec(Class<T> type, GaussDBObjectId gaussDBObjectId, ByteBufAllocator byteBufAllocator) {
         super(type);
-        this.gaussDBObjectId = Assert.requireNonNull(gaussDBObjectId, "postgresqlObjectId must not be null");
+        this.gaussDBObjectId = Assert.requireNonNull(gaussDBObjectId, "GaussDBObjectId must not be null");
         this.byteBufAllocator = Assert.requireNonNull(byteBufAllocator, "byteBufAllocator must not be null");
     }
 

@@ -76,16 +76,16 @@ final class TimeZoneUtils {
     }
 
     /**
-     * Convert Java time zone to postgres time zone. All others stay the same except that GMT+nn
+     * Convert Java time zone to GaussDB time zone. All others stay the same except that GMT+nn
      * changes to GMT-nn and vise versa.
-     * If you provide GMT+/-nn postgres uses POSIX rules which has a positive sign for west of Greenwich
+     * If you provide GMT+/-nn GaussDB uses POSIX rules which has a positive sign for west of Greenwich
      * JAVA uses ISO rules which the positive sign is east of Greenwich
-     * To make matters more interesting postgres will always report in ISO
+     * To make matters more interesting GaussDB will always report in ISO
      *
      * @param timeZone time zone to use
-     * @return The current JVM time zone in gaussdb format.
+     * @return The current JVM time zone in GaussDB format.
      */
-    public static String createPostgresTimeZone(TimeZone timeZone) {
+    public static String createGaussDBTimeZone(TimeZone timeZone) {
         String tz = timeZone.getID();
         if (tz.length() <= 3 || !tz.startsWith("GMT")) {
             return tz;

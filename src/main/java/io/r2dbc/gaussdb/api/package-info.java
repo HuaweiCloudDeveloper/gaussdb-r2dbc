@@ -15,7 +15,7 @@
  */
 
 /**
- * R2DBC driver API with Postgres-specific extensions.
+ * R2DBC driver API with GaussDB-specific extensions.
  */
 
 @NonNullApi

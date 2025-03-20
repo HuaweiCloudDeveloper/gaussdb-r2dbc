@@ -96,8 +96,8 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
         SERVER.getJdbcOperations().execute("DROP TABLE IF EXISTS enum_test");
         SERVER.getJdbcOperations().execute("CREATE TABLE enum_test (the_value my_enum_with_codec);");
 
-        PostgresTypes types = PostgresTypes.from(this.connection);
-        PostgresTypes.GaussDBType type = types.lookupType("my_enum_with_codec").block();
+        GaussDBTypes types = GaussDBTypes.from(this.connection);
+        GaussDBTypes.GaussDBType type = types.lookupType("my_enum_with_codec").block();
 
         this.connection.createStatement("INSERT INTO enum_test VALUES($1)")
             .bind("$1", Parameters.in(type, "HELLO"))
@@ -117,8 +117,8 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
         SERVER.getJdbcOperations().execute("DROP TABLE IF EXISTS enum_test");
         SERVER.getJdbcOperations().execute("CREATE TABLE enum_test (the_value my_enum_with_codec[]);");
 
-        PostgresTypes types = PostgresTypes.from(this.connection);
-        PostgresTypes.GaussDBType type = types.lookupType("my_enum_with_codec").block().asArrayType();
+        GaussDBTypes types = GaussDBTypes.from(this.connection);
+        GaussDBTypes.GaussDBType type = types.lookupType("my_enum_with_codec").block().asArrayType();
 
         this.connection.createStatement("INSERT INTO enum_test VALUES($1)")
             .bind("$1", Parameters.in(type, new String[]{"HELLO", "WORLD"}))

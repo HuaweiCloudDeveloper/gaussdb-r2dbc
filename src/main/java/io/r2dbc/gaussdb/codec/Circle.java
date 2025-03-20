@@ -19,7 +19,7 @@ package io.r2dbc.gaussdb.codec;
 import io.r2dbc.gaussdb.util.Assert;
 
 /**
- * Value object that maps to the {@code circle} datatype in Postgres.
+ * Value object that maps to the {@code circle} datatype in GaussDB.
  * <p>
  * Uses {@code double} to represent the coordinates.
  *

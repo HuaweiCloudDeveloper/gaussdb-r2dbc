@@ -5,7 +5,7 @@ import io.r2dbc.gaussdb.util.Assert;
 import java.util.Objects;
 
 /**
- * Value object that maps to the {@code lseg} datatype in Postgres.
+ * Value object that maps to the {@code lseg} datatype in GaussDB.
  * <p>
  * Uses {@code double} to represent the coordinates.
  *

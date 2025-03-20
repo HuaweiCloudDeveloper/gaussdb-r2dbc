@@ -44,7 +44,7 @@ import java.util.function.Function;
 
 final class GaussDBReplicationStream implements ReplicationStream {
 
-    public static final long POSTGRES_EPOCH_2000_01_01 = 946684800000L;
+    public static final long GAUSSDB_EPOCH_2000_01_01 = 946684800000L;
 
     private static final char KEEP_ALIVE = 'k';
 
@@ -175,7 +175,7 @@ final class GaussDBReplicationStream implements ReplicationStream {
 
         long now = TimeUnit.NANOSECONDS.toMillis(System.nanoTime());
         // consider range bounds
-        long systemClock = TimeUnit.MICROSECONDS.convert((now - POSTGRES_EPOCH_2000_01_01), TimeUnit.MICROSECONDS);
+        long systemClock = TimeUnit.MICROSECONDS.convert((now - GAUSSDB_EPOCH_2000_01_01), TimeUnit.MICROSECONDS);
 
         return new KeepAliveMessage(received, flushed, applied, systemClock, replyRequired).encode(this.allocator);
     }

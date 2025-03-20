@@ -129,7 +129,7 @@ final class GaussDBCopyIn {
 
     @Override
     public String toString() {
-        return "PostgresqlCopyIn{" +
+        return "GaussDBCopyIn{" +
             "context=" + this.context +
             '}';
     }

@@ -33,7 +33,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.CompletableFuture;
 
-abstract class AbstractPostgresSSLHandlerAdapter extends ChannelInboundHandlerAdapter implements GenericFutureListener<Future<Channel>> {
+abstract class AbstractGaussDBSSLHandlerAdapter extends ChannelInboundHandlerAdapter implements GenericFutureListener<Future<Channel>> {
 
     private final SSLConfig sslConfig;
 
@@ -43,7 +43,7 @@ abstract class AbstractPostgresSSLHandlerAdapter extends ChannelInboundHandlerAd
 
     private final CompletableFuture<Void> handshakeFuture;
 
-    AbstractPostgresSSLHandlerAdapter(ByteBufAllocator alloc, SocketAddress socketAddress, SSLConfig sslConfig) {
+    AbstractGaussDBSSLHandlerAdapter(ByteBufAllocator alloc, SocketAddress socketAddress, SSLConfig sslConfig) {
         this.sslConfig = sslConfig;
 
         SSLEngine sslEngine = sslConfig.getSslProvider().get().newEngine(alloc);
@@ -93,7 +93,7 @@ abstract class AbstractPostgresSSLHandlerAdapter extends ChannelInboundHandlerAd
     }
 
     /**
-     * Postgres-specific {@link R2dbcPermissionDeniedException}.
+     * GaussDB-specific {@link R2dbcPermissionDeniedException}.
      */
     static final class GaussDBSslException extends R2dbcPermissionDeniedException implements GaussDBException {
 

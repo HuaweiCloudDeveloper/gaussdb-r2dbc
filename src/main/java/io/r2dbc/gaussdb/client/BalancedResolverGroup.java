@@ -39,7 +39,7 @@ final class BalancedResolverGroup extends AddressResolverGroup<InetSocketAddress
     static {
 
         INSTANCE = new BalancedResolverGroup();
-        Runtime.getRuntime().addShutdownHook(new Thread(INSTANCE::close, "R2DBC-Postgresql-BalancedResolverGroup-ShutdownHook"));
+        Runtime.getRuntime().addShutdownHook(new Thread(INSTANCE::close, "R2DBC-GaussDB-BalancedResolverGroup-ShutdownHook"));
     }
 
     @Override

@@ -202,7 +202,7 @@ abstract class AbstractCodec<T> implements Codec<T>, CodecMetadata {
 
     /**
      * @param value    the  {@code value}
-     * @param dataType the Postgres OID to encode
+     * @param dataType the GaussDB OID to encode
      * @return the encoded value
      * @since 0.9
      */

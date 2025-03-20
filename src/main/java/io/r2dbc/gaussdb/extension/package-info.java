@@ -15,7 +15,7 @@
  */
 
 /**
- * Extension points for the Postgres driver.
+ * Extension points for the GaussDB driver.
  */
 
 @NonNullApi

@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  * Value object capturing diagnostic connection context. Allows for log-message post-processing with {@link #getMessage(String) if the logger category for
  * {@code ConnectionContext} is enabled for DEBUG/TRACE logs.
  * <p>
- * Captures also the Postgres process Id.
+ * Captures also the GaussDB process Id.
  *
  * @since 0.8.6
  */
@@ -135,7 +135,7 @@ public final class ConnectionContext {
     /**
      * Create a new {@link ConnectionContext} by associating the {@code processId}.
      *
-     * @param processId the Postgres processId.
+     * @param processId the GaussDB processId.
      * @return a new {@link ConnectionContext} with all previously set values and the associated {@code processId}.
      */
     public ConnectionContext withProcessId(int processId) {

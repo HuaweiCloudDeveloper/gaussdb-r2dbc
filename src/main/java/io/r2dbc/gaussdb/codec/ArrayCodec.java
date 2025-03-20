@@ -81,7 +81,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
      * Create a new {@link ArrayCodec}.
      *
      * @param byteBufAllocator the buffer allocator
-     * @param dataType         the Postgres OID handled by this codec
+     * @param dataType         the GaussDB OID handled by this codec
      * @param delegate         the underlying {@link ArrayCodecDelegate} used to encode/decode data
      * @param componentType    the target component type
      */
@@ -98,7 +98,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
      * Create a new {@link ArrayCodec}.
      *
      * @param byteBufAllocator the buffer allocator
-     * @param dataType         the Postgres OID handled by this codec
+     * @param dataType         the GaussDB OID handled by this codec
      * @param delegate         the underlying {@link ArrayCodecDelegate} used to encode/decode data
      * @param componentType    the target component type
      * @param delimiter        the delimiter to use when encoding
@@ -212,7 +212,7 @@ class ArrayCodec<T> extends AbstractCodec<Object[]> {
      * Create the encoded array representation.
      *
      * @param encodedSupplier supplies the encoded buffers
-     * @param dataType        the Postgres data type
+     * @param dataType        the GaussDB data type
      * @return encoded {@link EncodedParameter} item
      */
     EncodedParameter encodeArray(Supplier<ByteBuf> encodedSupplier, GaussDBTypeIdentifier dataType) {

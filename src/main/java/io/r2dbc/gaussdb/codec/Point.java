@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.codec;
 
 /**
- * Value object that maps to the {@code point} datatype in Postgres.
+ * Value object that maps to the {@code point} datatype in GaussDB.
  * <p>
  * Uses {@code double} to represent the coordinates.
  *

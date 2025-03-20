@@ -27,7 +27,7 @@ import java.util.Objects;
 import static io.r2dbc.gaussdb.GaussDBConnectionConfiguration.DEFAULT_PORT;
 
 /**
- * Connection configuration information for connecting to a cluster of Postgres servers.
+ * Connection configuration information for connecting to a cluster of GaussDB servers.
  *
  * @since 1.0
  */

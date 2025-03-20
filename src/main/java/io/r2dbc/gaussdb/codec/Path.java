@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Value object that maps to the {@code path} datatype in Postgres.
+ * Value object that maps to the {@code path} datatype in GaussDB.
  * <p>
  * Uses {@code double} to represent the coordinates.
  *

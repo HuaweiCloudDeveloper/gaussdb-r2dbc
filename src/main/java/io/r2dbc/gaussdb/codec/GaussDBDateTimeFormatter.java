@@ -39,7 +39,7 @@ import static java.time.temporal.ChronoField.NANO_OF_SECOND;
 import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 import static java.time.temporal.ChronoField.YEAR_OF_ERA;
 
-class PostgresqlDateTimeFormatter {
+class GaussDBDateTimeFormatter {
 
     private static final String NEGATIVE_INFINITY = "-infinity";
 
@@ -121,7 +121,7 @@ class PostgresqlDateTimeFormatter {
      */
     static LocalDate parseLocalDate(String localDate) {
 
-        // convert postgres's infinity values to internal infinity magic value
+        // convert GaussDB's infinity values to internal infinity magic value
         if (isInfinity(localDate)) {
             return LocalDate.MAX;
         }
@@ -163,7 +163,7 @@ class PostgresqlDateTimeFormatter {
      */
     static LocalDateTime parseLocalDateTime(String localDateTime) {
 
-        // convert postgres's infinity values to internal infinity magic value
+        // convert GaussDB's infinity values to internal infinity magic value
         if (isInfinity(localDateTime)) {
             return LocalDateTime.MAX;
         }
@@ -192,15 +192,15 @@ class PostgresqlDateTimeFormatter {
         StringBuilder sbuf = new StringBuilder(24);
 
         int nano = localDateTime.getNano();
-        if (PostgresqlTimeFormatter.nanosExceed499(nano)) {
+        if (GaussDBTimeFormatter.nanosExceed499(nano)) {
             // Technically speaking this is not a proper rounding, however
             // it relies on the fact that appendTime just truncates 000..999 nanosecond part
-            localDateTime = localDateTime.plus(PostgresqlTimeFormatter.ONE_MICROSECOND);
+            localDateTime = localDateTime.plus(GaussDBTimeFormatter.ONE_MICROSECOND);
         }
         LocalDate localDate = localDateTime.toLocalDate();
         appendDate(sbuf, localDate);
         sbuf.append(' ');
-        PostgresqlTimeFormatter.appendTime(sbuf, localDateTime.toLocalTime());
+        GaussDBTimeFormatter.appendTime(sbuf, localDateTime.toLocalTime());
         appendEra(sbuf, localDate);
 
         return sbuf.toString();
@@ -214,7 +214,7 @@ class PostgresqlDateTimeFormatter {
      */
     static OffsetDateTime parseOffsetDateTime(String offsetDateTime) {
 
-        // convert postgres's infinity values to internal infinity magic value
+        // convert GaussDB's infinity values to internal infinity magic value
         if (isInfinity(offsetDateTime)) {
             return OffsetDateTime.MAX;
         }
@@ -243,17 +243,17 @@ class PostgresqlDateTimeFormatter {
         StringBuilder sbuf = new StringBuilder(24);
 
         int nano = offsetDateTime.getNano();
-        if (PostgresqlTimeFormatter.nanosExceed499(nano)) {
+        if (GaussDBTimeFormatter.nanosExceed499(nano)) {
             // Technically speaking this is not a proper rounding, however
             // it relies on the fact that appendTime just truncates 000..999 nanosecond part
-            offsetDateTime = offsetDateTime.plus(PostgresqlTimeFormatter.ONE_MICROSECOND);
+            offsetDateTime = offsetDateTime.plus(GaussDBTimeFormatter.ONE_MICROSECOND);
         }
         LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
         LocalDate localDate = localDateTime.toLocalDate();
         appendDate(sbuf, localDate);
         sbuf.append(' ');
-        PostgresqlTimeFormatter.appendTime(sbuf, localDateTime.toLocalTime());
-        PostgresqlTimeFormatter.appendTimeZone(sbuf, offsetDateTime.getOffset());
+        GaussDBTimeFormatter.appendTime(sbuf, localDateTime.toLocalTime());
+        GaussDBTimeFormatter.appendTimeZone(sbuf, offsetDateTime.getOffset());
         appendEra(sbuf, localDate);
 
         return sbuf.toString();
@@ -293,13 +293,13 @@ class PostgresqlDateTimeFormatter {
         sb.append(year);
         int leadingZerosForYear = 4 - (sb.length() - prevLength);
         if (leadingZerosForYear > 0) {
-            sb.insert(prevLength, PostgresqlTimeFormatter.ZEROS, 0, leadingZerosForYear);
+            sb.insert(prevLength, GaussDBTimeFormatter.ZEROS, 0, leadingZerosForYear);
         }
 
         sb.append('-');
-        sb.append(PostgresqlTimeFormatter.NUMBERS[month]);
+        sb.append(GaussDBTimeFormatter.NUMBERS[month]);
         sb.append('-');
-        sb.append(PostgresqlTimeFormatter.NUMBERS[day]);
+        sb.append(GaussDBTimeFormatter.NUMBERS[day]);
     }
 
     private static void appendEra(StringBuilder sb, LocalDate localDate) {

@@ -73,12 +73,12 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
             }).handle((message, sink) -> {
 
                 if (message instanceof ErrorResponse) {
-                    sink.next(new PostgresErrorSegment((ErrorResponse) message, factory));
+                    sink.next(new GaussDBErrorSegment((ErrorResponse) message, factory));
                     return;
                 }
 
                 if (message instanceof NoticeResponse) {
-                    sink.next(new PostgresNoticeSegment((NoticeResponse) message, factory));
+                    sink.next(new GaussDBNoticeSegment((NoticeResponse) message, factory));
                     return;
                 }
 
@@ -86,7 +86,7 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
 
                     Long rowCount = ((CommandComplete) message).getRows();
                     if (rowCount != null) {
-                        sink.next(new PostgresqlUpdateCountSegment(rowCount));
+                        sink.next(new GaussDBUpdateCountSegment(rowCount));
                     }
                     return;
                 }
@@ -102,11 +102,11 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
                     }
 
                     if (metadata == null) {
-                        sink.error(new IllegalStateException("DataRow without PostgresqlRowMetadata"));
+                        sink.error(new IllegalStateException("DataRow without GaussDBRowMetadata"));
                         return;
                     }
 
-                    sink.next(new PostgresqlRowSegment(GaussDBRow.toRow(resources, (DataRow) message, metadata, rowDescription), (DataRow) message));
+                    sink.next(new GaussDBRowSegment(GaussDBRow.toRow(resources, (DataRow) message, metadata, rowDescription), (DataRow) message));
                     return;
                 }
 
@@ -120,8 +120,8 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
             .<Integer>handle((segment, sink) -> {
 
                 try {
-                    if (segment instanceof PostgresErrorSegment) {
-                        sink.error(((PostgresErrorSegment) segment).exception());
+                    if (segment instanceof GaussDBErrorSegment) {
+                        sink.error(((GaussDBErrorSegment) segment).exception());
                         return;
                     }
 
@@ -156,8 +156,8 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
             .handle((segment, sink) -> {
 
                 try {
-                    if (segment instanceof PostgresErrorSegment) {
-                        sink.error(((PostgresErrorSegment) segment).exception());
+                    if (segment instanceof GaussDBErrorSegment) {
+                        sink.error(((GaussDBErrorSegment) segment).exception());
                         return;
                     }
 
@@ -222,7 +222,7 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
 
     @Override
     public String toString() {
-        return "PostgresqlSegmentResult{" +
+        return "GaussDBSegmentResult{" +
             "segments=" + this.segments +
             '}';
     }
@@ -231,13 +231,13 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
         return new GaussDBSegmentResult(resources, messages, factory);
     }
 
-    static class PostgresqlRowSegment extends AbstractReferenceCounted implements Result.RowSegment {
+    static class GaussDBRowSegment extends AbstractReferenceCounted implements Result.RowSegment {
 
         private final Row row;
 
         private final ReferenceCounted releaseable;
 
-        public PostgresqlRowSegment(Row row, ReferenceCounted releaseable) {
+        public GaussDBRowSegment(Row row, ReferenceCounted releaseable) {
             this.row = row;
             this.releaseable = releaseable;
         }
@@ -259,11 +259,11 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
 
     }
 
-    static class PostgresqlUpdateCountSegment implements Result.UpdateCount {
+    static class GaussDBUpdateCountSegment implements Result.UpdateCount {
 
         private final long value;
 
-        public PostgresqlUpdateCountSegment(long value) {
+        public GaussDBUpdateCountSegment(long value) {
             this.value = value;
         }
 
@@ -274,13 +274,13 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
 
     }
 
-    static class PostgresErrorSegment implements Result.Message {
+    static class GaussDBErrorSegment implements Result.Message {
 
         private final ExceptionFactory factory;
 
         private final ErrorDetails details;
 
-        public PostgresErrorSegment(ErrorResponse response, ExceptionFactory factory) {
+        public GaussDBErrorSegment(ErrorResponse response, ExceptionFactory factory) {
             this.factory = factory;
             this.details = new ErrorDetails(response.getFields());
         }
@@ -307,13 +307,13 @@ final class GaussDBSegmentResult extends AbstractReferenceCounted implements Gau
 
     }
 
-    static class PostgresNoticeSegment implements Result.Message {
+    static class GaussDBNoticeSegment implements Result.Message {
 
         private final ExceptionFactory factory;
 
         private final ErrorDetails details;
 
-        public PostgresNoticeSegment(NoticeResponse response, ExceptionFactory factory) {
+        public GaussDBNoticeSegment(NoticeResponse response, ExceptionFactory factory) {
             this.factory = factory;
             this.details = new ErrorDetails(response.getFields());
         }

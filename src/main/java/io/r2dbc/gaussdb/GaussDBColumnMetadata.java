@@ -110,7 +110,7 @@ final class GaussDBColumnMetadata implements io.r2dbc.gaussdb.api.GaussDBColumnM
 
     @Override
     public String toString() {
-        return "PostgresqlColumnMetadata{" +
+        return "GaussDBColumnMetadata{" +
             ", name='" + this.name + '\'' +
             ", nativeType=" + this.nativeType +
             ", precision=" + this.precision +

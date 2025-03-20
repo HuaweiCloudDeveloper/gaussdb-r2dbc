@@ -22,7 +22,7 @@ import io.r2dbc.gaussdb.message.Format;
 import reactor.util.annotation.Nullable;
 
 /**
- * Codec to encode and decode values based on Postgres OIDs and {@link Format}.
+ * Codec to encode and decode values based on GaussDB OIDs and {@link Format}.
  * <p>Codecs can decode one or more server-specific data types and represent them as a specific Java {@link Class type}. The type parameter of {@link Codec}
  * indicates the interchange type that is handled by this codec.
  *
@@ -35,7 +35,7 @@ public interface Codec<T> {
      * Determine whether this {@link Codec} is capable of decoding a value for the given {@code dataType} and {@link Format} and whether it can represent the decoded value as the desired
      * {@link Class type}.
      *
-     * @param dataType the Postgres OID to decode
+     * @param dataType the GaussDB OID to decode
      * @param format   the data type {@link Format}, text or binary
      * @param type     the desired value type
      * @return {@code true} if this codec is able to decode values for tge given {@code dataType} and {@link Format}
@@ -64,7 +64,7 @@ public interface Codec<T> {
      * Decode the {@link ByteBuf buffer} and return it as the requested {@link Class type}.
      *
      * @param buffer   the data buffer
-     * @param dataType the Postgres OID to encode
+     * @param dataType the GaussDB OID to encode
      * @param format   the data type {@link Format}, text or binary
      * @param type     the desired value type
      * @return the decoded value. Can be {@code null} if the value is {@code null}.
@@ -84,7 +84,7 @@ public interface Codec<T> {
      * Encode the {@code value} to be used as RPC parameter.
      *
      * @param value    the {@code value}
-     * @param dataType the Postgres OID to encode
+     * @param dataType the GaussDB OID to encode
      * @return the encoded value
      * @since 0.9
      */

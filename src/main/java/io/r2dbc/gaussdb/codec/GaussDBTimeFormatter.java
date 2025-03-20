@@ -28,7 +28,7 @@ import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
 import static java.time.temporal.ChronoField.NANO_OF_SECOND;
 import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 
-class PostgresqlTimeFormatter {
+class GaussDBTimeFormatter {
 
     static final LocalTime MAX_TIME = LocalTime.MAX.minus(Duration.ofNanos(500));
 

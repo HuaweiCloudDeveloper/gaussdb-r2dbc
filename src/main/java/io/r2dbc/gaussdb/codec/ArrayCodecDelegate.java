@@ -46,7 +46,7 @@ interface ArrayCodecDelegate<T> extends CodecMetadata, Decoder<T> {
      * Decode the {@link ByteBuf buffer} and return it as the requested {@link Class type}.
      *
      * @param buffer   the data buffer
-     * @param dataType the Postgres OID to encode
+     * @param dataType the GaussDB OID to encode
      * @param format   the data type {@link Format}, text or binary
      * @param type     the desired value type
      * @return the decoded value. Can be {@code null} if the value is {@code null}.

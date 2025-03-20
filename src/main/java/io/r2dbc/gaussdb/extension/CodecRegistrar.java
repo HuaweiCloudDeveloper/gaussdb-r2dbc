@@ -26,7 +26,7 @@ import org.reactivestreams.Subscriber;
 
 /**
  * Registrar interface that is used to register {@link Codec}s as extension to built-in codecs.
- * <p>Implementations may use {@link GaussDBConnection} to query Postgres information schema to discover type details such as extension type OIDs.</p>
+ * <p>Implementations may use {@link GaussDBConnection} to query GaussDB information schema to discover type details such as extension type OIDs.</p>
  *
  * <strong>Constructor Requirements</strong>
  * <p>Extension implementations must have a <em>default constructor</em> if registered via the {@code ServiceLoader}.  When registered through
@@ -42,7 +42,7 @@ public interface CodecRegistrar extends Extension {
      * Register {@link Codec} into {@link CodecRegistry}.
      * Codecs should be registered using a deferred approach upon {@link Publisher#subscribe(Subscriber) subscription}.
      *
-     * @param connection the connection to query the connected Postgres runtime instance
+     * @param connection the connection to query the connected GaussDB runtime instance
      * @param allocator  the allocator for buffer allocation
      * @param registry   target codec registry that accepts codec registrations
      * @return a {@link Publisher} that activates codec registration upon subscription

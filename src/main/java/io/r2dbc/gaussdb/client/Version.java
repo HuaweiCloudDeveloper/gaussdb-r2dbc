@@ -20,7 +20,7 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 
 /**
- * Postgres version information.
+ * GaussDB version information.
  */
 public final class Version {
 
@@ -38,7 +38,7 @@ public final class Version {
     }
 
     /**
-     * <p>Note that there's no requirement for this to be numeric or of the form x.y.z. PostgreSQL
+     * <p>Note that there's no requirement for this to be numeric or of the form x.y.z. GaussDB
      * development releases usually have the format x.ydevel e.g. 9.4devel; betas usually x.ybetan
      * e.g. 9.4beta1. The --with-extra-version configure option may add an arbitrary string to this.</p>
      * <p>Don't use this string for logic, only use it when displaying the server version to the user.

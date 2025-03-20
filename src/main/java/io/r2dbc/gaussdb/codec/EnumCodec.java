@@ -38,8 +38,8 @@ import static io.r2dbc.gaussdb.client.EncodedParameter.NULL_VALUE;
 import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 
 /**
- * Codec to map Postgres {@code enumerated} types to Java {@link Enum} values.
- * This codec uses {@link Enum#name()} to map Postgres enum values as these are represented as string values.
+ * Codec to map GaussDB {@code enumerated} types to Java {@link Enum} values.
+ * This codec uses {@link Enum#name()} to map GaussDB enum values as these are represented as string values.
  * <p>Note that enum values are case-sensitive.
  *
  * @param <T> enum type
@@ -121,7 +121,7 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
     }
 
     /**
-     * Create a new {@link Builder} to build a {@link CodecRegistrar} to dynamically register Postgres {@code enum} types to {@link Enum} values.
+     * Create a new {@link Builder} to build a {@link CodecRegistrar} to dynamically register GaussDB {@code enum} types to {@link Enum} values.
      *
      * @return a new builder.
      */
@@ -165,19 +165,19 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
         private RegistrationPriority registrationPriority = RegistrationPriority.LAST;
 
         /**
-         * Add a Postgres enum type to {@link Enum} mapping.
+         * Add a GaussDB enum type to {@link Enum} mapping.
          *
-         * @param name      name of the Postgres enum type
+         * @param name      name of the GaussDB enum type
          * @param enumClass the corresponding Java type
          * @return this {@link Builder}
          */
         public Builder withEnum(String name, Class<? extends Enum<?>> enumClass) {
-            Assert.requireNotEmpty(name, "Postgres type name must not be null");
+            Assert.requireNotEmpty(name, "GaussDB type name must not be null");
             Assert.requireNonNull(enumClass, "Enum class must not be null");
             Assert.isTrue(enumClass.isEnum(), String.format("Enum class %s must be an enum type", enumClass.getName()));
 
             if (this.mapping.containsKey(name)) {
-                throw new IllegalArgumentException(String.format("Builder contains already a mapping for Postgres type %s", name));
+                throw new IllegalArgumentException(String.format("Builder contains already a mapping for GaussDB type %s", name));
             }
 
             if (this.mapping.containsValue(enumClass)) {
@@ -202,7 +202,7 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
         }
 
         /**
-         * Build a {@link CodecRegistrar} to be used with {@code PostgresqlConnectionConfiguration.Builder#codecRegistrar(CodecRegistrar)}.
+         * Build a {@link CodecRegistrar} to be used with {@code GaussDBConnectionConfiguration.Builder#codecRegistrar(CodecRegistrar)}.
          * The codec registrar registers the codes to be used as part of the connection setup.
          *
          * @return a new {@link CodecRegistrar}.
@@ -219,8 +219,8 @@ public class EnumCodec<T extends Enum<T>> implements Codec<T>, CodecMetadata {
             return (connection, allocator, registry) -> {
 
                 List<String> missing = new ArrayList<>(mapping.keySet());
-                return PostgresTypes.from(connection).lookupTypes(mapping.keySet())
-                    .filter(PostgresTypes.GaussDBType::isEnum)
+                return GaussDBTypes.from(connection).lookupTypes(mapping.keySet())
+                    .filter(GaussDBTypes.GaussDBType::isEnum)
                     .doOnNext(it -> {
 
                         Class<? extends Enum<?>> enumClass = mapping.get(it.getName());

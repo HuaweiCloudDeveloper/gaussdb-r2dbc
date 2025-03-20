@@ -173,7 +173,7 @@ final class GaussDBStatement implements io.r2dbc.gaussdb.api.GaussDBStatement {
 
     @Override
     public String toString() {
-        return "PostgresqlStatement{" +
+        return "GaussDBStatement{" +
             "bindings=" + this.bindings +
             ", context=" + this.resources +
             ", sql='" + this.parsedSql.getSql() + '\'' +

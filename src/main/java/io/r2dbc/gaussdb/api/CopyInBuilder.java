@@ -32,7 +32,7 @@ import java.nio.ByteBuffer;
 public interface CopyInBuilder {
 
     /**
-     * Postgres parse limit for large messages {@code 2^30 - 1} bytes.
+     * GaussDB parse limit for large messages {@code 2^30 - 1} bytes.
      */
     int MAX_FRAME_SIZE = 0x3fffffff - 1;
 

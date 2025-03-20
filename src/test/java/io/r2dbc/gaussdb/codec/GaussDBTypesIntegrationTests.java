@@ -28,16 +28,16 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Integration tests for {@link PostgresTypes}.
+ * Integration tests for {@link GaussDBTypes}.
  */
-class PostgresTypesIntegrationTests extends AbstractIntegrationTests {
+class GaussDBTypesIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     void shouldLookupSingleType() {
 
         Mono.usingWhen(getConnectionFactory().create(), c -> {
-            return PostgresTypes.from(c).lookupType("varchar");
-        }, Connection::close).map(PostgresTypes.GaussDBType::getName).map(String::toLowerCase)
+            return GaussDBTypes.from(c).lookupType("varchar");
+        }, Connection::close).map(GaussDBTypes.GaussDBType::getName).map(String::toLowerCase)
             .as(StepVerifier::create).expectNext("varchar").verifyComplete();
     }
 
@@ -45,8 +45,8 @@ class PostgresTypesIntegrationTests extends AbstractIntegrationTests {
     void shouldLookupMultipleType() {
 
         Flux.usingWhen(getConnectionFactory().create(), c -> {
-            return PostgresTypes.from(c).lookupTypes(Arrays.asList("varchar", "int4"));
-        }, Connection::close).map(PostgresTypes.GaussDBType::getName).map(String::toLowerCase).collectList()
+            return GaussDBTypes.from(c).lookupTypes(Arrays.asList("varchar", "int4"));
+        }, Connection::close).map(GaussDBTypes.GaussDBType::getName).map(String::toLowerCase).collectList()
             .as(StepVerifier::create).consumeNextWith(actual -> {
             assertThat(actual).contains("varchar", "int4");
         }).verifyComplete();

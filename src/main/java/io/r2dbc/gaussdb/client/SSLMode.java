@@ -48,7 +48,7 @@ public enum SSLMode {
     VERIFY_FULL("verify-full"),
 
     /**
-     * I want to use a SSL tunnel instead of following Postgres SSL handshake protocol.
+     * I want to use a SSL tunnel instead of following GaussDB SSL handshake protocol.
      */
     TUNNEL("tunnel");
 

@@ -100,9 +100,9 @@ public final class ReactorNettyClient implements Client {
 
     private static final boolean DEBUG_ENABLED = logger.isDebugEnabled();
 
-    private static final Supplier<PostgresConnectionClosedException> UNEXPECTED = () -> new PostgresConnectionClosedException("Connection unexpectedly closed");
+    private static final Supplier<GaussDBConnectionClosedException> UNEXPECTED = () -> new GaussDBConnectionClosedException("Connection unexpectedly closed");
 
-    private static final Supplier<PostgresConnectionClosedException> EXPECTED = () -> new PostgresConnectionClosedException("Connection closed");
+    private static final Supplier<GaussDBConnectionClosedException> EXPECTED = () -> new GaussDBConnectionClosedException("Connection closed");
 
     private final ByteBufAllocator byteBufAllocator;
 
@@ -433,7 +433,7 @@ public final class ReactorNettyClient implements Client {
         try {
             if (sslConfig.getSslMode().startSsl()) {
 
-                AbstractPostgresSSLHandlerAdapter sslAdapter;
+                AbstractGaussDBSSLHandlerAdapter sslAdapter;
                 if (sslConfig.getSslMode() == SSLMode.TUNNEL) {
                     sslAdapter = new SSLTunnelHandlerAdapter(channel.alloc(), socketAddress, sslConfig);
                 } else {
@@ -448,7 +448,7 @@ public final class ReactorNettyClient implements Client {
     }
 
     private static Mono<Void> getSslHandshake(Channel channel) {
-        AbstractPostgresSSLHandlerAdapter sslAdapter = channel.pipeline().get(AbstractPostgresSSLHandlerAdapter.class);
+        AbstractGaussDBSSLHandlerAdapter sslAdapter = channel.pipeline().get(AbstractGaussDBSSLHandlerAdapter.class);
         return (sslAdapter != null) ? sslAdapter.getHandshake() : Mono.empty();
     }
 
@@ -520,7 +520,7 @@ public final class ReactorNettyClient implements Client {
 
             return ReactorNettyClient.connect(this.connection.channel().remoteAddress(), this.settings)
                 .flatMap(client -> CancelRequestMessageFlow.exchange(client, processId, secretKey).then(Mono.defer(client::closeConnection))
-                    .onErrorResume(PostgresConnectionClosedException.class::isInstance, e -> Mono.empty()));
+                    .onErrorResume(GaussDBConnectionClosedException.class::isInstance, e -> Mono.empty()));
         });
     }
 
@@ -548,7 +548,7 @@ public final class ReactorNettyClient implements Client {
             drainError(() -> this.messageSubscriber.createClientClosedException(error));
         }
 
-        drainError(() -> new PostgresConnectionException(error));
+        drainError(() -> new GaussDBConnectionException(error));
     }
 
     private void drainError(Supplier<? extends Throwable> supplier) {
@@ -581,16 +581,16 @@ public final class ReactorNettyClient implements Client {
 
     }
 
-    static class PostgresConnectionClosedException extends R2dbcNonTransientResourceException implements GaussDBException {
+    static class GaussDBConnectionClosedException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private final ErrorDetails errorDetails;
 
-        public PostgresConnectionClosedException(String reason) {
+        public GaussDBConnectionClosedException(String reason) {
             super(reason, CONNECTION_FAILURE, 0, (String) null);
             this.errorDetails = ErrorDetails.fromCodeAndMessage(CONNECTION_FAILURE, reason);
         }
 
-        public PostgresConnectionClosedException(String reason, @Nullable Throwable cause) {
+        public GaussDBConnectionClosedException(String reason, @Nullable Throwable cause) {
             super(reason, CONNECTION_FAILURE, 0, null, cause);
             this.errorDetails = ErrorDetails.fromCodeAndMessage(CONNECTION_FAILURE, reason);
         }
@@ -602,11 +602,11 @@ public final class ReactorNettyClient implements Client {
 
     }
 
-    static class PostgresConnectionException extends R2dbcNonTransientResourceException implements GaussDBException {
+    static class GaussDBConnectionException extends R2dbcNonTransientResourceException implements GaussDBException {
 
         private final static ErrorDetails ERROR_DETAILS = ErrorDetails.fromCodeAndMessage(CONNECTION_FAILURE, "An I/O error occurred while sending to the backend or receiving from the backend");
 
-        public PostgresConnectionException(Throwable cause) {
+        public GaussDBConnectionException(Throwable cause) {
             super(ERROR_DETAILS.getMessage(), ERROR_DETAILS.getCode(), 0, null, cause);
         }
 
@@ -784,12 +784,12 @@ public final class ReactorNettyClient implements Client {
             });
         }
 
-        PostgresConnectionClosedException createClientClosedException() {
+        GaussDBConnectionClosedException createClientClosedException() {
             return createClientClosedException(null);
         }
 
-        PostgresConnectionClosedException createClientClosedException(@Nullable Throwable cause) {
-            return new PostgresConnectionClosedException("Cannot exchange messages because the connection is closed", cause);
+        GaussDBConnectionClosedException createClientClosedException(@Nullable Throwable cause) {
+            return new GaussDBConnectionClosedException("Cannot exchange messages because the connection is closed", cause);
         }
 
         /**

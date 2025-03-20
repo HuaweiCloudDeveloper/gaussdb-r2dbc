@@ -19,7 +19,7 @@ package io.r2dbc.gaussdb.api;
 import reactor.util.annotation.Nullable;
 
 /**
- * Postgres notification received via {@code LISTEN}.
+ * GaussDB notification received via {@code LISTEN}.
  */
 public interface Notification {
 

@@ -363,7 +363,7 @@ public enum GaussDBObjectId implements Type, GaussDBTypeIdentifier {
 
     /**
      * UNKNOWN type
-     * PostgreSQL will sometimes return this type
+     * GaussDB will sometimes return this type
      * an example might be select 'hello' as foo
      * newer versions return TEXT but some older
      * versions will return UNKNOWN
