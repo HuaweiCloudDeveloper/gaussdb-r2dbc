@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryOptions;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import reactor.core.publisher.Mono;
 
-import static io.r2dbc.gaussdb.PostgresqlConnectionFactoryProvider.POSTGRESQL_DRIVER;
+import static io.r2dbc.gaussdb.GaussDBConnectionFactoryProvider.GAUSSDB_DRIVER;
 import static io.r2dbc.spi.ConnectionFactoryOptions.DATABASE;
 import static io.r2dbc.spi.ConnectionFactoryOptions.DRIVER;
 import static io.r2dbc.spi.ConnectionFactoryOptions.HOST;
@@ -40,12 +40,12 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 final class PostgresqlAuthenticationFailureIntegrationTests {
 
     @RegisterExtension
-    static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
     @Test
     void authExceptionCausedByWrongCredentials() {
         final ConnectionFactory connectionFactory = ConnectionFactories.get(ConnectionFactoryOptions.builder()
-            .option(DRIVER, POSTGRESQL_DRIVER)
+            .option(DRIVER, GAUSSDB_DRIVER)
             .option(DATABASE, SERVER.getDatabase())
             .option(HOST, SERVER.getHost())
             .option(PORT, SERVER.getPort())

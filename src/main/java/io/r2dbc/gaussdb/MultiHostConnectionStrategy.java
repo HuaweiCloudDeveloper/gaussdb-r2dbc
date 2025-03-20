@@ -51,7 +51,7 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
 
     private final Collection<SocketAddress> addresses;
 
-    private final PostgresqlConnectionConfiguration configuration;
+    private final GaussDBConnectionConfiguration configuration;
 
     private final MultiHostConfiguration multiHostConfiguration;
 
@@ -59,7 +59,7 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
 
     private final Map<SocketAddress, HostConnectOutcome> statusMap;
 
-    MultiHostConnectionStrategy(ConnectionFunction connectionFunction, Collection<SocketAddress> addresses, PostgresqlConnectionConfiguration configuration, ConnectionSettings settings) {
+    MultiHostConnectionStrategy(ConnectionFunction connectionFunction, Collection<SocketAddress> addresses, GaussDBConnectionConfiguration configuration, ConnectionSettings settings) {
 
         Assert.isTrue(!addresses.isEmpty(), "Collection of SocketAddress must not be empty");
 
@@ -156,7 +156,7 @@ public final class MultiHostConnectionStrategy implements ConnectionStrategy {
             ? HostConnectOutcome.ok(candidate) : oldStatus;
     }
 
-    private static Mono<Boolean> isPrimaryServer(Client client, PostgresqlConnectionConfiguration configuration) {
+    private static Mono<Boolean> isPrimaryServer(Client client, GaussDBConnectionConfiguration configuration) {
 
         GaussDBConnection connection = new GaussDBConnection(client, new DefaultCodecs(client.getByteBufAllocator()), DefaultPortalNameSupplier.INSTANCE,
             DisabledStatementCache.INSTANCE, IsolationLevel.READ_UNCOMMITTED, configuration);

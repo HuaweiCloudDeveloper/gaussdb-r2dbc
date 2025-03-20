@@ -33,13 +33,13 @@ final class ConnectionResources {
 
     private final GaussDBConnection connection;
 
-    private final PostgresqlConnectionConfiguration configuration;
+    private final GaussDBConnectionConfiguration configuration;
 
     private final StatementCache statementCache;
 
     private final PortalNameSupplier portalNameSupplier;
 
-    ConnectionResources(Client client, Codecs codecs, GaussDBConnection connection, PostgresqlConnectionConfiguration configuration, PortalNameSupplier portalNameSupplier,
+    ConnectionResources(Client client, Codecs codecs, GaussDBConnection connection, GaussDBConnectionConfiguration configuration, PortalNameSupplier portalNameSupplier,
                         StatementCache statementCache) {
         this.client = client;
         this.codecs = codecs;
@@ -61,7 +61,7 @@ final class ConnectionResources {
         return this.connection;
     }
 
-    public PostgresqlConnectionConfiguration getConfiguration() {
+    public GaussDBConnectionConfiguration getConfiguration() {
         return this.configuration;
     }
 

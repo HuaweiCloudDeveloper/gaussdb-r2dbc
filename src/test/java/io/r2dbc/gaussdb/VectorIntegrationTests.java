@@ -54,7 +54,7 @@ final class VectorIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         builder.forceBinary(true);
         super.customize(builder);
     }

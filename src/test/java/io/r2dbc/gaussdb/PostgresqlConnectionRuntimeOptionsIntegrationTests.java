@@ -1,6 +1,6 @@
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import reactor.test.StepVerifier;
@@ -15,7 +15,7 @@ import java.util.Map;
 final class PostgresqlConnectionRuntimeOptionsIntegrationTests {
 
     @RegisterExtension
-    static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
     private static final Map<String, String> options = new HashMap<>();
 
@@ -24,7 +24,7 @@ final class PostgresqlConnectionRuntimeOptionsIntegrationTests {
         options.put("statement_timeout", "60s");
     }
 
-    private final PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+    private final GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
         .database(SERVER.getDatabase())
         .host(SERVER.getHost())
         .port(SERVER.getPort())

@@ -21,13 +21,13 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.HostPortWaitStrategy;
 
 /**
- * {@code pgpool} extension that can be added in front of {@link PostgresqlServerExtension}.
+ * {@code pgpool} extension that can be added in front of {@link GaussDBServerExtension}.
  */
 public final class PgPool implements AutoCloseable {
 
     private final GenericContainer<?> container;
 
-    public PgPool(PostgresqlServerExtension server) {
+    public PgPool(GaussDBServerExtension server) {
         this.container = new GenericContainer<>("bitnami/pgpool:4.1.0")
             .withExposedPorts(PostgreSQLContainer.POSTGRESQL_PORT)
             .withEnv("PGPOOL_BACKEND_NODES", String.format("0:%s:%s", server.getPostgres().getNetworkAlias(), PostgreSQLContainer.POSTGRESQL_PORT))

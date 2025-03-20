@@ -37,17 +37,17 @@ import java.util.List;
 final class ConnectionStrategyFactory {
 
     /**
-     * Create a {@link ConnectionStrategy} that is able to connect to the specified {@link PostgresqlConnectionConfiguration configuration}.
+     * Create a {@link ConnectionStrategy} that is able to connect to the specified {@link GaussDBConnectionConfiguration configuration}.
      *
      * @param connectionFunction the raw connection function to use to create a {@link Client}. The connection function is enhanced during the connect phase to perform a handshake with the database.
      * @param configuration      the configuration object
      * @return the connection strategy to use.
      */
-    public static ConnectionStrategy getConnectionStrategy(ConnectionFunction connectionFunction, PostgresqlConnectionConfiguration configuration, ConnectionSettings connectionSettings) {
+    public static ConnectionStrategy getConnectionStrategy(ConnectionFunction connectionFunction, GaussDBConnectionConfiguration configuration, ConnectionSettings connectionSettings) {
         return doGetConnectionStrategy(new SingleHostConnectionFunction(connectionFunction, configuration), configuration, connectionSettings);
     }
 
-    private static ConnectionStrategy doGetConnectionStrategy(ConnectionFunction connectionFunction, PostgresqlConnectionConfiguration configuration, ConnectionSettings connectionSettings) {
+    private static ConnectionStrategy doGetConnectionStrategy(ConnectionFunction connectionFunction, GaussDBConnectionConfiguration configuration, ConnectionSettings connectionSettings) {
 
         SSLConfig sslConfig = configuration.getSslConfig();
         if (!SSLMode.DISABLE.equals(sslConfig.getSslMode())) {

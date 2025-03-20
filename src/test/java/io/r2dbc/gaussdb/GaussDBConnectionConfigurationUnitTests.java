@@ -29,43 +29,43 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.mockito.Mockito.mock;
 
 /**
- * Unit tests for {@link PostgresqlConnectionConfiguration}.
+ * Unit tests for {@link GaussDBConnectionConfiguration}.
  */
-final class PostgresqlConnectionConfigurationUnitTests {
+final class GaussDBConnectionConfigurationUnitTests {
 
     @Test
     void builderNoApplicationName() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder().applicationName(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder().applicationName(null))
             .withMessage("applicationName must not be null");
     }
 
     @Test
     void builderNoHostConfiguration() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder().build())
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder().build())
             .withMessage("Connection must be configured for either multi-host or single host connectivity");
     }
 
     @Test
     void builderHostAndSocket() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder().host("host").socket("socket").build())
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder().host("host").socket("socket").build())
             .withMessageContaining("Connection must be configured for either host/port or socket usage but not both");
     }
 
     @Test
     void builderNoUsername() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder().username((String) null))
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder().username((String) null))
             .withMessage("username must not be null");
     }
 
     @Test
     void builderNegativeFetchSize() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder().fetchSize(-1))
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder().fetchSize(-1))
             .withMessage("fetch size must be greater or equal zero");
     }
 
     @Test
     void builderNoTcpLoopResources() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder().loopResources(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder().loopResources(null))
             .withMessage("loopResources must not be null");
     }
 
@@ -76,7 +76,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
         options.put("statement_timeout", "60000"); // [ms]
         LoopResources loopResources = mock(LoopResources.class);
 
-        PostgresqlConnectionConfiguration configuration = getPostgresqlConnectionConfiguration(options, loopResources).build();
+        GaussDBConnectionConfiguration configuration = getPostgresqlConnectionConfiguration(options, loopResources).build();
 
         assertThat(configuration)
             .hasFieldOrPropertyWithValue("applicationName", "test-application-name")
@@ -103,7 +103,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
         options.put("statement_timeout", "60000"); // [ms]
         LoopResources loopResources = mock(LoopResources.class);
 
-        PostgresqlConnectionConfiguration configuration = getPostgresqlConnectionConfiguration(options, loopResources)
+        GaussDBConnectionConfiguration configuration = getPostgresqlConnectionConfiguration(options, loopResources)
             .statementTimeout(Duration.ofMillis(5000))
             .lockWaitTimeout(Duration.ofSeconds(50))
             .build();
@@ -126,8 +126,8 @@ final class PostgresqlConnectionConfigurationUnitTests {
             .containsEntry("search_path", "test-schema");
     }
 
-    private PostgresqlConnectionConfiguration.Builder getPostgresqlConnectionConfiguration(Map<String, String> options, LoopResources loopResources) {
-        return PostgresqlConnectionConfiguration.builder()
+    private GaussDBConnectionConfiguration.Builder getPostgresqlConnectionConfiguration(Map<String, String> options, LoopResources loopResources) {
+        return GaussDBConnectionConfiguration.builder()
             .applicationName("test-application-name")
             .connectTimeout(Duration.ofMillis(1000))
             .database("test-database")
@@ -144,7 +144,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void configurationDefaults() {
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .database("test-database")
             .host("test-host")
             .password("test-password")
@@ -156,7 +156,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
             .hasFieldOrPropertyWithValue("applicationName", "r2dbc-gaussdb")
             .hasFieldOrPropertyWithValue("database", "test-database")
             .hasFieldOrPropertyWithValue("singleHostConfiguration.host", "test-host")
-            .hasFieldOrPropertyWithValue("singleHostConfiguration.port", 5432)
+            .hasFieldOrPropertyWithValue("singleHostConfiguration.port", 8000)
             .hasFieldOrProperty("options")
             .hasFieldOrProperty("sslConfig")
             .hasFieldOrPropertyWithValue("tcpKeepAlive", false)
@@ -169,7 +169,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNoUsername() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .password("test-password")
             .build())
@@ -178,7 +178,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNoPassword() {
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("foo")
             .build();
@@ -188,7 +188,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorInvalidOptions() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("test-username")
             .password("test-password")
@@ -199,7 +199,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
         assertThatIllegalArgumentException().isThrownBy(() -> {
             final Map<String, String> options = new HashMap<>();
             options.put(null, "test-value");
-            PostgresqlConnectionConfiguration.builder()
+            GaussDBConnectionConfiguration.builder()
                 .host("test-host")
                 .username("test-username")
                 .password("test-password")
@@ -211,7 +211,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
         assertThatIllegalArgumentException().isThrownBy(() -> {
             final Map<String, String> options = new HashMap<>();
             options.put("test-option", null);
-            PostgresqlConnectionConfiguration.builder()
+            GaussDBConnectionConfiguration.builder()
                 .host("test-host")
                 .username("test-username")
                 .password("test-password")
@@ -223,7 +223,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNoSslCustomizer() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .sslContextBuilderCustomizer(null)
             .build())
             .withMessage("sslContextBuilderCustomizer must not be null");
@@ -231,7 +231,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNoSslCert() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .password("test-password")
             .sslCert((String) null)
@@ -241,7 +241,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNotExistSslCert() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("test-username")
             .password("test-password")
@@ -252,7 +252,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorSslCert() {
-        PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("test-username")
             .password("test-password")
@@ -262,7 +262,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNoSslKey() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .password("test-password")
             .sslKey((String) null)
@@ -272,7 +272,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNotExistSslKey() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("test-username")
             .password("test-password")
@@ -283,7 +283,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorSslKey() {
-        PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("test-username")
             .password("test-password")
@@ -293,7 +293,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNullSslRootCert() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .password("test-password")
             .sslRootCert((String) null)
@@ -303,7 +303,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorNotExistSslRootCert() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PostgresqlConnectionConfiguration.builder()
+        assertThatIllegalArgumentException().isThrownBy(() -> GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .password("test-password")
             .sslRootCert("no-server.crt")
@@ -313,7 +313,7 @@ final class PostgresqlConnectionConfigurationUnitTests {
 
     @Test
     void constructorSslRootCert() {
-        PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration.builder()
             .host("test-host")
             .username("test-username")
             .password("test-password")

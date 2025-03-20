@@ -104,7 +104,7 @@ public class PostgresqlHighAvailabilityClusterExtension implements BeforeAllCall
     }
 
     private void startPrimary(Network network) {
-        this.primary = new PostgreSQLContainer<>(PostgresqlServerExtension.IMAGE_NAME)
+        this.primary = new PostgreSQLContainer<>(GaussDBServerExtension.IMAGE_NAME)
             .withNetwork(network)
             .withNetworkAliases("postgres-primary")
             .withCopyFileToContainer(getHostPath("setup-primary.sh", 0755), "/docker-entrypoint-initdb.d/setup-primary.sh")
@@ -119,14 +119,14 @@ public class PostgresqlHighAvailabilityClusterExtension implements BeforeAllCall
     }
 
     private void startStandby(Network network) {
-        this.standby = new CustomPostgreSQLContainer(PostgresqlServerExtension.IMAGE_NAME)
+        this.standby = new CustomPostgreSQLContainer(GaussDBServerExtension.IMAGE_NAME)
             .withNetwork(network)
             .withCopyFileToContainer(getHostPath("setup-standby.sh", 0755), "/setup-standby.sh")
             .withCommand("/setup-standby.sh")
             .withEnv("PG_REP_USER", "replication")
             .withEnv("PG_REP_PASSWORD", "replication_password")
             .withEnv("PG_MASTER_HOST", "postgres-primary")
-            .withEnv("PG_MASTER_PORT", "5432");
+            .withEnv("PG_MASTER_PORT", "8000");
         this.standby.start();
         HikariConfig standbyConfig = new HikariConfig();
         standbyConfig.setJdbcUrl(this.standby.getJdbcUrl());

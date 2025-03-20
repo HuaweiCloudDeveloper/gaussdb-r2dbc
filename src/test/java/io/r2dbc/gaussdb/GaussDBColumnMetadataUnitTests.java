@@ -24,9 +24,9 @@ import static io.r2dbc.gaussdb.message.Format.FORMAT_TEXT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Unit tests for {@link PostgresqlColumnMetadata}.
+ * Unit tests for {@link GaussDBColumnMetadata}.
  */
-final class PostgresqlColumnMetadataUnitTests {
+final class GaussDBColumnMetadataUnitTests {
 
     @Test
     void toColumnMetadata() {
@@ -34,7 +34,7 @@ final class PostgresqlColumnMetadataUnitTests {
             .preferredType(200, FORMAT_TEXT, String.class)
             .build();
 
-        PostgresqlColumnMetadata columnMetadata = PostgresqlColumnMetadata.toColumnMetadata(codecs, new Field((short) 100, 200, 300, (short) 400, FORMAT_TEXT, "test-name", 500));
+        GaussDBColumnMetadata columnMetadata = GaussDBColumnMetadata.toColumnMetadata(codecs, new Field((short) 100, 200, 300, (short) 400, FORMAT_TEXT, "test-name", 500));
 
         assertThat(columnMetadata.getJavaType()).isEqualTo(String.class);
         assertThat(columnMetadata.getName()).isEqualTo("test-name");

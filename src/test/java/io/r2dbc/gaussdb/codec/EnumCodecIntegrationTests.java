@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.codec;
 
 import io.r2dbc.gaussdb.AbstractIntegrationTests;
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
@@ -50,14 +50,14 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         builder.codecRegistrar(EnumCodec.builder().withEnum("my_enum_with_codec", MyEnum.class).build());
     }
 
     @Test
     void shouldNotRegisterIfEmpty() {
 
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .database(SERVER.getDatabase())
             .host(SERVER.getHost())
             .port(SERVER.getPort())
@@ -75,7 +75,7 @@ final class EnumCodecIntegrationTests extends AbstractIntegrationTests {
     @Test
     void shouldReportUnresolvableTypes() {
 
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .database(SERVER.getDatabase())
             .host(SERVER.getHost())
             .port(SERVER.getPort())

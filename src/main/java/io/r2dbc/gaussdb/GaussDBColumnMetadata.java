@@ -29,7 +29,7 @@ import java.util.Objects;
 /**
  * An implementation of {@link ColumnMetadata} for a PostgreSQL database.
  */
-final class PostgresqlColumnMetadata implements io.r2dbc.gaussdb.api.PostgresqlColumnMetadata {
+final class GaussDBColumnMetadata implements io.r2dbc.gaussdb.api.GaussDBColumnMetadata {
 
     private final Codecs codecs;
 
@@ -41,7 +41,7 @@ final class PostgresqlColumnMetadata implements io.r2dbc.gaussdb.api.PostgresqlC
 
     private final short precision;
 
-    PostgresqlColumnMetadata(Codecs codecs, String name, int nativeType, short precision) {
+    GaussDBColumnMetadata(Codecs codecs, String name, int nativeType, short precision) {
         this.codecs = codecs;
         this.format = Format.FORMAT_TEXT;
         this.name = name;
@@ -49,7 +49,7 @@ final class PostgresqlColumnMetadata implements io.r2dbc.gaussdb.api.PostgresqlC
         this.precision = precision;
     }
 
-    PostgresqlColumnMetadata(Codecs codecs, Field field) {
+    GaussDBColumnMetadata(Codecs codecs, Field field) {
         this.codecs = Assert.requireNonNull(codecs, "codecs must not be null");
         Assert.requireNonNull(field, "field must not be null");
         this.format = field.getFormat();
@@ -63,10 +63,10 @@ final class PostgresqlColumnMetadata implements io.r2dbc.gaussdb.api.PostgresqlC
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PostgresqlColumnMetadata)) {
+        if (!(o instanceof GaussDBColumnMetadata)) {
             return false;
         }
-        PostgresqlColumnMetadata that = (PostgresqlColumnMetadata) o;
+        GaussDBColumnMetadata that = (GaussDBColumnMetadata) o;
         return
             this.name.equals(that.name) &&
                 this.nativeType == that.nativeType &&
@@ -117,8 +117,8 @@ final class PostgresqlColumnMetadata implements io.r2dbc.gaussdb.api.PostgresqlC
             '}';
     }
 
-    static PostgresqlColumnMetadata toColumnMetadata(Codecs codecs, Field field) {
-        return new PostgresqlColumnMetadata(codecs, field);
+    static GaussDBColumnMetadata toColumnMetadata(Codecs codecs, Field field) {
+        return new GaussDBColumnMetadata(codecs, field);
     }
 
     static class OidType implements Type {

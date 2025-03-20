@@ -19,8 +19,8 @@ package io.r2dbc.gaussdb.api;
 import io.r2dbc.spi.ColumnMetadata;
 
 /**
- * {@link ColumnMetadata} for a PostgreSQL database.
+ * {@link ColumnMetadata} for a GaussDB database.
  */
-public interface PostgresqlColumnMetadata extends ColumnMetadata {
+public interface GaussDBColumnMetadata extends ColumnMetadata {
 
 }

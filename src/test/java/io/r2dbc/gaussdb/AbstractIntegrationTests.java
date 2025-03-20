@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.api.GaussDBConnection;
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 public abstract class AbstractIntegrationTests {
 
     @RegisterExtension
-    public static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    public static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
     public GaussDBConnectionFactory connectionFactory;
 
@@ -51,9 +51,9 @@ public abstract class AbstractIntegrationTests {
      *
      * @return a {@link GaussDBConnectionFactory}.
      */
-    protected GaussDBConnectionFactory getConnectionFactory(Consumer<PostgresqlConnectionConfiguration.Builder> customizer) {
+    protected GaussDBConnectionFactory getConnectionFactory(Consumer<GaussDBConnectionConfiguration.Builder> customizer) {
 
-        PostgresqlConnectionConfiguration.Builder builder = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration.Builder builder = GaussDBConnectionConfiguration.builder()
             .database(SERVER.getDatabase())
             .host(SERVER.getHost())
             .port(SERVER.getPort())
@@ -65,11 +65,11 @@ public abstract class AbstractIntegrationTests {
     }
 
     /**
-     * Template method to customize {@link PostgresqlConnectionConfiguration.Builder}.
+     * Template method to customize {@link GaussDBConnectionConfiguration.Builder}.
      *
      * @param builder builder to customize.
      */
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
 
     }
 

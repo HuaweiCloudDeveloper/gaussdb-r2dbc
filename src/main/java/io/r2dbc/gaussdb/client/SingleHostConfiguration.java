@@ -19,7 +19,7 @@ package io.r2dbc.gaussdb.client;
 import io.r2dbc.gaussdb.util.Assert;
 import reactor.util.annotation.Nullable;
 
-import static io.r2dbc.gaussdb.PostgresqlConnectionConfiguration.DEFAULT_PORT;
+import static io.r2dbc.gaussdb.GaussDBConnectionConfiguration.DEFAULT_PORT;
 
 /**
  * Connection configuration information for connecting to a single Postgres server.
@@ -128,7 +128,7 @@ public final class SingleHostConfiguration {
         }
 
         /**
-         * Configure the port. Defaults to {@code 5432}.
+         * Configure the port. Defaults to {@code 8000}.
          *
          * @param port the port
          * @return this {@link Builder}

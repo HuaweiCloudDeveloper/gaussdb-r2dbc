@@ -16,12 +16,12 @@
 
 package io.r2dbc.gaussdb.replication;
 
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.api.PostgresqlReplicationConnection;
 import io.r2dbc.gaussdb.api.PostgresqlResult;
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -39,9 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 final class LogicalDecodeIntegrationTests {
 
     @RegisterExtension
-    static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
-    private final GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
+    private final GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(GaussDBConnectionConfiguration.builder()
         .database(SERVER.getDatabase())
         .host(SERVER.getHost())
         .port(SERVER.getPort())

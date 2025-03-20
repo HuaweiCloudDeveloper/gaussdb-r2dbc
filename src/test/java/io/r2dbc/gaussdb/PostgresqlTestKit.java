@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb;
 
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryOptions;
@@ -24,7 +24,7 @@ import io.r2dbc.spi.test.TestKit;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.jdbc.core.JdbcOperations;
 
-import static io.r2dbc.gaussdb.PostgresqlConnectionFactoryProvider.POSTGRESQL_DRIVER;
+import static io.r2dbc.gaussdb.GaussDBConnectionFactoryProvider.GAUSSDB_DRIVER;
 import static io.r2dbc.spi.ConnectionFactoryOptions.DATABASE;
 import static io.r2dbc.spi.ConnectionFactoryOptions.DRIVER;
 import static io.r2dbc.spi.ConnectionFactoryOptions.HOST;
@@ -38,10 +38,10 @@ import static io.r2dbc.spi.ConnectionFactoryOptions.USER;
 final class PostgresqlTestKit implements TestKit<String> {
 
     @RegisterExtension
-    static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
     private final ConnectionFactory connectionFactory = ConnectionFactories.get(ConnectionFactoryOptions.builder()
-        .option(DRIVER, POSTGRESQL_DRIVER)
+        .option(DRIVER, GAUSSDB_DRIVER)
         .option(DATABASE, SERVER.getDatabase())
         .option(HOST, SERVER.getHost())
         .option(PORT, SERVER.getPort())

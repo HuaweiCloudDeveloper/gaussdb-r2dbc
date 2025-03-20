@@ -70,14 +70,14 @@ import java.util.function.ToIntFunction;
 import static io.r2dbc.gaussdb.message.frontend.Execute.NO_LIMIT;
 
 /**
- * Connection configuration information for connecting to a PostgreSQL database.
+ * Connection configuration information for connecting to a GaussDB database.
  */
-public final class PostgresqlConnectionConfiguration {
+public final class GaussDBConnectionConfiguration {
 
     /**
-     * Default PostgreSQL port.
+     * Default GaussDB port.
      */
-    public static final int DEFAULT_PORT = 5432;
+    public static final int DEFAULT_PORT = 8000;
 
     private final String applicationName;
 
@@ -134,12 +134,12 @@ public final class PostgresqlConnectionConfiguration {
 
     private final Publisher<String> username;
 
-    private PostgresqlConnectionConfiguration(String applicationName, boolean autodetectExtensions, @Nullable boolean compatibilityMode, @Nullable Duration connectTimeout, @Nullable String database
+    private GaussDBConnectionConfiguration(String applicationName, boolean autodetectExtensions, @Nullable boolean compatibilityMode, @Nullable Duration connectTimeout, @Nullable String database
         , LogLevel errorResponseLogLevel, List<Extension> extensions, ToIntFunction<String> fetchSize, boolean forceBinary, @Nullable Duration lockWaitTimeout,
-                                              @Nullable LoopResources loopResources, @Nullable MultiHostConfiguration multiHostConfiguration, LogLevel noticeLogLevel,
-                                              @Nullable Map<String, String> options, @Nullable Publisher<CharSequence> password, boolean preferAttachedBuffers, int preparedStatementCacheQueries,
-                                              @Nullable String schema, @Nullable SingleHostConfiguration singleHostConfiguration, SSLConfig sslConfig, @Nullable Duration statementTimeout,
-                                              boolean tcpKeepAlive, boolean tcpNoDelay, TimeZone timeZone, Publisher<String> username) {
+                                           @Nullable LoopResources loopResources, @Nullable MultiHostConfiguration multiHostConfiguration, LogLevel noticeLogLevel,
+                                           @Nullable Map<String, String> options, @Nullable Publisher<CharSequence> password, boolean preferAttachedBuffers, int preparedStatementCacheQueries,
+                                           @Nullable String schema, @Nullable SingleHostConfiguration singleHostConfiguration, SSLConfig sslConfig, @Nullable Duration statementTimeout,
+                                           boolean tcpKeepAlive, boolean tcpNoDelay, TimeZone timeZone, Publisher<String> username) {
         this.applicationName = Assert.requireNonNull(applicationName, "applicationName must not be null");
         this.autodetectExtensions = autodetectExtensions;
         this.compatibilityMode = compatibilityMode;
@@ -190,7 +190,7 @@ public final class PostgresqlConnectionConfiguration {
 
     @Override
     public String toString() {
-        return "PostgresqlConnectionConfiguration{" +
+        return "GaussDBConnectionConfiguration{" +
             "applicationName='" + this.applicationName + '\'' +
             ", autodetectExtensions='" + this.autodetectExtensions + '\'' +
             ", compatibilityMode=" + this.compatibilityMode +
@@ -347,7 +347,7 @@ public final class PostgresqlConnectionConfiguration {
     }
 
     /**
-     * A builder for {@link PostgresqlConnectionConfiguration} instances.
+     * A builder for {@link GaussDBConnectionConfiguration} instances.
      * <p>
      * <i>This class is not threadsafe</i>
      */
@@ -462,11 +462,11 @@ public final class PostgresqlConnectionConfiguration {
         }
 
         /**
-         * Returns a configured {@link PostgresqlConnectionConfiguration}.
+         * Returns a configured {@link GaussDBConnectionConfiguration}.
          *
-         * @return a configured {@link PostgresqlConnectionConfiguration}
+         * @return a configured {@link GaussDBConnectionConfiguration}
          */
-        public PostgresqlConnectionConfiguration build() {
+        public GaussDBConnectionConfiguration build() {
 
             SingleHostConfiguration singleHostConfiguration = this.singleHostConfiguration != null
                 ? this.singleHostConfiguration.build()
@@ -484,7 +484,7 @@ public final class PostgresqlConnectionConfiguration {
                 throw new IllegalArgumentException("username must not be null");
             }
 
-            return new PostgresqlConnectionConfiguration(this.applicationName, this.autodetectExtensions, this.compatibilityMode, this.connectTimeout, this.database, this.errorResponseLogLevel,
+            return new GaussDBConnectionConfiguration(this.applicationName, this.autodetectExtensions, this.compatibilityMode, this.connectTimeout, this.database, this.errorResponseLogLevel,
                 this.extensions, this.fetchSize, this.forceBinary, this.lockWaitTimeout, this.loopResources, multiHostConfiguration,
                 this.noticeLogLevel, this.options, this.password, this.preferAttachedBuffers,
                 this.preparedStatementCacheQueries, this.schema, singleHostConfiguration,
@@ -598,7 +598,7 @@ public final class PostgresqlConnectionConfiguration {
         }
 
         /**
-         * Force binary results (<a href="https://wiki.postgresql.org/wiki/JDBC-BinaryTransfer">Binary Transfer</a>). Defaults to false.
+         * Force binary results. Defaults to false.
          *
          * @param forceBinary whether to force binary transfer
          * @return this {@link Builder}
@@ -688,8 +688,6 @@ public final class PostgresqlConnectionConfiguration {
          * <p>
          * This parameter is applied once after creating a new connection.
          * If lockTimeout is already set using {@link #options(Map)}, it will be overridden.
-         * <a href="https://www.postgresql.org/docs/current/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-FORMAT">Lock Timeout</a>
-         *
          * @param lockWaitTimeout the lock timeout
          * @return this {@link Builder}
          * @since 0.8.9
@@ -716,7 +714,6 @@ public final class PostgresqlConnectionConfiguration {
          *
          * @param noticeLogLevel the log level to use.
          * @return this {@link Builder}
-         * @since 0.9
          */
         public Builder noticeLogLevel(LogLevel noticeLogLevel) {
             this.noticeLogLevel = Assert.requireNonNull(noticeLogLevel, "noticeLogLevel must not be null");
@@ -727,7 +724,6 @@ public final class PostgresqlConnectionConfiguration {
          * Configure connection initialization parameters.
          * <p>
          * These parameters are applied once after creating a new connection. This is useful for setting up client-specific
-         * <a href="https://www.postgresql.org/docs/current/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-FORMAT">runtime parameters</a>
          * like statement timeouts, time zones etc.
          *
          * @param options the options
@@ -782,7 +778,7 @@ public final class PostgresqlConnectionConfiguration {
         }
 
         /**
-         * Configure the port. Defaults to {@code 5432}. Calling this method prepares single-node configuration. This method can be only used if the builder was not configured with a multi-host
+         * Configure the port. Defaults to {@code 8000}. Calling this method prepares single-node configuration. This method can be only used if the builder was not configured with a multi-host
          * configuration.
          *
          * @param port the port
@@ -1009,11 +1005,8 @@ public final class PostgresqlConnectionConfiguration {
          * <p>
          * This parameter is applied once after creating a new connection.
          * If statementTimeout is already set using {@link #options(Map)}, it will be overridden.
-         * <a href="https://www.postgresql.org/docs/current/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-FORMAT">Statement Timeout</a>
-         *
          * @param statementTimeout the statement timeout
          * @return this {@link Builder}
-         * @since 0.8.9
          */
         public Builder statementTimeout(Duration statementTimeout) {
             this.statementTimeout = Assert.requireNonNull(statementTimeout, "Statement timeout");

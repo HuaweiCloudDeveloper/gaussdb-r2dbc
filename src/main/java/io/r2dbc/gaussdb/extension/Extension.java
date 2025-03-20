@@ -16,11 +16,13 @@
 
 package io.r2dbc.gaussdb.extension;
 
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
+
 /**
  * Marker interface for all extensions.
  *
  * <p>An {@link Extension} can be registered <em>programmatically</em> through
- * {@link io.r2dbc.gaussdb.PostgresqlConnectionConfiguration} or <em>automatically</em> using
+ * {@link GaussDBConnectionConfiguration} or <em>automatically</em> using
  * the {@link java.util.ServiceLoader} mechanism.
  * <p>
  * The global extension registration through Java's {@link java.util.ServiceLoader} mechanism, allows third-party extensions to be auto-detected and automatically registered based on
@@ -30,12 +32,12 @@ package io.r2dbc.gaussdb.extension;
  * {@code /META-INF/services} directory in its enclosing JAR file.</p>
  *
  * <strong>Configuring Automatic Extension Detection</strong>
- * <p>Auto-detection is enabled by default. To disable it, simply set the {@link io.r2dbc.gaussdb.PostgresqlConnectionConfiguration.Builder#autodetectExtensions(boolean)} parameter to
+ * <p>Auto-detection is enabled by default. To disable it, simply set the {@link GaussDBConnectionConfiguration.Builder#autodetectExtensions(boolean)} parameter to
  * {@code false}.</p>
  *
  * <strong>Constructor Requirements</strong>
  * <p>Extension implementations must have a <em>default constructor</em> if registered via the {@code ServiceLoader}.  When registered through
- * {@link io.r2dbc.gaussdb.PostgresqlConnectionConfiguration} the default constructor is not required to be {@code public}.
+ * {@link GaussDBConnectionConfiguration} the default constructor is not required to be {@code public}.
  * When registered via the {@code ServiceLoader} the default constructor must be {@code public}.
  */
 public interface Extension {

@@ -87,7 +87,7 @@ public interface GaussDBConnection extends Connection {
      * {@inheritDoc}
      */
     @Override
-    PostgresqlBatch createBatch();
+    GaussDBBatch createBatch();
 
     /**
      * {@inheritDoc}

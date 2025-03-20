@@ -50,7 +50,7 @@ class PostgresqlStatementIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         builder.preparedStatementCacheQueries(2);
     }
 

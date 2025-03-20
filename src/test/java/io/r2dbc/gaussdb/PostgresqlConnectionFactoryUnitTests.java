@@ -64,7 +64,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .build();
         // @formatter:on
 
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .applicationName("test-application-name")
             .database("test-database")
             .host("test-host")
@@ -96,7 +96,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .build();
         // @formatter:on
 
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .applicationName("test-application-name")
             .database("test-database")
             .host("test-host")
@@ -115,7 +115,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .build();
         // @formatter:on
 
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .applicationName("test-application-name")
             .database("test-database")
             .host("test-host")
@@ -139,7 +139,7 @@ final class PostgresqlConnectionFactoryUnitTests {
             .build();
         // @formatter:on
 
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .applicationName("test-application-name")
             .database("test-database")
             .host("test-host")
@@ -150,7 +150,7 @@ final class PostgresqlConnectionFactoryUnitTests {
         assertThat(new GaussDBConnectionFactory(testClientFactory(client, configuration), configuration).getMetadata()).isNotNull();
     }
 
-    private ConnectionFunction testClientFactory(Client client, PostgresqlConnectionConfiguration configuration) {
+    private ConnectionFunction testClientFactory(Client client, GaussDBConnectionConfiguration configuration) {
         return new SingleHostConnectionFunction((endpoint, settings) -> Mono.just(client), configuration);
     }
 

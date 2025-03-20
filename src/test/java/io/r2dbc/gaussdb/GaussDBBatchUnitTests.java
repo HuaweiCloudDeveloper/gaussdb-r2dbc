@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 /**
  * Unit tests for {@link Batch}.
  */
-final class PostgresqlBatchUnitTests {
+final class GaussDBBatchUnitTests {
 
     @Test
     void add() {
@@ -42,7 +42,7 @@ final class PostgresqlBatchUnitTests {
             .expectRequest(new Query("test-query-1; test-query-2")).thenRespond(new CommandComplete("test-1", null, null), new CommandComplete("test-2", null, null))
             .build();
 
-        new PostgresqlBatch(MockContext.builder().client(client).build())
+        new GaussDBBatch(MockContext.builder().client(client).build())
             .add("test-query-1")
             .add("test-query-2")
             .execute()
@@ -53,19 +53,19 @@ final class PostgresqlBatchUnitTests {
 
     @Test
     void addNoSql() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlBatch(MockContext.empty()).add(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBBatch(MockContext.empty()).add(null))
             .withMessage("sql must not be null");
     }
 
     @Test
     void addWithParameter() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlBatch(MockContext.empty()).add("test-query-$1"))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBBatch(MockContext.empty()).add("test-query-$1"))
             .withMessage("Statement 'test-query-$1' is not supported.  This is often due to the presence of parameters.");
     }
 
     @Test
     void constructorNoContext() {
-        assertThatIllegalArgumentException().isThrownBy(() -> new PostgresqlBatch(null))
+        assertThatIllegalArgumentException().isThrownBy(() -> new GaussDBBatch(null))
             .withMessage("context must not be null");
     }
 
@@ -75,7 +75,7 @@ final class PostgresqlBatchUnitTests {
             .expectRequest(new Query("test-query")).thenRespond(new CommandComplete("test", null, null))
             .build();
 
-        new PostgresqlBatch(MockContext.builder().client(client).build())
+        new GaussDBBatch(MockContext.builder().client(client).build())
             .add("test-query")
             .execute()
             .as(StepVerifier::create)
@@ -89,7 +89,7 @@ final class PostgresqlBatchUnitTests {
             .expectRequest(new Query("test-query")).thenRespond(EmptyQueryResponse.INSTANCE)
             .build();
 
-        new PostgresqlBatch(MockContext.builder().client(client).build())
+        new GaussDBBatch(MockContext.builder().client(client).build())
             .add("test-query")
             .execute()
             .as(StepVerifier::create)
@@ -103,7 +103,7 @@ final class PostgresqlBatchUnitTests {
             .expectRequest(new Query("test-query")).thenRespond(new ErrorResponse(Collections.emptyList()))
             .build();
 
-        new PostgresqlBatch(MockContext.builder().client(client).build())
+        new GaussDBBatch(MockContext.builder().client(client).build())
             .add("test-query")
             .execute()
             .flatMap(result -> result.map((row, rowMetadata) -> row))

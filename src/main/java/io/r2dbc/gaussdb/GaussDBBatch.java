@@ -24,20 +24,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implementation of {@link Batch} for executing a collection of statements in a batch against a PostgreSQL database.
+ * An implementation of {@link Batch} for executing a collection of statements in a batch against a GaussDB database.
  */
-final class PostgresqlBatch implements io.r2dbc.gaussdb.api.PostgresqlBatch {
+final class GaussDBBatch implements io.r2dbc.gaussdb.api.GaussDBBatch {
 
     private final ConnectionResources context;
 
     private final List<String> statements = new ArrayList<>();
 
-    PostgresqlBatch(ConnectionResources context) {
+    GaussDBBatch(ConnectionResources context) {
         this.context = Assert.requireNonNull(context, "context must not be null");
     }
 
     @Override
-    public PostgresqlBatch add(String sql) {
+    public GaussDBBatch add(String sql) {
         Assert.requireNonNull(sql, "sql must not be null");
 
         if (!(PostgresqlSqlParser.parse(sql).getParameterCount() == 0)) {

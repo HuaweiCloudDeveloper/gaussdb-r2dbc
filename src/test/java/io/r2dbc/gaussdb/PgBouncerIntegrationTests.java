@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb;
 
 import io.r2dbc.gaussdb.util.PgBouncer;
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -30,7 +30,7 @@ import reactor.test.StepVerifier;
 final class PgBouncerIntegrationTests {
 
     @RegisterExtension
-    static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
     @ParameterizedTest
     @ValueSource(strings = {"transaction", "statement"})
@@ -71,7 +71,7 @@ final class PgBouncerIntegrationTests {
     }
 
     private GaussDBConnectionFactory createConnectionFactory(PgBouncer pgBouncer, int statementCacheSize) {
-        return new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        return new GaussDBConnectionFactory(GaussDBConnectionConfiguration.builder()
             .host(pgBouncer.getHost())
             .port(pgBouncer.getPort())
             .username(SERVER.getUsername())

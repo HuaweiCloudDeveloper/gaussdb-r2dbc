@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb.client;
 
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.message.backend.ErrorResponse;
 import io.r2dbc.gaussdb.message.backend.NoticeResponse;
 import io.r2dbc.gaussdb.util.Assert;
@@ -281,7 +281,7 @@ public final class ConnectionSettings {
          * Configure TCP KeepAlive.
          *
          * @param enabled whether to enable TCP KeepAlive
-         * @return this {@link PostgresqlConnectionConfiguration.Builder}
+         * @return this {@link GaussDBConnectionConfiguration.Builder}
          * @see Socket#setKeepAlive(boolean)
          */
         public Builder tcpKeepAlive(boolean enabled) {
@@ -293,7 +293,7 @@ public final class ConnectionSettings {
          * Configure TCP NoDelay.
          *
          * @param enabled whether to enable TCP NoDelay
-         * @return this {@link PostgresqlConnectionConfiguration.Builder}
+         * @return this {@link GaussDBConnectionConfiguration.Builder}
          * @see Socket#setTcpNoDelay(boolean)
          */
         public Builder tcpNoDelay(boolean enabled) {

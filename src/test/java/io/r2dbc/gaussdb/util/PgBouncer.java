@@ -21,7 +21,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.HostPortWaitStrategy;
 
 /**
- * {@code pgbouncer} extension that can be added in front of {@link PostgresqlServerExtension}.
+ * {@code pgbouncer} extension that can be added in front of {@link GaussDBServerExtension}.
  */
 public final class PgBouncer implements AutoCloseable {
 
@@ -29,7 +29,7 @@ public final class PgBouncer implements AutoCloseable {
 
     private final GenericContainer<?> container;
 
-    public PgBouncer(PostgresqlServerExtension server, String poolMode) {
+    public PgBouncer(GaussDBServerExtension server, String poolMode) {
         this.container = new GenericContainer<>(IMAGE_NAME)
             .withExposedPorts(PostgreSQLContainer.POSTGRESQL_PORT)
             .withEnv("POOL_MODE", poolMode)

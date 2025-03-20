@@ -19,7 +19,7 @@ package io.r2dbc.gaussdb.client;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.kqueue.KQueue;
 import io.netty.util.ReferenceCountUtil;
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.authentication.PasswordAuthenticationHandler;
@@ -30,7 +30,7 @@ import io.r2dbc.gaussdb.message.backend.NotificationResponse;
 import io.r2dbc.gaussdb.message.backend.RowDescription;
 import io.r2dbc.gaussdb.message.frontend.FrontendMessage;
 import io.r2dbc.gaussdb.message.frontend.Query;
-import io.r2dbc.gaussdb.util.PostgresqlServerExtension;
+import io.r2dbc.gaussdb.util.GaussDBServerExtension;
 import io.r2dbc.spi.R2dbcNonTransientResourceException;
 import io.r2dbc.spi.R2dbcPermissionDeniedException;
 import org.junit.jupiter.api.AfterEach;
@@ -76,7 +76,7 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 final class ReactorNettyClientIntegrationTests {
 
     @RegisterExtension
-    static final PostgresqlServerExtension SERVER = new PostgresqlServerExtension();
+    static final GaussDBServerExtension SERVER = new GaussDBServerExtension();
 
     static final Field CONNECTION = ReflectionUtils.findField(ReactorNettyClient.class, "connection");
 
@@ -293,7 +293,7 @@ final class ReactorNettyClientIntegrationTests {
 
     @Test
     void timeoutTest() {
-        GaussDBConnectionFactory gaussDBConnectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionFactory gaussDBConnectionFactory = new GaussDBConnectionFactory(GaussDBConnectionConfiguration.builder()
             .host("example.com")
             .port(81)
             .username("test")
@@ -313,12 +313,12 @@ final class ReactorNettyClientIntegrationTests {
     @DisabledOnOs(OS.WINDOWS)
     void unixDomainSocketTest() {
 
-        String socket = "/tmp/.s.PGSQL.5432";
+        String socket = "/tmp/.s.PGSQL.8000";
 
         assumeThat(KQueue.isAvailable() || Epoll.isAvailable()).describedAs("EPoll or KQueue must be available").isTrue();
         assumeThat(new File(socket)).exists();
 
-        GaussDBConnectionFactory gaussDBConnectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionFactory gaussDBConnectionFactory = new GaussDBConnectionFactory(GaussDBConnectionConfiguration.builder()
             .socket(socket)
             .username("postgres")
             .database(SERVER.getDatabase())
@@ -337,7 +337,7 @@ final class ReactorNettyClientIntegrationTests {
     @Test
     @Timeout(10)
     void queryNeverCompletes() {
-        GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionFactory connectionFactory = new GaussDBConnectionFactory(GaussDBConnectionConfiguration.builder()
             .host(SERVER.getHost())
             .port(SERVER.getPort())
             .username(SERVER.getUsername())
@@ -401,7 +401,7 @@ final class ReactorNettyClientIntegrationTests {
         }
 
         private GaussDBConnectionFactory createConnectionFactory(String username, String password) {
-            return new GaussDBConnectionFactory(PostgresqlConnectionConfiguration.builder()
+            return new GaussDBConnectionFactory(GaussDBConnectionConfiguration.builder()
                 .host(SERVER.getHost())
                 .port(SERVER.getPort())
                 .username(username)
@@ -515,9 +515,9 @@ final class ReactorNettyClientIntegrationTests {
                     .verifyError(R2dbcPermissionDeniedException.class));
         }
 
-        private void client(Function<PostgresqlConnectionConfiguration.Builder, PostgresqlConnectionConfiguration.Builder> configurer,
+        private void client(Function<GaussDBConnectionConfiguration.Builder, GaussDBConnectionConfiguration.Builder> configurer,
                             Consumer<Mono<GaussDBConnection>> connectionConsumer) {
-            PostgresqlConnectionConfiguration.Builder defaultConfig = PostgresqlConnectionConfiguration.builder()
+            GaussDBConnectionConfiguration.Builder defaultConfig = GaussDBConnectionConfiguration.builder()
                 .database(SERVER.getDatabase())
                 .host(SERVER.getHost())
                 .port(SERVER.getPort())

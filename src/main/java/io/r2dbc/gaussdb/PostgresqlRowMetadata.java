@@ -40,26 +40,26 @@ import java.util.Objects;
  */
 final class PostgresqlRowMetadata extends AbstractCollection<String> implements io.r2dbc.gaussdb.api.PostgresqlRowMetadata {
 
-    private final List<PostgresqlColumnMetadata> columnMetadatas;
+    private final List<GaussDBColumnMetadata> columnMetadatas;
 
-    private final Map<String, PostgresqlColumnMetadata> nameKeyedColumns;
+    private final Map<String, GaussDBColumnMetadata> nameKeyedColumns;
 
     private final Map<String, Integer> columnNameIndexMap;
 
-    PostgresqlRowMetadata(List<PostgresqlColumnMetadata> columnMetadatas) {
+    PostgresqlRowMetadata(List<GaussDBColumnMetadata> columnMetadatas) {
         this.columnMetadatas = Assert.requireNonNull(columnMetadatas, "columnMetadatas must not be null");
         this.nameKeyedColumns = new LinkedHashMap<>(columnMetadatas.size(), 1);
         this.columnNameIndexMap = new HashMap<>(columnMetadatas.size(), 1);
 
         int i = 0;
-        for (PostgresqlColumnMetadata columnMetadata : columnMetadatas) {
+        for (GaussDBColumnMetadata columnMetadata : columnMetadatas) {
             this.nameKeyedColumns.putIfAbsent(columnMetadata.getName(), columnMetadata);
             this.columnNameIndexMap.putIfAbsent(columnMetadata.getName().toLowerCase(Locale.ROOT), i++);
         }
     }
 
     @Override
-    public PostgresqlColumnMetadata getColumnMetadata(int index) {
+    public GaussDBColumnMetadata getColumnMetadata(int index) {
         if (index >= this.columnMetadatas.size()) {
             throw new IndexOutOfBoundsException(String.format("Column index %d is larger than the number of columns %d", index, this.columnMetadatas.size()));
         }
@@ -68,10 +68,10 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
     }
 
     @Override
-    public PostgresqlColumnMetadata getColumnMetadata(String name) {
+    public GaussDBColumnMetadata getColumnMetadata(String name) {
         Assert.requireNonNull(name, "name must not be null");
 
-        for (PostgresqlColumnMetadata metadata : this.columnMetadatas) {
+        for (GaussDBColumnMetadata metadata : this.columnMetadatas) {
 
             if (metadata.getName().equalsIgnoreCase(name)) {
                 return metadata;
@@ -94,7 +94,7 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
     }
 
     @Override
-    public List<PostgresqlColumnMetadata> getColumnMetadatas() {
+    public List<GaussDBColumnMetadata> getColumnMetadatas() {
         return Collections.unmodifiableList(this.columnMetadatas);
     }
 
@@ -168,15 +168,15 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
     }
 
     /**
-     * Lookup {@link PostgresqlColumnMetadata} by its {@code name}.
+     * Lookup {@link GaussDBColumnMetadata} by its {@code name}.
      *
      * @param name the column name.
-     * @return the {@link PostgresqlColumnMetadata}.
+     * @return the {@link GaussDBColumnMetadata}.
      */
     @Nullable
-    PostgresqlColumnMetadata findColumn(String name) {
+    GaussDBColumnMetadata findColumn(String name) {
 
-        PostgresqlColumnMetadata column = this.nameKeyedColumns.get(name);
+        GaussDBColumnMetadata column = this.nameKeyedColumns.get(name);
 
         if (column == null) {
             name = EscapeAwareColumnMatcher.findColumn(name, this.nameKeyedColumns.keySet());
@@ -199,11 +199,11 @@ final class PostgresqlRowMetadata extends AbstractCollection<String> implements 
         return new PostgresqlRowMetadata(getColumnMetadatas(codecs, rowDescription));
     }
 
-    private static List<PostgresqlColumnMetadata> getColumnMetadatas(Codecs codecs, RowDescription rowDescription) {
-        List<PostgresqlColumnMetadata> columnMetadatas = new ArrayList<>(rowDescription.getFields().size());
+    private static List<GaussDBColumnMetadata> getColumnMetadatas(Codecs codecs, RowDescription rowDescription) {
+        List<GaussDBColumnMetadata> columnMetadatas = new ArrayList<>(rowDescription.getFields().size());
 
         for (RowDescription.Field field : rowDescription.getFields()) {
-            columnMetadatas.add(PostgresqlColumnMetadata.toColumnMetadata(codecs, field));
+            columnMetadatas.add(GaussDBColumnMetadata.toColumnMetadata(codecs, field));
         }
 
         return columnMetadatas;

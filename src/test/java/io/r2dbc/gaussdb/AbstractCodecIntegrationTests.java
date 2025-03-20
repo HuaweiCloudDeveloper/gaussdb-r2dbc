@@ -92,7 +92,7 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 abstract class AbstractCodecIntegrationTests extends AbstractIntegrationTests {
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         try {
             SERVER.getJdbcOperations().execute("CREATE TYPE my_enum AS ENUM ('HELLO', 'WORLD')");
         } catch (DataAccessException e) {

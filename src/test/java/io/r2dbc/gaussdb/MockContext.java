@@ -54,7 +54,7 @@ final class MockContext {
         }
 
         public ConnectionResources build() {
-            PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+            GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
                 .host("localhost")
                 .username("admin")
                 .password("password")

@@ -22,7 +22,7 @@ package io.r2dbc.gaussdb;
 public class TemporalCodecBinaryIntegrationTests extends AbstractTemporalCodecIntegrationTests {
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         super.customize(builder);
         builder.forceBinary(true);
     }

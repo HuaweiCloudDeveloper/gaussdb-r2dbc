@@ -16,18 +16,26 @@
 
 package io.r2dbc.gaussdb;
 
-import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.r2dbc.spi.ConnectionFactoryMetadata;
 
 /**
- * Unit tests for {@link PostgresqlConnectionFactoryMetadata}.
+ * An implementation of {@link ConnectionFactoryMetadata} for a GaussDB database.
  */
-final class PostgresqlConnectionFactoryMetadataUnitTests {
+final class GaussDBConnectionFactoryMetadata implements ConnectionFactoryMetadata {
 
-    @Test
-    void name() {
-        assertThat(PostgresqlConnectionFactoryMetadata.INSTANCE.getName()).isEqualTo(PostgresqlConnectionFactoryMetadata.NAME);
+    /**
+     * The name of the GaussDB database product.
+     */
+    public static final String NAME = "GaussDB";
+
+    static final GaussDBConnectionFactoryMetadata INSTANCE = new GaussDBConnectionFactoryMetadata();
+
+    private GaussDBConnectionFactoryMetadata() {
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
 }

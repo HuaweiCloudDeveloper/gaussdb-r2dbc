@@ -200,7 +200,7 @@ final class PostgresqlConnectionUnitTests {
 
     @Test
     void createBatch() {
-        assertThat(createConnection(NO_OP, MockCodecs.empty(), this.statementCache).createBatch()).isInstanceOf(PostgresqlBatch.class);
+        assertThat(createConnection(NO_OP, MockCodecs.empty(), this.statementCache).createBatch()).isInstanceOf(GaussDBBatch.class);
     }
 
     @Test
@@ -559,7 +559,7 @@ final class PostgresqlConnectionUnitTests {
     }
 
     private GaussDBConnection createConnection(Client client, MockCodecs codecs, StatementCache cache) {
-        PostgresqlConnectionConfiguration configuration = PostgresqlConnectionConfiguration.builder()
+        GaussDBConnectionConfiguration configuration = GaussDBConnectionConfiguration.builder()
             .host("127.0.0.1")
             .username("admin")
             .password("password")

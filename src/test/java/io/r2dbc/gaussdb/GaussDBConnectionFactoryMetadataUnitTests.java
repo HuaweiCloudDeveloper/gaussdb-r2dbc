@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package io.r2dbc.gaussdb.api;
+package io.r2dbc.gaussdb;
 
-import io.r2dbc.spi.Batch;
-import reactor.core.publisher.Flux;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * {@link Batch} for executing a collection of statements in a batch against a PostgreSQL database.
+ * Unit tests for {@link GaussDBConnectionFactoryMetadata}.
  */
-public interface PostgresqlBatch extends Batch {
+final class GaussDBConnectionFactoryMetadataUnitTests {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    PostgresqlBatch add(String sql);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    Flux<PostgresqlResult> execute();
+    @Test
+    void name() {
+        assertThat(GaussDBConnectionFactoryMetadata.INSTANCE.getName()).isEqualTo(GaussDBConnectionFactoryMetadata.NAME);
+    }
 
 }

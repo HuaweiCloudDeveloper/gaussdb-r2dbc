@@ -37,9 +37,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 final class PostgresqlRowMetadataUnitTests {
 
-    private final List<PostgresqlColumnMetadata> columnMetadatas = Arrays.asList(
-        new PostgresqlColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300),
-        new PostgresqlColumnMetadata(MockCodecs.empty(), "test-name-1", 200, (short) 100)
+    private final List<GaussDBColumnMetadata> columnMetadatas = Arrays.asList(
+        new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300),
+        new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-1", 200, (short) 100)
     );
 
     @Test
@@ -51,7 +51,7 @@ final class PostgresqlRowMetadataUnitTests {
     @Test
     void getColumnMetadataIndex() {
         assertThat(new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata(0))
-            .isEqualTo(new PostgresqlColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300));
+            .isEqualTo(new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300));
     }
 
     @Test
@@ -69,7 +69,7 @@ final class PostgresqlRowMetadataUnitTests {
     @Test
     void getColumnMetadataName() {
         assertThat(new PostgresqlRowMetadata(this.columnMetadatas).getColumnMetadata("test-name-2"))
-            .isEqualTo(new PostgresqlColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300));
+            .isEqualTo(new GaussDBColumnMetadata(MockCodecs.empty(), "test-name-2", 400, (short) 300));
     }
 
     @Test
@@ -94,10 +94,10 @@ final class PostgresqlRowMetadataUnitTests {
     @Test
     void getColumnNamesRetainsOrdering() {
 
-        List<PostgresqlColumnMetadata> columnMetadatas = Arrays.asList(
-            new PostgresqlColumnMetadata(MockCodecs.empty(), "id", 400, (short) 300),
-            new PostgresqlColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100),
-            new PostgresqlColumnMetadata(MockCodecs.empty(), "name", 200, (short) 100)
+        List<GaussDBColumnMetadata> columnMetadatas = Arrays.asList(
+            new GaussDBColumnMetadata(MockCodecs.empty(), "id", 400, (short) 300),
+            new GaussDBColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100),
+            new GaussDBColumnMetadata(MockCodecs.empty(), "name", 200, (short) 100)
         );
 
         Collection<String> columnNames = new PostgresqlRowMetadata(columnMetadatas);
@@ -108,10 +108,10 @@ final class PostgresqlRowMetadataUnitTests {
     @Test
     void getColumnNamesRetainsMayContainDuplicates() {
 
-        List<PostgresqlColumnMetadata> columnMetadatas = Arrays.asList(
-            new PostgresqlColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100),
-            new PostgresqlColumnMetadata(MockCodecs.empty(), "name", 200, (short) 100),
-            new PostgresqlColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100)
+        List<GaussDBColumnMetadata> columnMetadatas = Arrays.asList(
+            new GaussDBColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100),
+            new GaussDBColumnMetadata(MockCodecs.empty(), "name", 200, (short) 100),
+            new GaussDBColumnMetadata(MockCodecs.empty(), "age", 200, (short) 100)
         );
 
         Collection<String> columnNames = new PostgresqlRowMetadata(columnMetadatas);

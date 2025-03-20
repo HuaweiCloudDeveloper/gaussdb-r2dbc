@@ -26,7 +26,7 @@ import reactor.test.StepVerifier;
 final class FetchSizeIntegrationTests extends AbstractIntegrationTests {
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         builder.fetchSize(100);
     }
 

@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.util;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -43,10 +43,10 @@ import java.util.function.Supplier;
 import static org.testcontainers.utility.MountableFile.forHostPath;
 
 /**
- * JUnit Extension to establish a Postgres database context during integration tests.
+ * JUnit Extension to establish a GaussDB database context during integration tests.
  * Uses either {@link TestContainer Testcontainers} or a {@link External locally available database}.
  */
-public final class PostgresqlServerExtension implements BeforeAllCallback, AfterAllCallback {
+public final class GaussDBServerExtension implements BeforeAllCallback, AfterAllCallback {
 
     static final String IMAGE_NAME = "postgres:13.3";
 
@@ -56,12 +56,12 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
 
     private final Supplier<PostgreSQLContainer<?>> container = () -> {
 
-        if (PostgresqlServerExtension.containerInstance != null) {
-            return PostgresqlServerExtension.containerInstance;
+        if (GaussDBServerExtension.containerInstance != null) {
+            return GaussDBServerExtension.containerInstance;
         }
 
-        PostgresqlServerExtension.containerNetwork = Network.newNetwork();
-        return PostgresqlServerExtension.containerInstance = container();
+        GaussDBServerExtension.containerNetwork = Network.newNetwork();
+        return GaussDBServerExtension.containerInstance = container();
     };
 
     private final DatabaseContainer postgres = getContainer();
@@ -72,7 +72,7 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
 
     private JdbcOperations jdbcOperations;
 
-    public PostgresqlServerExtension() {
+    public GaussDBServerExtension() {
     }
 
     private DatabaseContainer getContainer() {
@@ -91,7 +91,7 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
         }
 
         return new External();
-
+// TODO: now test container is not available for GaussDB, use external
 //        if (preference.equals(External.PREFERENCE)) {
 //            return new External();
 //        }
@@ -139,11 +139,11 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
         return getResourcePath("client.key").toAbsolutePath().toString();
     }
 
-    public PostgresqlConnectionConfiguration.Builder configBuilder() {
-        return PostgresqlConnectionConfiguration.builder().database(getDatabase()).host(getHost()).port(getPort()).username(getUsername()).password(getPassword());
+    public GaussDBConnectionConfiguration.Builder configBuilder() {
+        return GaussDBConnectionConfiguration.builder().database(getDatabase()).host(getHost()).port(getPort()).username(getUsername()).password(getPassword());
     }
 
-    public PostgresqlConnectionConfiguration getConnectionConfiguration() {
+    public GaussDBConnectionConfiguration getConnectionConfiguration() {
         return configBuilder().build();
     }
 
@@ -199,7 +199,7 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
             .withReuse(true)
             .withNetworkAliases("r2dbc-postgres")
             .withCommand("/var/setup.sh")
-            .withNetwork(PostgresqlServerExtension.containerNetwork);
+            .withNetwork(GaussDBServerExtension.containerNetwork);
 
         return container;
     }
@@ -266,7 +266,7 @@ public final class PostgresqlServerExtension implements BeforeAllCallback, After
 
         @Override
         public int getPort() {
-            return 5432;
+            return 8000;
         }
 
         @Override

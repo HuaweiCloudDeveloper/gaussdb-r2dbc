@@ -7,11 +7,11 @@ public class ClosingPgTestExecutionListener implements TestExecutionListener {
 
     @Override
     public void testPlanExecutionFinished(TestPlan testPlan) {
-        if (PostgresqlServerExtension.containerInstance != null) {
-            PostgresqlServerExtension.containerInstance.stop();
+        if (GaussDBServerExtension.containerInstance != null) {
+            GaussDBServerExtension.containerInstance.stop();
         }
-        if (PostgresqlServerExtension.containerNetwork != null) {
-            PostgresqlServerExtension.containerNetwork.close();
+        if (GaussDBServerExtension.containerNetwork != null) {
+            GaussDBServerExtension.containerNetwork.close();
         }
     }
 

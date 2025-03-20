@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 abstract class AbstractTemporalCodecIntegrationTests extends AbstractIntegrationTests {
 
     @Override
-    protected void customize(PostgresqlConnectionConfiguration.Builder builder) {
+    protected void customize(GaussDBConnectionConfiguration.Builder builder) {
         builder.timeZone(TimeZone.getTimeZone("UTC"));
     }
 

@@ -16,7 +16,7 @@
 
 package io.r2dbc.gaussdb.client;
 
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.PostgresqlException;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ public class DowntimeIntegrationTests {
 
     static GaussDBConnectionFactory newConnectionFactory(DisposableServer server, SSLMode sslMode) {
         return new GaussDBConnectionFactory(
-            PostgresqlConnectionConfiguration.builder()
+            GaussDBConnectionConfiguration.builder()
                 .host(server.host())
                 .port(server.port())
                 .username("test")

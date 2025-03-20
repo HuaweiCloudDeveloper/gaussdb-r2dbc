@@ -53,7 +53,7 @@ import static io.r2dbc.spi.ConnectionFactoryOptions.USER;
 /**
  * An implementation of {@link ConnectionFactoryProvider} for creating {@link GaussDBConnectionFactory}s.
  */
-public final class PostgresqlConnectionFactoryProvider implements ConnectionFactoryProvider {
+public final class GaussDBConnectionFactoryProvider implements ConnectionFactoryProvider {
 
     /**
      * Application name.
@@ -135,12 +135,7 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
     /**
      * Driver option value.
      */
-    public static final String POSTGRESQL_DRIVER = "gaussdb";
-
-    /**
-     * Legacy driver option value.
-     */
-    public static final String LEGACY_POSTGRESQL_DRIVER = "postgres";
+    public static final String GAUSSDB_DRIVER = "gaussdb";
 
     /**
      * Failover driver protocol.
@@ -264,13 +259,13 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
     public static final Option<TimeZone> TIME_ZONE = Option.valueOf("timeZone");
 
     /**
-     * Returns a new {@link PostgresqlConnectionConfiguration.Builder} configured with the given {@link ConnectionFactoryOptions}.
+     * Returns a new {@link GaussDBConnectionConfiguration.Builder} configured with the given {@link ConnectionFactoryOptions}.
      *
-     * @param connectionFactoryOptions {@link ConnectionFactoryOptions} used to initialize the {@link PostgresqlConnectionConfiguration.Builder}.
-     * @return a {@link PostgresqlConnectionConfiguration.Builder}
+     * @param connectionFactoryOptions {@link ConnectionFactoryOptions} used to initialize the {@link GaussDBConnectionConfiguration.Builder}.
+     * @return a {@link GaussDBConnectionConfiguration.Builder}
      * @since 0.9
      */
-    public static PostgresqlConnectionConfiguration.Builder builder(ConnectionFactoryOptions connectionFactoryOptions) {
+    public static GaussDBConnectionConfiguration.Builder builder(ConnectionFactoryOptions connectionFactoryOptions) {
         return fromConnectionFactoryOptions(connectionFactoryOptions);
     }
 
@@ -281,7 +276,7 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
 
     @Override
     public String getDriver() {
-        return POSTGRESQL_DRIVER;
+        return GAUSSDB_DRIVER;
     }
 
     @Override
@@ -289,22 +284,22 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
         Assert.requireNonNull(connectionFactoryOptions, "connectionFactoryOptions must not be null");
 
         String driver = "" + connectionFactoryOptions.getValue(DRIVER);
-        return driver != null && (driver.equals(POSTGRESQL_DRIVER) || driver.equals(LEGACY_POSTGRESQL_DRIVER));
+        return driver != null && (driver.equals(GAUSSDB_DRIVER));
     }
 
     /**
      * Configure the builder with the given {@link ConnectionFactoryOptions}.
      *
      * @param options {@link ConnectionFactoryOptions}
-     * @return this {@link PostgresqlConnectionConfiguration.Builder}
+     * @return this {@link GaussDBConnectionConfiguration.Builder}
      * @throws IllegalArgumentException if {@code options} is {@code null}
      */
     @SuppressWarnings("unchecked")
-    private static PostgresqlConnectionConfiguration.Builder fromConnectionFactoryOptions(ConnectionFactoryOptions options) {
+    private static GaussDBConnectionConfiguration.Builder fromConnectionFactoryOptions(ConnectionFactoryOptions options) {
 
         Assert.requireNonNull(options, "connectionFactoryOptions must not be null");
 
-        PostgresqlConnectionConfiguration.Builder builder = PostgresqlConnectionConfiguration.builder();
+        GaussDBConnectionConfiguration.Builder builder = GaussDBConnectionConfiguration.builder();
 
         OptionMapper mapper = OptionMapper.create(options);
 
@@ -353,7 +348,7 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
         mapper.from(LOCK_WAIT_TIMEOUT).map(OptionMapper::toDuration).to(builder::lockWaitTimeout);
         mapper.fromTyped(LOOP_RESOURCES).to(builder::loopResources);
         mapper.from(NOTICE_LOG_LEVEL).map(it -> OptionMapper.toEnum(it, LogLevel.class)).to(builder::noticeLogLevel);
-        mapper.from(OPTIONS).map(PostgresqlConnectionFactoryProvider::convertToMap).to(builder::options);
+        mapper.from(OPTIONS).map(GaussDBConnectionFactoryProvider::convertToMap).to(builder::options);
         mapper.from(PORT).map(OptionMapper::toInteger).to(builder::port);
         mapper.from(PREFER_ATTACHED_BUFFERS).map(OptionMapper::toBoolean).to(builder::preferAttachedBuffers);
         mapper.from(PREPARED_STATEMENT_CACHE_QUERIES).map(OptionMapper::toInteger).to(builder::preparedStatementCacheQueries);
@@ -396,7 +391,7 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
         return builder;
     }
 
-    private static void setupSsl(PostgresqlConnectionConfiguration.Builder builder, OptionMapper mapper) {
+    private static void setupSsl(GaussDBConnectionConfiguration.Builder builder, OptionMapper mapper) {
 
         mapper.from(SSL).map(OptionMapper::toBoolean).to(enableSsl -> {
             if (enableSsl) {
@@ -404,8 +399,8 @@ public final class PostgresqlConnectionFactoryProvider implements ConnectionFact
             }
         });
 
-        mapper.from(SSL_MODE).map(PostgresqlConnectionFactoryProvider::toSSLMode).to(builder::sslMode).otherwise(() -> {
-            mapper.from(SSL_MODE_ALIAS).map(PostgresqlConnectionFactoryProvider::toSSLMode).to(builder::sslMode);
+        mapper.from(SSL_MODE).map(GaussDBConnectionFactoryProvider::toSSLMode).to(builder::sslMode).otherwise(() -> {
+            mapper.from(SSL_MODE_ALIAS).map(GaussDBConnectionFactoryProvider::toSSLMode).to(builder::sslMode);
         });
 
         mapper.fromTyped(SSL_CERT).to(builder::sslCert);

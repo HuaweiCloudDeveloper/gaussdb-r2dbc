@@ -58,7 +58,7 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
 
     private final ConnectionFunction connectionFunction;
 
-    private final PostgresqlConnectionConfiguration configuration;
+    private final GaussDBConnectionConfiguration configuration;
 
     private final Extensions extensions;
 
@@ -68,7 +68,7 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
      * @param configuration the configuration to use
      * @throws IllegalArgumentException if {@code configuration} is {@code null}
      */
-    public GaussDBConnectionFactory(PostgresqlConnectionConfiguration configuration) {
+    public GaussDBConnectionFactory(GaussDBConnectionConfiguration configuration) {
         this(DEFAULT_CONNECTION_FUNCTION, configuration);
     }
 
@@ -79,13 +79,13 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
      * @param configuration      the configuration to use
      * @throws IllegalArgumentException if {@code configuration} is {@code null}
      */
-    GaussDBConnectionFactory(ConnectionFunction connectionFunction, PostgresqlConnectionConfiguration configuration) {
+    GaussDBConnectionFactory(ConnectionFunction connectionFunction, GaussDBConnectionConfiguration configuration) {
         this.connectionFunction = Assert.requireNonNull(connectionFunction, "connectionFunction must not be null");
         this.configuration = Assert.requireNonNull(configuration, "configuration must not be null");
         this.extensions = getExtensions(configuration);
     }
 
-    private static Extensions getExtensions(PostgresqlConnectionConfiguration configuration) {
+    private static Extensions getExtensions(GaussDBConnectionConfiguration configuration) {
         Extensions extensions = Extensions.from(configuration.getExtensions());
 
         if (configuration.isAutodetectExtensions()) {
@@ -190,10 +190,10 @@ public final class GaussDBConnectionFactory implements ConnectionFactory {
 
     @Override
     public ConnectionFactoryMetadata getMetadata() {
-        return PostgresqlConnectionFactoryMetadata.INSTANCE;
+        return GaussDBConnectionFactoryMetadata.INSTANCE;
     }
 
-    PostgresqlConnectionConfiguration getConfiguration() {
+    GaussDBConnectionConfiguration getConfiguration() {
         return this.configuration;
     }
 

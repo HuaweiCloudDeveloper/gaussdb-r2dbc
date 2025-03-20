@@ -17,6 +17,7 @@
 package io.r2dbc.gaussdb.extension;
 
 import io.netty.buffer.ByteBufAllocator;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.codec.Codec;
 import io.r2dbc.gaussdb.codec.CodecRegistry;
@@ -29,7 +30,7 @@ import org.reactivestreams.Subscriber;
  *
  * <strong>Constructor Requirements</strong>
  * <p>Extension implementations must have a <em>default constructor</em> if registered via the {@code ServiceLoader}.  When registered through
- * {@link io.r2dbc.gaussdb.PostgresqlConnectionConfiguration} the default constructor is not required to be {@code public}.
+ * {@link GaussDBConnectionConfiguration} the default constructor is not required to be {@code public}.
  * When registered via the {@code ServiceLoader} the default constructor must be {@code public}.
  *
  * @see Extension

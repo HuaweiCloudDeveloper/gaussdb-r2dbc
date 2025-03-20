@@ -58,7 +58,7 @@ public final class MockGaussDBConnection implements GaussDBConnection {
     }
 
     @Override
-    public PostgresqlBatch createBatch() {
+    public GaussDBBatch createBatch() {
         return null;
     }
 

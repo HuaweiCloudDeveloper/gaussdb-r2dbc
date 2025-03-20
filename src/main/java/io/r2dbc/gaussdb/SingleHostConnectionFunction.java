@@ -35,9 +35,9 @@ final class SingleHostConnectionFunction implements ConnectionFunction {
 
     private final ConnectionFunction upstreamFunction;
 
-    private final PostgresqlConnectionConfiguration configuration;
+    private final GaussDBConnectionConfiguration configuration;
 
-    SingleHostConnectionFunction(ConnectionFunction upstreamFunction, PostgresqlConnectionConfiguration configuration) {
+    SingleHostConnectionFunction(ConnectionFunction upstreamFunction, GaussDBConnectionConfiguration configuration) {
         this.upstreamFunction = upstreamFunction;
         this.configuration = configuration;
     }
@@ -52,7 +52,7 @@ final class SingleHostConnectionFunction implements ConnectionFunction {
                 .handle(ExceptionFactory.INSTANCE::handleErrorResponse));
     }
 
-    private static PostgresStartupParameterProvider getParameterProvider(PostgresqlConnectionConfiguration configuration, ConnectionSettings settings) {
+    private static PostgresStartupParameterProvider getParameterProvider(GaussDBConnectionConfiguration configuration, ConnectionSettings settings) {
         return new PostgresStartupParameterProvider(configuration.getApplicationName(), configuration.getTimeZone(), settings);
     }
 

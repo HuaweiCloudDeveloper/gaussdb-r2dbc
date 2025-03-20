@@ -17,7 +17,7 @@
 package io.r2dbc.gaussdb.client;
 
 import io.r2dbc.gaussdb.MultiHostConnectionStrategy;
-import io.r2dbc.gaussdb.PostgresqlConnectionConfiguration;
+import io.r2dbc.gaussdb.GaussDBConnectionConfiguration;
 import io.r2dbc.gaussdb.GaussDBConnectionFactory;
 import io.r2dbc.gaussdb.api.GaussDBConnection;
 import io.r2dbc.gaussdb.util.PostgresqlHighAvailabilityClusterExtension;
@@ -191,11 +191,11 @@ final class HighAvailabilityClusterIntegrationTests {
 
     private GaussDBConnectionFactory multiHostConnectionFactory(MultiHostConnectionStrategy.TargetServerType targetServerType, PostgreSQLContainer<?>... servers) {
         PostgreSQLContainer<?> firstServer = servers[0];
-        PostgresqlConnectionConfiguration.Builder builder = PostgresqlConnectionConfiguration.builder();
+        GaussDBConnectionConfiguration.Builder builder = GaussDBConnectionConfiguration.builder();
         for (PostgreSQLContainer<?> server : servers) {
-            builder.addHost(server.getHost(), server.getMappedPort(5432));
+            builder.addHost(server.getHost(), server.getMappedPort(8000));
         }
-        PostgresqlConnectionConfiguration configuration = builder
+        GaussDBConnectionConfiguration configuration = builder
             .targetServerType(targetServerType)
             .username(firstServer.getUsername())
             .password(firstServer.getPassword())

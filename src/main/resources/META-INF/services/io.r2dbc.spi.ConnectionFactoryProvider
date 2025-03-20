@@ -1,1 +1,1 @@
-io.r2dbc.gaussdb.PostgresqlConnectionFactoryProvider
+io.r2dbc.gaussdb.GaussDBConnectionFactoryProvider

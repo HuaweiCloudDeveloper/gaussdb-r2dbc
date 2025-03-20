@@ -85,7 +85,7 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
     private volatile IsolationLevel previousIsolationLevel;
 
     GaussDBConnection(Client client, Codecs codecs, PortalNameSupplier portalNameSupplier, StatementCache statementCache, IsolationLevel isolationLevel,
-                      PostgresqlConnectionConfiguration configuration) {
+                      GaussDBConnectionConfiguration configuration) {
         this.client = Assert.requireNonNull(client, "client must not be null");
         this.resources = new ConnectionResources(client, codecs, this, configuration, portalNameSupplier, statementCache);
         this.connectionContext = client.getContext();
@@ -228,8 +228,8 @@ final class GaussDBConnection implements io.r2dbc.gaussdb.api.GaussDBConnection,
     }
 
     @Override
-    public PostgresqlBatch createBatch() {
-        return new PostgresqlBatch(this.resources);
+    public GaussDBBatch createBatch() {
+        return new GaussDBBatch(this.resources);
     }
 
     @Override

@@ -55,7 +55,7 @@ final class PostgresqlRowUnitTests {
 
     private final PostgresqlRowMetadata metadata = new PostgresqlRowMetadata(columns
         .stream()
-        .map(field -> PostgresqlColumnMetadata.toColumnMetadata(mock(Codecs.class), field))
+        .map(field -> GaussDBColumnMetadata.toColumnMetadata(mock(Codecs.class), field))
         .collect(Collectors.toList()));
 
     private final ByteBuf[] data = new ByteBuf[]{TEST.buffer(4).writeInt(100), TEST.buffer(4).writeInt(300), null};
