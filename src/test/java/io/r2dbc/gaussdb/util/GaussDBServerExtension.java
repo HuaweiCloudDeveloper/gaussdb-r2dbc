@@ -271,7 +271,7 @@ public final class GaussDBServerExtension implements BeforeAllCallback, AfterAll
 
         @Override
         public String getDatabase() {
-            return "r2dbc_test";
+            return "postgres";
         }
 
         @Override
@@ -281,7 +281,7 @@ public final class GaussDBServerExtension implements BeforeAllCallback, AfterAll
 
         @Override
         public String getPassword() {
-            return "r2dbc_test_12";
+            return "R2dbc_test@12";
         }
 
         @Override

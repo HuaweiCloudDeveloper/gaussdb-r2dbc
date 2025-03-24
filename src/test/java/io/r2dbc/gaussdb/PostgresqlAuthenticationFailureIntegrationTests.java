@@ -55,7 +55,7 @@ final class PostgresqlAuthenticationFailureIntegrationTests {
 
         assertThatExceptionOfType(R2dbcPermissionDeniedException.class)
             .isThrownBy(() -> Mono.from(connectionFactory.create()).block())
-            .withMessage("password authentication failed for user \"test\"");
+            .withMessage("Invalid username/password,login denied.");
     }
 
 }

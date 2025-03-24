@@ -213,10 +213,16 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.postgresql</groupId>-->
+<!--            <artifactId>postgresql</artifactId>-->
+<!--            <version>${postgresql.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
+            <groupId>com.huaweicloud.gaussdb</groupId>
+            <artifactId>gaussdbjdbc</artifactId>
+            <version>1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
